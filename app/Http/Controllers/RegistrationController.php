@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DigitalOffice;
+use App\Models\DigitalOfficeEmployee;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class RegistrationController extends Controller
 {
@@ -14,7 +18,6 @@ class RegistrationController extends Controller
      */
     public function create() {
         return view('registration');
-
     }
 
     /**
@@ -42,7 +45,25 @@ class RegistrationController extends Controller
         ]);
 
         if($account_type === 'provider') {
-            
+
+            $officeOwnerRole = Role::findByName('OfficeOwner');
+            $user_id = $user->id;
+            $user->assignRole($officeOwnerRole);
+
+            $digitalOffice = DigitalOffice::create([
+                'name' => ''
+            ]);
+
+            DigitalOfficeEmployee::create([
+                'user_id' => $user_id,
+                'office_id' => $digitalOffice->id,
+                'role_name' => 'مدير'
+            ]);
+
+            Auth::loginUsingId($user->id);
+
+            route('filament-digital-office.pages.dashboard');
+
         }
 
     }

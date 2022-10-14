@@ -1,3 +1,4 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors') 
  
 module.exports = {
@@ -8,6 +9,9 @@ module.exports = {
     darkMode: 'class',
     theme: {
         extend: {
+            fontFamily: {
+                'sans': ['"Noto Sans Arabic", sans-serif', ...defaultTheme.fontFamily.sans],
+            },
             colors: { 
                 danger: colors.rose,
                 primary: colors.blue,

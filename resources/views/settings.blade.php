@@ -1,5 +1,5 @@
-@extends('layouts.dashboard')
+@extends('layouts.dashboard', ['pageTitle' => 'إعدادات المكتب'])
 
 @section('content')
-<livewire:edit-office-settings />
+<livewire:office.edit-settings />
 @endsection

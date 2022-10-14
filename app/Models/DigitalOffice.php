@@ -35,6 +35,16 @@ class DigitalOffice extends Model
         return $this->hasMany(DigitalOfficeEmployee::class, 'office_id', 'id');
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'digital_office_categories', 'category_id', 'office_id');
+    }
+
+    public function owner() {
+       //return $this->hasOne(DigitalOfficeEmployee::class, 'user_id', '')
+    }
+
+
     function getLocationAttribute($value)
     {
         return json_encode([
@@ -51,6 +61,7 @@ class DigitalOffice extends Model
 
         return $query->where('id', $employee->office_id);
     }
+
 
 
     function setLocationAttribute($value)

@@ -19,13 +19,9 @@ class Login extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            TextInput::make('email')->required(),
-            TextInput::make('password')->password()->required()
+            TextInput::make('email')->label(__('validation.attributes.email'))->required(),
+            TextInput::make('password')->label(__('validation.attributes.password'))->password()->required()
         ];
-    }
-
-    public function save() {
-
     }
 
     public function submit() {
@@ -33,7 +29,7 @@ class Login extends Component implements HasForms
 
         if(! Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
             throw ValidationException::withMessages([
-                'email' => 'البريد الإلكتروني أو كلمة السر خطأ',
+                'email' => __('auth.failed'),
             ]);
         }
 

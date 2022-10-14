@@ -15,6 +15,7 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "ryangjchandler/filament-navigation": "^0.3.1",
         "spatie/laravel-permission": "^5.5",
         "yemenpoint/filament-google-map-location-picker": "^1.3"
     },

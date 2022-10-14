@@ -7,6 +7,9 @@
     <meta name="application-name" content="{{ config('app.name') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
 
     <title>{{ config('app.name') }}</title>
 
@@ -37,12 +40,12 @@
                 <!-- Main content -->
                 <main class="flex-1 max-h-full overflow-hidden overflow-y-scroll">
                     <!-- Main content header -->
-                    <div class="bg-white shadow">
-                        <div class="mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                            <h1 class="text-3xl font-bold tracking-tight text-gray-900">لوحة التحكم</h1>
-                        </div>
-                    </div>
                     <div class="w-full p-4 mx-auto md:px-6 lg:px-8 max-w-7xl">
+                        <livewire:office.alerts />
+
+                        <div class="mb-6">
+                            <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $pageTitle }}</h1>
+                        </div>
                         @yield('content')
                     </div>
                 </main>

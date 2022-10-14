@@ -10,12 +10,11 @@ class OfficeListingController extends Controller
     public function index()
     {
         $offices = DigitalOffice::all();
-
-        return view('offices', ['offices' => $offices]);
+        return view('office.listing', ['offices' => $offices]);
     }
 
-    public function show() {
-        return view('office');
+    public function show( DigitalOffice $office ) {
+        return view('office.single', ['office' => $office]);
     }
 
 }

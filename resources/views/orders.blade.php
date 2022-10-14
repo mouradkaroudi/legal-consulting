@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.dashboard', ['pageTitle' => ''])
 @section('content')
 <div class="mx-auto max-w-screen-xl px-4 md:px-6 flex flex-col">
     <div class="lg:flex lg:items-center lg:justify-between">

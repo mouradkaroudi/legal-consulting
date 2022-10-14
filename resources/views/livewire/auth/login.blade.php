@@ -16,6 +16,6 @@
         تسجيل الدخول
     </x-filament-support::button>
     <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-        ليس لديك حساب? <a href="#" class="font-medium text-primary-600 hover:underline dark:text-primary-500">تسجيل</a>
+        ليس لديك حساب? <a href="/registration" class="font-medium text-primary-600 hover:underline dark:text-primary-500">تسجيل</a>
     </p>
 </form>

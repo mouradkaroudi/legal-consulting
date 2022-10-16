@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('license_number')->nullable();
             $table->string('country_code')->nullable();
             $table->string('city')->nullable();
-            // $table->integer('image_id')->nullable();
             $table->integer('license_attachment')->nullable();
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();

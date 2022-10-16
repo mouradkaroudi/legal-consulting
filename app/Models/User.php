@@ -45,8 +45,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function office() {
-        return $this->hasOne(DigitalOfficeEmployee::class, 'user_id', 'id');
+    public function offices() {
+        return $this->hasMany(DigitalOfficeEmployee::class, 'user_id', 'id');
     }
 
     public function canAccessFilament() {

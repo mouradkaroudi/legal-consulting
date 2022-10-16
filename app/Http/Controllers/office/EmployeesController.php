@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\office;
 
 use App\Http\Controllers\Controller;
+use App\Models\DigitalOffice;
 use Illuminate\Http\Request;
 
 class EmployeesController extends Controller
@@ -12,9 +13,11 @@ class EmployeesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( DigitalOffice $digitalOffice )
     {
-        return view('office.employees');
+        return view('pages.office.employees', [
+            'officeId' => $digitalOffice->id
+        ]);
     }
 
     /**

@@ -54,7 +54,7 @@ class Thread extends Model
     }
 
     /**
-     * Participants relationship.
+     * Office relationship.
      *
      * @return HasMany
      *

@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardHomeController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\office\AppointmentsController;
 use App\Http\Controllers\office\EmployeesController;
+use App\Http\Controllers\Office\MessagesController as OfficeMessagesController;
 use App\Http\Controllers\office\SettingsController;
 use App\Http\Controllers\OfficeListingController;
 use App\Http\Controllers\OrderController;
@@ -38,15 +39,21 @@ Route::post('/registration', [RegistrationController::class, 'store']);
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/offices', [OfficeListingController::class, 'index'])->name('offices');
-Route::get('/offices/{office}', [OfficeListingController::class, 'show']);
+//Route::get('/offices', [OfficeListingController::class, 'index'])->name('offices');
+//Route::get('/offices/{office}', [OfficeListingController::class, 'show']);
 
-Route::name('dashboard')->prefix('/dashboard')->group(function () {
+Route::name('office')->prefix('/office/{digitalOffice}')->group(function () {
     Route::get('/', [DashboardHomeController::class, 'index']);
     Route::resource('/orders', OrderController::class);
     Route::resource('/settings', SettingsController::class);
     Route::resource('/employees', EmployeesController::class);
     Route::resource('/appointments', AppointmentsController::class);
+    Route::resource('/messages', OfficeMessagesController::class);
+});
+
+Route::name('search')->prefix('search/{category}')->group(function () {
+    Route::get('/', [OfficeListingController::class, 'index']);
+    Route::get('/{digitalOffice}', [OfficeListingController::class, 'show']);
 });
 
 Route::name('account')->prefix('/account')->middleware(Authenticate::class)->group(function () {

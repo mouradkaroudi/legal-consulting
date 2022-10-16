@@ -7,6 +7,7 @@ use App\Models\DigitalOffice;
 use Filament\Forms;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
@@ -15,21 +16,11 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
     use Forms\Concerns\InteractsWithForms;
     use AuthorizesRequests;
 
-    public DigitalOffice $digitalOffice;
-
-    public $name;
-    public $description;
-    public $image;
-    public $phone_number;
-    public $license_number;
-    public $license_attachment;
-    public $status;
+    public $digitalOffice;
 
     public function mount(): void
     {
-        $get_current_office = get_current_office();
-        $this->digitalOffice = DigitalOffice::find($get_current_office['id']);
-
+        
         $this->form->fill([
             'name' => $this->digitalOffice['name'],
             'description' => $this->digitalOffice['description'],
@@ -67,7 +58,7 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
             ]),
             Forms\Components\MarkdownEditor::make('description')->label('وصف'),
         ];
-
+        
         if ($this->digitalOffice->status != 'uncomplete') {
             $fields[] = Grid::make(2)->schema([
                 Forms\Components\Select::make('status')->label('الحالة')->options([
@@ -121,6 +112,6 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 
     public function render()
     {
-        return view('livewire.office.edit-settings', ['status', $this->status]);
+        return view('livewire.office.edit-settings');
     }
 }

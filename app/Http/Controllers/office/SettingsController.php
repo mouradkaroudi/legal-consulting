@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\office;
 
 use App\Http\Controllers\Controller;
+use App\Models\DigitalOffice;
 use Illuminate\Http\Request;
 
 class SettingsController extends Controller
@@ -12,9 +13,9 @@ class SettingsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(DigitalOffice $digitalOffice)
     {
-        return view('settings');
+        return view('pages.office.settings', ['digitalOffice' => $digitalOffice]);
     }
 
     /**

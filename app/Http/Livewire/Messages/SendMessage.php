@@ -64,8 +64,6 @@ class SendMessage extends Component implements HasForms
 
     protected function getFormSchema(): array
     {
-
-
         return [
             Hidden::make('officeId'),
             TextInput::make('subject')->label('الموضوع')->required(),

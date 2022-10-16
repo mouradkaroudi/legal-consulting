@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Account;
+namespace App\Http\Livewire\Office;
 
 use App\Models\Thread;
 use Filament\Tables\Actions\Action;
@@ -18,10 +18,12 @@ class MessagesTable extends Component implements HasTable
 
     use InteractsWithTable;
 
+    public $officeId = 0;
+
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('office.name')->label('المكتب'),
+            TextColumn::make('office.name')->label('المستفيد'),
             TextColumn::make('subject')->label('الموضوع'),
         ];
     }
@@ -35,17 +37,18 @@ class MessagesTable extends Component implements HasTable
 
     protected function getTableRecordUrlUsing(): Closure
     {
-        return fn (Model $record): string => route('accountmessages.show', ['id' => $record->id]);
+        return fn (Model $record): string => route(
+            'officemessages.show', ['digitalOffice' => $this->officeId, 'message' => $record->id]
+        );
     }
 
     protected function getTableQuery(): Builder|Relation
     {
-        
-        return Thread::query()->where('user_id', auth()->user()->id);
+        return Thread::query();
     }
 
     public function render()
     {
-        return view('livewire.account.messages-table');
+        return view('livewire.office.messages-table');
     }
 }

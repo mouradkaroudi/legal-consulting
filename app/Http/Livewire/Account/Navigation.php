@@ -8,11 +8,15 @@ use Livewire\Component;
 class Navigation extends Component
 {
     public $show_office_link = false;
-    
+    public $officeId = null;
+
     public function __construct()
     {
         $user = Auth::user();
-        $this->show_office_link = !empty($user->office);
+        if(!empty($user->offices->toArray())) {
+            $this->show_office_link = true;
+            $this->officeId = $user->offices[0]->id;
+        }
     }
 
     private $navigationLinks = [
@@ -40,6 +44,9 @@ class Navigation extends Component
 
     public function render()
     {
-        return view('livewire.account.navigation', ['navigationLinks' => $this->navigationLinks]);
+        return view('livewire.account.navigation', [
+            'officeId' => $this->officeId,
+            'navigationLinks' => $this->navigationLinks
+        ]);
     }
 }

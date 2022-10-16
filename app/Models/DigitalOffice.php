@@ -37,7 +37,7 @@ class DigitalOffice extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'digital_office_categories', 'category_id', 'office_id');
+        return $this->belongsToMany(Category::class, 'digital_office_categories', 'office_id', 'category_id');
     }
 
     public function owner() {

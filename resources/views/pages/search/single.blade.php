@@ -22,7 +22,7 @@
 </head>
 
 <body class="bg-gray-50">
-    <x-navbar />
+    <livewire:front.navigation />
     <div class="mx-auto max-w-screen-xl px-4 md:px-6 my-12">
         <div class="md:flex no-wrap md:-mx-2">
             <!-- Left Side -->
@@ -35,7 +35,9 @@
                     <h1 class="text-gray-900 font-bold text-xl leading-8 my-1">{{ $office->name }}</h1>
                     <h3 class="text-gray-600 font-lg text-semibold leading-6">Owner at Her Company Inc.</h3>
                     <div>
+                        @if($displayMessagingForm)
                         <livewire:messages.send-message :officeId="$office->id"/>
+                        @endif
                     </div>
                     <ul class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                         <li class="flex items-center py-3">

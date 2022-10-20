@@ -20,12 +20,14 @@ class DatabaseSeeder extends Seeder
             RoleAndPermissionSeeder::class,
         ]);
 
-        // \App\Models\User::factory(10)->create();
-
         $user = \App\Models\User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@example.com',
             'is_admin' => true
+        ]);
+
+        \App\Models\DigitalOffice::factory()->create([
+            'name' => 'مكتب المحامي محمد جابر'
         ]);
 
         // $user->assignRole($adminRole);

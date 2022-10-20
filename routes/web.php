@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardHomeController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\office\AppointmentsController;
 use App\Http\Controllers\office\EmployeesController;
+use App\Http\Controllers\Office\InviteController;
 use App\Http\Controllers\Office\MessagesController as OfficeMessagesController;
 use App\Http\Controllers\office\SettingsController;
 use App\Http\Controllers\OfficeListingController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,22 +35,26 @@ Route::get('/', function () {
     return view('home.index');
 })->name('home');
 
-Route::get('/registration', [RegistrationController::class, 'create'])->name('registration');
-Route::post('/registration', [RegistrationController::class, 'store']);
+Route::name('auth')->middleware(RedirectIfAuthenticated::class)->group(function() {
+    Route::get('/registration', [RegistrationController::class, 'create'])->name('registration');
+    Route::post('/registration', [RegistrationController::class, 'store']);
+    Route::get('/login', [AuthController::class, 'index'])->name('login');    
+});
 
-Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //Route::get('/offices', [OfficeListingController::class, 'index'])->name('offices');
 //Route::get('/offices/{office}', [OfficeListingController::class, 'show']);
 
-Route::name('office')->prefix('/office/{digitalOffice}')->group(function () {
+Route::name('office')->prefix('/office/{digitalOffice}')->middleware('office')->group(function () {
     Route::get('/', [DashboardHomeController::class, 'index']);
+    Route::get('/settings', SettingsController::class)->name('settings');
+
     Route::resource('/orders', OrderController::class);
-    Route::resource('/settings', SettingsController::class);
     Route::resource('/employees', EmployeesController::class);
     Route::resource('/appointments', AppointmentsController::class);
     Route::resource('/messages', OfficeMessagesController::class);
+    Route::get('/invite', [InviteController::class, 'invite']);
 });
 
 Route::name('search')->prefix('search/{category}')->group(function () {
@@ -56,11 +62,11 @@ Route::name('search')->prefix('search/{category}')->group(function () {
     Route::get('/{digitalOffice}', [OfficeListingController::class, 'show']);
 });
 
-Route::name('account')->prefix('/account')->middleware(Authenticate::class)->group(function () {
-    Route::get('/', [DashboardController::class, 'index']);
-    Route::get('/profile', [AccountController::class, 'index']);
-    Route::get('/balance', [BalanceController::class, 'index']);
-    Route::get('/notifications', [NotificationController::class, 'index']);
+Route::name('account.')->prefix('/account')->middleware(Authenticate::class)->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('overview');
+    Route::get('/profile', [AccountController::class, 'index'])->name('profile');
+    Route::get('/balance', [BalanceController::class, 'index'])->name('balance');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notification');
 
     Route::get('/messages', [MessagesController::class, 'index'])->name('messages');
     Route::get('/messages/{id}', [MessagesController::class, 'show'])->name('messages.show');
@@ -71,12 +77,4 @@ Route::name('account')->prefix('/account')->middleware(Authenticate::class)->gro
 
 });
 
-
-
-Route::name('beneficiary')->group(function () {
-    Route::get('/orders', [OrdersController::class, 'index']);
-});
-
-Route::get('/messaging', function () {
-    return view('messaging');
-});
+Route::get('/invitation/{token}/accept', [InviteController::class, 'accept']);

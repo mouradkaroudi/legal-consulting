@@ -19,34 +19,27 @@ class Navigation extends Component
         }
     }
 
-    private $navigationLinks = [
-        [
-            'label' => 'الرئيسية',
-            'link' => '/account'
-        ],
-        [
-            'label' => 'المواعيد',
-            'link' => '#'
-        ],
-        [
-            'label' => 'الطلبات',
-            'link' => '/account/orders'
-        ],
-        [
-            'label' => 'الحساب',
-            'link' => '/account/profile'
-        ],
-        [
-            'label' => 'الرصيد',
-            'link' => '/account/balance'
-        ],
-    ];
-
     public function render()
     {
+
+        $navigationLinks = [
+            [
+                'label' => 'الرئيسية',
+                'routeName' => 'account.overview'
+            ],
+            [
+                'label' => 'الحساب',
+                'routeName' => 'account.profile'
+            ],
+            [
+                'label' => 'الرصيد',
+                'routeName' => 'account.balance'
+            ],
+        ];
+
         return view('livewire.account.navigation', [
             'officeId' => $this->officeId,
-            'navigationLinks' => $this->navigationLinks
+            'navigationLinks' => $navigationLinks
         ]);
     }
 }

@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('threads', function (Blueprint $table) {
+        Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('office_id')->constrained('digital_offices');
-            $table->string('subject');
+            $table->string('national_ID');
+            $table->string('degree')->nullable();
+            $table->string('nationality')->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
+            $table->string('national_id_attachment')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('threads');
+        Schema::dropIfExists('profiles');
     }
 };

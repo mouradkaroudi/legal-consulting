@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->float('hold_balance')->default(0);
-            $table->float('available_balance')->default(0);
+        Schema::create('invites', function (Blueprint $table) {
+            $table->id();
+            $table->string('email');
+            $table->string('token', 40)->unique();
+            $table->foreignId('office_id')->constrained('digital_offices');
+            $table->timestamps();
         });
     }
 
@@ -26,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('invites');
     }
 };

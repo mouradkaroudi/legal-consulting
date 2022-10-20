@@ -17,9 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone_number')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_admin')->default(0);
+            $table->string('avatar_url')->nullable();
+            $table->float('hold_balance')->default(0);
+            $table->float('available_balance')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

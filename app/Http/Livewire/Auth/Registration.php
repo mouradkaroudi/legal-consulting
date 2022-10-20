@@ -61,6 +61,8 @@ class Registration extends Component implements HasForms
             'password' => Hash::make($password)
         ]);
 
+        Auth::loginUsingId($user->id);
+
         if ($account_type === 'provider') {
 
             $officeOwnerRole = Role::findByName('OfficeOwner');
@@ -77,21 +79,22 @@ class Registration extends Component implements HasForms
                 'role_name' => 'مدير'
             ]);
 
-            Auth::loginUsingId($user->id);
-
-            if($account_type == 'beneficiary') {
-                route('account');
-            }else{
-                route('dashboardsettings.index');
-            }
+            return $digitalOffice;
 
         }
+
     }
 
     public function submit()
     {
         $data = $this->form->getState();
-        $this->register($data);
+        $register = $this->register($data);
+        if(!empty($register)) {
+            return redirect()->to("/office/$register->id/settings");
+        }
+
+        return redirect()->to('/account');
+
     }
 
     public function render()

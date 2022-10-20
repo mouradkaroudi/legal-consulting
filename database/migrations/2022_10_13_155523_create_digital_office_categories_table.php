@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('digital_office_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('office_id');
-            $table->foreignId('category_id');
+            $table->foreignId('office_id')->constrained('digital_offices');
+            $table->foreignId('category_id')->constrained('categories');
         });
     }
 

@@ -20,12 +20,4 @@ class RegistrationController extends Controller
         return view('auth.registration');
     }
 
-    /**
-     * 
-     */
-    public function store( Request $request ) {
-
-
-    }
-
 }

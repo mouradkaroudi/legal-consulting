@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasRoles;
 
 class DigitalOfficeEmployee extends Model
 {
-    use HasFactory;
+    use HasFactory, HasRoles;
+    protected $guard_name = 'web';
 
     /**
      * The attributes that are mass assignable.
@@ -29,10 +31,10 @@ class DigitalOfficeEmployee extends Model
 
     public function scopeCurrentUserOffice($query)
     {
-        $user = Auth::user();
+        //$user = Auth::user();
 
-        $employee = DigitalOfficeEmployee::where('user_id', $user->id)->first();
+        //$employee = DigitalOfficeEmployee::where('user_id', $user->id)->first();
 
-        $query->where('office_id', $employee->office_id);
+        //$query->where('office_id', $employee->office_id);
     }
 }

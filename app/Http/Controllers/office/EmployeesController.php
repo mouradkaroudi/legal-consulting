@@ -4,6 +4,7 @@ namespace App\Http\Controllers\office;
 
 use App\Http\Controllers\Controller;
 use App\Models\DigitalOffice;
+use App\Models\DigitalOfficeEmployee;
 use Illuminate\Http\Request;
 
 class EmployeesController extends Controller
@@ -15,30 +16,9 @@ class EmployeesController extends Controller
      */
     public function index( DigitalOffice $digitalOffice )
     {
-        return view('pages.office.employees', [
+        return view('pages.office.employees.index', [
             'officeId' => $digitalOffice->id
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -60,7 +40,8 @@ class EmployeesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $employee = DigitalOfficeEmployee::find($id);
+        return view('pages.office.employees.edit', ['DigitalOfficeEmployee' => $employee]);
     }
 
     /**

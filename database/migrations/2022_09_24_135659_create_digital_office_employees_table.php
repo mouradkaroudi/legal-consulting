@@ -15,16 +15,9 @@ return new class extends Migration
     {
         Schema::create('digital_office_employees', function (Blueprint $table) {
             $table->id();
-            $table->integer('office_id');
-            $table->integer('user_id');
-            $table->string('role_name');
-            $table->string('phone_number')->nullable();
-            $table->string('national_id')->nullable();
-            $table->string('degree')->nullable();
-            $table->string('nationality')->nullable();
-            $table->enum('gender', ['male', 'female'])->nullable();
-            $table->integer('profile_picture_id')->nullable();
-            $table->integer('national_id_attachment')->nullable();
+            $table->foreignId('office_id')->constrained('digital_offices');
+            $table->foreignId('user_id')->constrained();
+            $table->string('role_name')->nullable();
             $table->timestamps();
         });
     }

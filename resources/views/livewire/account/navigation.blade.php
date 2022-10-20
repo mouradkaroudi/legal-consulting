@@ -3,13 +3,17 @@
         <div class="flex h-16 items-center justify-between">
             <div class="flex items-center">
                 <div class="text-white">
+                    <a href="{{ url('/') }}">
                     <livewire:shared.site-logo />
+                    </a>
                 </div>
                 <div class="hidden md:block">
                     <div class="mr-10 flex items-baseline space-x-4 space-x-reverse">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         @foreach( $navigationLinks as $navigationLink )
-                        <a href="{{ $navigationLink['link'] }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        <a 
+                            href="{{ route($navigationLink['routeName']) }}" 
+                            class="{{ (strpos(Route::currentRouteName(), $navigationLink['routeName']) === 0) ? 'text-white bg-gray-700' : 'text-gray-300' }} hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                             {{ $navigationLink['label'] }}
                         </a>
                         @endforeach
@@ -96,7 +100,7 @@
                 </button>
             </div>
             <div class="mt-3 space-y-1 px-2">
-                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">إعدادت الحساب</a>
+                <a href="" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">إعدادت الحساب</a>
 
                 <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">الرصيد: 0.00SAR</a>
 

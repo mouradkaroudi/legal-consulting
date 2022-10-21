@@ -56,7 +56,7 @@ return [
     |
     */
 
-    'asset_url' => App::environment('staging') ? 'public' : null,
+    'asset_url' => env('LIVEWIRE_ASSET_URL', null),
 
     /*
     |--------------------------------------------------------------------------

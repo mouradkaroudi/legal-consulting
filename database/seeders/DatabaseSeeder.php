@@ -26,9 +26,9 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true
         ]);
 
-        \App\Models\DigitalOffice::factory()->create([
-            'name' => 'مكتب المحامي محمد جابر'
-        ]);
+        //\App\Models\DigitalOffice::factory()->create([
+        //    'name' => 'مكتب المحامي محمد جابر'
+        //]);
 
         // $user->assignRole($adminRole);
 

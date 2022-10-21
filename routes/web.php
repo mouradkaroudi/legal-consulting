@@ -35,9 +35,8 @@ Route::get('/', function () {
     return view('home.index');
 })->name('home');
 
-Route::name('auth')->middleware(RedirectIfAuthenticated::class)->group(function() {
+Route::name('auth.')->middleware(RedirectIfAuthenticated::class)->group(function() {
     Route::get('/registration', [RegistrationController::class, 'create'])->name('registration');
-    Route::post('/registration', [RegistrationController::class, 'store']);
     Route::get('/login', [AuthController::class, 'index'])->name('login');    
 });
 

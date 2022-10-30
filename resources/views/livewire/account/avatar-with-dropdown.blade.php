@@ -13,11 +13,11 @@
             <div class="font-medium truncate">{{ $user->email }}</div>
         </div>
         <!-- Active: "bg-gray-100", Not Active: "" -->
-        <a href="/account/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">إعدادات الحساب</a>
+        <a href="{{ route('account.profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">إعدادات الحساب</a>
 
-        <a href="/account/balance" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">الرصيد: {{ $user->available_balance ?? "0.00" }} SAR</a>
+        <a href="{{ route('account.balance') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">الرصيد: {{ $user->available_balance ?? "0.00" }} SAR</a>
 
-        <a href="/logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2">تسجيل الخروج</a>
+        <a href="{{ route('logout') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2">تسجيل الخروج</a>
     </div>
 </div>
 @else

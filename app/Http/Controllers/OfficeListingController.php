@@ -23,7 +23,6 @@ class OfficeListingController extends Controller
             $displayMessagingForm = false;
         }
 
-
         return view('pages.search.single', [
             'office' => $digitalOffice,
             'displayMessagingForm' => $displayMessagingForm

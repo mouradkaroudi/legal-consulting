@@ -15,7 +15,7 @@ class OfficeListingController extends Controller
         return view('pages.search.index', ['offices' => $offices]);
     }
 
-    public function show( $cateogry, DigitalOffice $digitalOffice ) {
+    public function show( DigitalOffice $digitalOffice ) {
         
         $displayMessagingForm = true;
         $user = auth()->user();

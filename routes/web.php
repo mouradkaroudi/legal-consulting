@@ -56,9 +56,9 @@ Route::name('office.')->prefix('/office/{digitalOffice}')->middleware('office')-
     Route::get('/invite', [InviteController::class, 'invite'])->name('invite');
 });
 
-Route::name('search')->prefix('search/{category}')->group(function () {
-    Route::get('/', [OfficeListingController::class, 'index']);
-    Route::get('/{digitalOffice}', [OfficeListingController::class, 'show']);
+Route::name('search')->prefix('search')->group(function () {
+    Route::get('/', [OfficeListingController::class, 'index'])->name('listing');
+    Route::get('/{digitalOffice}', [OfficeListingController::class, 'show'])->name('office');
 });
 
 Route::name('account.')->prefix('/account')->middleware(Authenticate::class)->group(function () {

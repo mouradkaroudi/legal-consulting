@@ -30,8 +30,7 @@ class DigitalOfficePolicy
      */
     public function view(User $user, DigitalOffice $digitalOffice)
     {
-        $officeEmployees = $digitalOffice->employees()->get()->toArray();
-        return $user->hasRole('OfficeOwner') && in_array($user->id, array_column($officeEmployees, 'user_id'));
+        return true;
     }
 
     /**
@@ -54,7 +53,7 @@ class DigitalOfficePolicy
      */
     public function update(User $user, DigitalOffice $digitalOffice)
     {
-        return $user->hasRole('OfficeOwner') && in_array($user->id, array_column($digitalOffice->employees()->get()->toArray(), 'user_id'));
+        return true;
     }
 
     /**

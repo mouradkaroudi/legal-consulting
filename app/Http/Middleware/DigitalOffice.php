@@ -10,7 +10,7 @@ class DigitalOffice extends Middleware
 {
     protected function authenticate($request, array $guards): void
     {
-        $guardName = config('filament.auth.guard');
+        $guardName = 'web';
         $guard = $this->auth->guard($guardName);
 
         if (!$guard->check()) {

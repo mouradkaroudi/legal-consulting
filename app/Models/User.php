@@ -9,55 +9,174 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+  use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'available_balance'
-    ];
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array<int, string>
+   */
+  protected $fillable = ["name", "email", "password", "available_balance"];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+  /**
+   * The attributes that should be hidden for serialization.
+   *
+   * @var array<int, string>
+   */
+  protected $hidden = ["password", "remember_token"];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+  /**
+   * The attributes that should be cast.
+   *
+   * @var array<string, string>
+   */
+  protected $casts = [
+    "email_verified_at" => "datetime",
+  ];
 
-    public function offices() {
-        return $this->hasMany(DigitalOfficeEmployee::class, 'user_id', 'id');
+  /**
+   * Determine if the given office is the current office.
+   *
+   * @param  mixed  $digitalOffice
+   * @return bool
+   */
+  public function isCurrentOffice($digitalOffice)
+  {
+    return $digitalOffice->id === $this->currentOffice->id;
+  }
+
+  /**
+   * Get the current office of the user's context.
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function currentOffice()
+  {
+    if (is_null($this->current_team_id) && $this->id) {
+      //$this->switchTeam($this->personalTeam());
     }
 
-    public function avatar_url() {
-        if(!empty($this->avatar_url)) {
-            return asset('storage/' . $this->avatar_url);
-        }
-        return (new UiAvatarsProvider())->get(User::find($this->id));
+    //return $this->belongsTo(Jetstream::teamModel(), "current_team_id");
+  }
+
+  /**
+   * Get all of the offices the user owns or belongs to.
+   *
+   * @return \Illuminate\Support\Collection
+   */
+  public function allOffices()
+  {
+    return $this->ownedOffices->merge($this->offices)->sortBy("name");
+  }
+
+  /**
+   * Get all of the offices the user owns.
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\HasMany
+   */
+  public function ownedOffices()
+  {
+    return $this->hasMany(DigitalOffice::class, "user_id");
+  }
+
+  /**
+   * Get all of the offices the user belongs to.
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+   */
+  public function offices()
+  {
+    return $this->belongsToMany(
+      DigitalOffice::class,
+      DigitalOfficeEmployee::class,
+      "user_id",
+      "office_id"
+    );
+  }
+
+  /**
+   * Determine if the user owns the given team.
+   *
+   * @param  mixed  $team
+   * @return bool
+   */
+  public function ownsOffice($office)
+  {
+    if (is_null($office)) {
+      return false;
     }
 
-    public function canAccessFilament() {
-        return true;
+    return $this->id == $office->user_id;
+  }
+
+  /**
+   * Determine if the user belongs to the given office.
+   *
+   * @param  mixed  $office
+   * @return bool
+   */
+  public function belongsToOffice($office)
+  {
+    if (is_null($office)) {
+      return false;
     }
+
+    return $this->ownsOffice($office) ||
+      $this->offices->contains(function ($t) use ($office) {
+        return $t->id === $office->id;
+      });
+  }
+
+  /**
+   * Get the role that the user has on the team.
+   *
+   * @param  mixed  $team
+   * @return \Laravel\Jetstream\Role|null
+   */
+  public function officeRole($office)
+  {
+    if ($this->ownsTeam($office)) {
+      //return new OwnerRole;
+    }
+
+    if (!$this->belongsToOffice($office)) {
+      return;
+    }
+
+    $role = $office->users->where("id", $this->id)->first()->membership->role;
+
+    return $role ? Role::findByName($role) : null;
+  }
+
+  /**
+   *
+   */
+  public function profile()
+  {
+    return $this->hasOne(Profile::class, "user_id", "id");
+  }
+
+  /**
+   *
+   */
+  public function avatar_url()
+  {
+    if (!empty($this->avatar_url)) {
+      return asset("storage/" . $this->avatar_url);
+    }
+    return (new UiAvatarsProvider())->get(User::find($this->id));
+  }
+
+  /**
+   *
+   */
+  public function canAccessFilament()
+  {
+    return true;
+  }
 }

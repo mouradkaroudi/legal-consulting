@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('digital_offices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
             $table->string('name');
             $table->longText('description')->nullable();
             $table->string('image')->nullable();
@@ -25,7 +26,7 @@ return new class extends Migration
             $table->integer('license_attachment')->nullable();
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();
-            $table->string('status')->default('uncomplete');
+            $table->string('status')->default('uncomplete'); // uncomplete, busy, available
             $table->timestamp('banned_at')->nullable();
             $table->timestamps();
         });

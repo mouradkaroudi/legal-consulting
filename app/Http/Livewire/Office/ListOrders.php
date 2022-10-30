@@ -13,7 +13,7 @@ class ListOrders extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        $get_current_office = get_current_office();
+        $get_current_office = get_current_office_id();
 
 
         return Order::query()->where('office_id', $get_current_office['id']);

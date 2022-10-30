@@ -9,7 +9,7 @@ class BalanceController extends Controller
 {
     public function index() {
 
-        return view('account.balance');
+        return view('pages.account.balance');
 
     }
 }

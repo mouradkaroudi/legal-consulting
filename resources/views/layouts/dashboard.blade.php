@@ -33,7 +33,7 @@
             </div>
 
             <!-- Sidebar -->
-            @include('layouts.partials.sidebar')
+            <livewire:office.sidebar/>
             <div class="flex flex-col flex-1 h-full overflow-hidden bg-gray-100">
                 <!-- Navbar -->
                 @include('layouts.partials.navbar')

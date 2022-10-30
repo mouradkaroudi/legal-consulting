@@ -17,7 +17,7 @@ class Thread extends Model
      *
      * @var array
      */
-    protected $fillable = ['office_id', 'subject'];
+    protected $fillable = ['user_id', 'office_id', 'subject'];
 
     /**
      * Messages relationship.

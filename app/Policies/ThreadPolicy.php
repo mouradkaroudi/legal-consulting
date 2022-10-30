@@ -3,10 +3,11 @@
 namespace App\Policies;
 
 use App\Models\DigitalOffice;
+use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class DigitalOfficePolicy
+class ThreadPolicy
 {
     use HandlesAuthorization;
 
@@ -25,13 +26,12 @@ class DigitalOfficePolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DigitalOffice  $digitalOffice
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, DigitalOffice $digitalOffice)
+    public function view(User $user, Thread $thread)
     {
-        $officeEmployees = $digitalOffice->employees()->get()->toArray();
-        return $user->hasRole('OfficeOwner') && in_array($user->id, array_column($officeEmployees, 'user_id'));
+        //
     }
 
     /**
@@ -40,56 +40,57 @@ class DigitalOfficePolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user, $office)
     {
-        return false;
+        
+        return $user->belongsToOffice($office) === false;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DigitalOffice  $digitalOffice
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, DigitalOffice $digitalOffice)
+    public function update(User $user, Thread $thread)
     {
-        return $user->hasRole('OfficeOwner') && in_array($user->id, array_column($digitalOffice->employees()->get()->toArray(), 'user_id'));
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DigitalOffice  $digitalOffice
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, DigitalOffice $digitalOffice)
+    public function delete(User $user, Thread $thread)
     {
-        return false;
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DigitalOffice  $digitalOffice
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, DigitalOffice $digitalOffice)
+    public function restore(User $user, Thread $thread)
     {
-        return false;
+        //
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DigitalOffice  $digitalOffice
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, DigitalOffice $digitalOffice)
+    public function forceDelete(User $user, Thread $thread)
     {
-        return false;
+        //
     }
 }

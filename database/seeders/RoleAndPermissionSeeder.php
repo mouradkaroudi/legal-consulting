@@ -16,21 +16,17 @@ class RoleAndPermissionSeeder extends Seeder
      */
     public function run()
     {
-        // office owners permissions
+        // digital office employees permissions
         Permission::create(['name' => 'manage-employees']);
         Permission::create(['name' => 'manage-office']);
+        Permission::create(['name' => 'manage-messages']);
+        Permission::create(['name' => 'manage-orders']);
 
-        // $adminRole = Role::create(['name' => 'Admin']);
-        // $financialAdminRole = Role::create(['name' => 'FinancialAdmin']);
-        // $usersAdminRole = Role::create(['name' => 'UsersAdmin']);
+        $officeEmployeeRole = Role::create(['name' => 'OfficeEmployee']);
 
-        $officeOwnerRole = Role::create(['name' => 'OfficeOwner']);
-        // $officeEmployeeRole = Role::create(['name' => 'OfficeEmployeeOwner']);
-        $beneficiaryRole = Role::create(['name' => 'Beneficiary']);
-
-        $officeOwnerRole->givePermissionTo([
-            'manage-employees',
-            'manage-office'
+        $officeEmployeeRole->givePermissionTo([
+            'manage-messages',
+            'manage-orders'
         ]);
 
     }

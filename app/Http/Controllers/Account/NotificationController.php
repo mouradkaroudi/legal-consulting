@@ -14,7 +14,7 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        return view('account.notifications');
+        return view('pages.account.notifications');
     }
 
     /**

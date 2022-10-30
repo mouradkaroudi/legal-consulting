@@ -5,7 +5,9 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 
 use App\Models\DigitalOffice;
+use App\Models\Thread;
 use App\Policies\DigitalOfficePolicy;
+use App\Policies\ThreadPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -17,7 +19,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-        DigitalOffice::class => DigitalOfficePolicy::class
+        DigitalOffice::class => DigitalOfficePolicy::class,
+        Thread::class => ThreadPolicy::class
     ];
 
     /**

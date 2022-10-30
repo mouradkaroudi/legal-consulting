@@ -13,9 +13,10 @@ class Navigation extends Component
     public function __construct()
     {
         $user = Auth::user();
-        if(!empty($user->offices->toArray())) {
+        $offices = $user->allOffices()->toArray();
+        if(!empty(($offices))) {
             $this->show_office_link = true;
-            $this->officeId = $user->offices[0]->id;
+            $this->officeId = $offices[0]['id'];
         }
     }
 

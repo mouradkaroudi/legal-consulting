@@ -2,10 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\DigitalOffice;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class EnsureUserCanAcessOffice
+class EnsureUserCanAccessOffice
 {
     /**
      * Handle an incoming request.
@@ -15,8 +17,21 @@ class EnsureUserCanAcessOffice
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
-    {
-        $route =  $request->route();
+    {   
+        $user = $request->user();
+        if(!$user) {
+            return redirect('login');
+        }
+        
+        $office = $request->route()->parameters()['digitalOffice'];
+
+        if(!$office instanceof DigitalOffice) {
+            $office = DigitalOffice::find($office);
+        }
+
+        if(!$user->belongsToOffice($office)) {
+            abort(404);
+        }
 
         return $next($request);
     }

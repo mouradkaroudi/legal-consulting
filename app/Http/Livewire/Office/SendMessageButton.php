@@ -6,7 +6,7 @@ use Livewire\Component;
 
 class SendMessageButton extends Component
 {
-
+    
     public $is_logged_in = false;
 
     public function __construct()

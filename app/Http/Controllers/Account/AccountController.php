@@ -18,7 +18,7 @@ class AccountController extends Controller
 
         $user = Auth::user();
 
-        return view('account.profile', ['user' => $user]);
+        return view('pages.account.profile', ['user' => $user]);
     }
 
 }

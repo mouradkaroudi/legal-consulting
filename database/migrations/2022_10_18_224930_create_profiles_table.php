@@ -15,12 +15,15 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('national_ID');
+            $table->foreignId('user_id')->constrained('users');
+            $table->string('national_ID')->nullable();
             $table->string('degree')->nullable();
             $table->string('nationality')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('national_id_attachment')->nullable();
+            $table->string('status')->default('uncompleted'); // available, busy, uncompleted
+            $table->timestamp('banned_at')->nullable();
+            $table->timestamp('last_seen_at')->nullable();
             $table->timestamps();
         });
     }

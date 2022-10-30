@@ -35,7 +35,7 @@ class MessagesTable extends Component implements HasTable
 
     protected function getTableRecordUrlUsing(): Closure
     {
-        return fn (Model $record): string => route('accountmessages.show', ['id' => $record->id]);
+        return fn (Model $record): string => route('account.messages.show', ['id' => $record->id]);
     }
 
     protected function getTableQuery(): Builder|Relation

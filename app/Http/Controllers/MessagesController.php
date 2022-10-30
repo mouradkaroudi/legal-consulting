@@ -30,7 +30,7 @@ class MessagesController extends Controller
         // All threads that user is participating in, with new messages
         // $threads = Thread::forUserWithNewMessages(Auth::id())->latest('updated_at')->get();
 
-        return view('account.messages.index', compact('threads'));
+        return view('pages.account.messages.index', compact('threads'));
     }
 
     /**
@@ -58,7 +58,7 @@ class MessagesController extends Controller
 
         // $thread->markAsRead($userId);
 
-        return view('account.messages.show', compact('thread', 'users'));
+        return view('pages.account.messages.show', compact('thread', 'users'));
     }
 
     /*  

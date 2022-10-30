@@ -14,7 +14,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return view('office.orders');
+        return view('pages.office.orders');
     }
 
     /**
@@ -46,7 +46,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return view('office.order-followup');
+        return view('pages.office.order-followup');
     }
 
     /**

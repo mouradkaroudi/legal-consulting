@@ -38,7 +38,7 @@ class MessagesTable extends Component implements HasTable
     protected function getTableRecordUrlUsing(): Closure
     {
         return fn (Model $record): string => route(
-            'officemessages.show', ['digitalOffice' => $this->officeId, 'message' => $record->id]
+            'office.messages.show', ['digitalOffice' => $this->officeId, 'message' => $record->id]
         );
     }
 

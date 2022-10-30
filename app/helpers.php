@@ -4,7 +4,12 @@ use App\Models\DigitalOffice;
 use App\Models\DigitalOfficeEmployee;
 use Illuminate\Support\Facades\Auth;
 
-function get_current_office() {
+/**
+ * 
+ * 
+ * @return int|null
+ */
+function get_current_office_id() {
 
     $user = Auth::user();
 
@@ -12,10 +17,7 @@ function get_current_office() {
         return;
     }
 
-    $employee = DigitalOfficeEmployee::where('user_id', $user->id)->first();
-
-    $office = DigitalOffice::where('id', $employee->office_id)->first();
-    return $office->toArray();
+    var_dump(request()->input('officeId'));
 
 
 }

@@ -17,6 +17,7 @@ class DigitalOffice extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'name',
         'description',
         'image',
@@ -55,11 +56,6 @@ class DigitalOffice extends Model
 
     public function scopeUserOffice($query)
     {
-        $user = Auth::user();
-
-        $employee = DigitalOfficeEmployee::where('user_id', $user->id)->first();
-
-        return $query->where('id', $employee->office_id);
     }
 
 

@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home.index');
+    return view('pages.home.index');
 })->name('home');
 
 Route::name('auth.')->middleware(RedirectIfAuthenticated::class)->group(function() {
@@ -45,15 +45,15 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 //Route::get('/offices', [OfficeListingController::class, 'index'])->name('offices');
 //Route::get('/offices/{office}', [OfficeListingController::class, 'show']);
 
-Route::name('office')->prefix('/office/{digitalOffice}')->middleware('office')->group(function () {
-    Route::get('/', [DashboardHomeController::class, 'index']);
+Route::name('office.')->prefix('/office/{digitalOffice}')->middleware('office')->group(function () {
+    Route::get('/', [DashboardHomeController::class, 'index'])->name('overview');
     Route::get('/settings', SettingsController::class)->name('settings');
-
+    // add middleware here
     Route::resource('/orders', OrderController::class);
     Route::resource('/employees', EmployeesController::class);
     Route::resource('/appointments', AppointmentsController::class);
     Route::resource('/messages', OfficeMessagesController::class);
-    Route::get('/invite', [InviteController::class, 'invite']);
+    Route::get('/invite', [InviteController::class, 'invite'])->name('invite');
 });
 
 Route::name('search')->prefix('search/{category}')->group(function () {

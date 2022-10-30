@@ -14,7 +14,7 @@ class AppointmentsController extends Controller
      */
     public function index()
     {
-        return view('office.appointments');
+        return view('pages.office.appointments');
     }
 
     /**

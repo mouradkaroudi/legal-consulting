@@ -12,8 +12,6 @@
                 </svg>
             </button>
         </div>
-
-
         <div class="relative flex items-center space-x-3">
             <div class="items-center hidden space-x-3 space-x-reverse md:flex">
                 <livewire:account.avatar-with-dropdown />

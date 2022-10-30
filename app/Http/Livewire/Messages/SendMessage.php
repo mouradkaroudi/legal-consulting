@@ -12,14 +12,14 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class SendMessage extends Component implements HasForms
 {
 
-    use InteractsWithForms;
-
+    use InteractsWithForms, AuthorizesRequests;
     public $officeId = 0;
     public $subject = "";
     public $body = "";
@@ -32,14 +32,17 @@ class SendMessage extends Component implements HasForms
     }
 
     public function send() {
-        
-        $data = $this->form->getState();
 
+        $data = $this->form->getState();
         $officeId = $data['officeId'];
+        $this->authorize('create', [Thread::class, DigitalOffice::find($officeId)]);
+
+
         $subject = $data['subject'];
         $body = $data['body'];
 
         $thread = Thread::create([
+            'user_id' => Auth::id(),
             'office_id' => $officeId,
             'subject' => $subject,
         ]);

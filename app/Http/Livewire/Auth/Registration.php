@@ -65,22 +65,12 @@ class Registration extends Component implements HasForms
 
         if ($account_type === 'provider') {
 
-            $officeOwnerRole = Role::findByName('OfficeOwner');
-            $user_id = $user->id;
-            $user->assignRole($officeOwnerRole);
-
             $digitalOffice = DigitalOffice::create([
+                'user_id' => $user->id,
                 'name' => ''
             ]);
 
-            DigitalOfficeEmployee::create([
-                'user_id' => $user_id,
-                'office_id' => $digitalOffice->id,
-                'role_name' => 'مدير'
-            ]);
-
             return $digitalOffice;
-
         }
 
     }

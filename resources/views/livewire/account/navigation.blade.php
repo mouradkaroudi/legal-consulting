@@ -3,7 +3,7 @@
         <div class="flex h-16 items-center justify-between">
             <div class="flex items-center">
                 <div class="text-white">
-                    <a href="{{ route('office.overview') }}">
+                    <a href="{{ url('/') }}">
                     <livewire:shared.site-logo />
                     </a>
                 </div>
@@ -23,7 +23,7 @@
             <div class="hidden md:block">
                 <div class="flex items-center md:ml-6">
                     @if($show_office_link)
-                    <a href="/office/{{ $officeId }}" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                    <a href="{{ route('office.overview', ['digitalOffice' => $officeId]) }}" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                         الدخول للمكتب
                     </a>
                     @endif

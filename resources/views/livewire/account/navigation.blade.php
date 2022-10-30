@@ -3,7 +3,7 @@
         <div class="flex h-16 items-center justify-between">
             <div class="flex items-center">
                 <div class="text-white">
-                    <a href="{{ url('/') }}">
+                    <a href="{{ route('office.overview') }}">
                     <livewire:shared.site-logo />
                     </a>
                 </div>

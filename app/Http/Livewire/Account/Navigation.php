@@ -29,8 +29,12 @@ class Navigation extends Component
                 'routeName' => 'account.overview'
             ],
             [
+                'label' => 'الطلبات',
+                'routeName' => 'account.orders.index'
+            ],
+            [
                 'label' => 'الحساب',
-                'routeName' => 'account.profile'
+                'routeName' => 'account.settings'
             ],
             [
                 'label' => 'الرصيد',

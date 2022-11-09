@@ -8,6 +8,7 @@ use Filament\AvatarProviders\UiAvatarsProvider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
@@ -53,15 +54,18 @@ class User extends Authenticatable
   /**
    * Get the current office of the user's context.
    *
-   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   * @return \App\Models\DigitalOffice|null
    */
   public function currentOffice()
   {
-    if (is_null($this->current_team_id) && $this->id) {
-      //$this->switchTeam($this->personalTeam());
+
+    $office = Route::current()->parameter('digitalOffice');
+
+    if(empty($office)) {
+      return null;
     }
 
-    //return $this->belongsTo(Jetstream::teamModel(), "current_team_id");
+    return $office instanceof DigitalOffice ? $office : DigitalOffice::find($office);
   }
 
   /**
@@ -133,14 +137,41 @@ class User extends Authenticatable
   }
 
   /**
-   * Get the role that the user has on the team.
+   * Determine if the user have specific permission in an office
+   * 
+   * @param  mixed  $office
+   * @param string $permission
+   * @return boolean
+   */
+  public function hasOfficePermission( $office, $permission ) {
+    // Grant all permissions to office owner
+    if ($this->ownsOffice($office)) {
+      return true;
+    }
+
+    if (!$this->belongsToOffice($office)) {
+      return;
+    }
+    return $office->employees->where("user_id", $this->id)->first()->hasPermissionTo($permission);
+  }
+
+  /**
+   * 
+   * @param $office \App\Models\DigitalOffice
+   */
+  public function officePermissions( $office ) {
+    return $office->employees->where("user_id", $this->id)->first()->getAllPermissions();
+  }
+
+  /**
+   * Get the role that the user has on the office.
    *
-   * @param  mixed  $team
+   * @param  mixed  $office
    * @return \Laravel\Jetstream\Role|null
    */
   public function officeRole($office)
   {
-    if ($this->ownsTeam($office)) {
+    if ($this->ownsOffice($office)) {
       //return new OwnerRole;
     }
 
@@ -148,7 +179,7 @@ class User extends Authenticatable
       return;
     }
 
-    $role = $office->users->where("id", $this->id)->first()->membership->role;
+    $role = $office->employees->where("user_id", $this->id)->first()->role;
 
     return $role ? Role::findByName($role) : null;
   }

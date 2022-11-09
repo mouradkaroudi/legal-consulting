@@ -2,74 +2,66 @@
 
 namespace App\Http\Livewire\Account;
 
-use App\Models\User;
+use App\Models\Country;
+use App\Models\Profile as ModelsProfile;
+use Filament\Forms\Components;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
-use Filament\Forms;
-use Filament\Forms\Components\Grid;
-use Illuminate\Validation\Rule;
 
-class Profile extends Component implements Forms\Contracts\HasForms
+class Profile extends Component implements HasForms
 {
-    use Forms\Concerns\InteractsWithForms;
 
-    public User $user;
+    use InteractsWithForms;
 
-    public function mount($user) {
-        $this->form->fill([
-            'name' => $user->name,
-            'email' => $user->email,
-            'avatar_url' => $user->avatar_url
-        ]);
-    }
-
-    private function updateProfile( $data ) {
-        
-        $email = $data['email'];
-        $name = $data['name'];
-        $avatar_url = $data['avatar_url'];
-
-        $this->user->email = $email;
-        $this->user->name = $name;
-        $this->user->avatar_url = $avatar_url;
-
-        $this->user->save();
-
-    }
-
-    public function submit() {
-        
-        $this->validate([
-            'name' => 'required|string|min:6',
-            'email' => ['sometimes', Rule::unique('users')->ignore($this->user->id)],
-        ]);
-
-        $data = $this->form->getState();
-        $this->updateProfile($data);
+    public ModelsProfile $profile;
+    
+    public function mount($profile) {
+        $this->form->fill($profile->toArray());
     }
 
     protected function getFormSchema(): array
     {
+
+        $countries = Country::all();
+        $citizenships = [];
+
+        foreach( $countries as $country ) {
+            $citizenships[$country->id] = $country->citizenship;
+        }
+
         return [
-            Grid::make(2)->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('الإسم')
-                    ->label(__('validation.attributes.name'))->required(),
-                Forms\Components\TextInput::make('email')
-                    ->label(__('validation.attributes.email'))
-                    ->email()
-                    ->unique('users', 'email', $this->user)
-                    ->required(),
-            ]),
-            Grid::make(2)->schema([
-                Forms\Components\FileUpload::make('avatar_url')
-                    ->label('الصورة الشخصية')
-                ,
-            ]),
+            Components\TextInput::make('national_ID')->label('الهوية الوطنية')->required(),
+            Components\TextInput::make('degree')->label('الدرجة العلمية')->required(),
+            Components\Select::make('origin_country')->options($citizenships)->label('الجنسية'),
+            Components\Select::make('gender')->options([
+                'male' => 'ذكر',
+                'female' => 'انثى'
+            ])->label('الجنس')->required(),
+            Components\FileUpload::make('national_id_attachment')->label('صورة الهوية'),
+            Components\Select::make('status')->options([
+                'available' => 'متوفر',
+                'busy' => 'مشغول'
+            ])->label('الحالة'),
         ];
     }
 
     public function render()
     {
         return view('livewire.account.profile');
+    }
+
+    public function submit() {
+
+        $this->validate([
+            'national_ID' => 'required|string|min:6',
+            'degree' => 'required|string|min:6',
+            'nationality' => 'required|string|min:6',
+            'gender' => 'required|string|min:6',
+            // 'national_id_attachment' => 'required|string|min:6',
+            'status' => ['required'],
+        ]);
+
+        $data = $this->form->getState();
     }
 }

@@ -66,6 +66,18 @@ class Thread extends Model
     }
 
     /**
+     * The owner of thread.
+     *
+     * @return HasOne
+     *
+     * @codeCoverageIgnore
+     */
+    public function owner()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    /**
      * User's relationship.
      *
      * @return BelongsToMany
@@ -152,12 +164,13 @@ class Thread extends Model
      */
     public function scopeForUser(Builder $query, $userId)
     {
+        
         $participantsTable = 'participants';
         $threadsTable = 'threads';
-
+        
         return $query->join($participantsTable, $this->getQualifiedKeyName(), '=', $participantsTable . '.thread_id')
             ->where($participantsTable . '.user_id', $userId)
-            ->whereNull($participantsTable . '.deleted_at')
+            //->whereNull($participantsTable . '.deleted_at')
             ->select($threadsTable . '.*');
     }
 

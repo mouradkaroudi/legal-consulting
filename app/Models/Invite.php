@@ -15,7 +15,7 @@ class Invite extends Model
   /**
    *
    */
-  protected $fillable = ["email", "token"];
+  protected $fillable = ["office_id", "email", "token"];
 
   /**
    * The "booted" method of the model.

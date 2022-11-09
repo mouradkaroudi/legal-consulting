@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Messages;
 
 use App\Models\DigitalOffice;
+use App\Models\DigitalOfficeEmployee;
 use App\Models\Message;
 use App\Models\Participant;
 use App\Models\Thread;
@@ -37,13 +38,15 @@ class SendMessage extends Component implements HasForms
         $officeId = $data['officeId'];
         $this->authorize('create', [Thread::class, DigitalOffice::find($officeId)]);
 
-
         $subject = $data['subject'];
         $body = $data['body'];
 
+        $digitalOffice = DigitalOffice::find($officeId);
+        $employees = DigitalOfficeEmployee::where('office_id', $officeId)->permission('manage-messages')->get();
+        
         $thread = Thread::create([
             'user_id' => Auth::id(),
-            'office_id' => $officeId,
+            'office_id' => $digitalOffice->id,
             'subject' => $subject,
         ]);
 
@@ -61,7 +64,22 @@ class SendMessage extends Component implements HasForms
             'last_read' => new Carbon(),
         ]);
 
+        // Office owner
+        Participant::create([
+            'thread_id' => $thread->id,
+            'user_id' => $digitalOffice->user_id
+        ]);
+
+        // Add all eligible employees as participants to the thread
+        foreach($employees as $employee) {
+            Participant::create([
+                'thread_id' => $thread->id,
+                'user_id' => $employee->user_id
+            ]);
+        }
+
         return redirect()->route('messages');
+        
     }
     
 

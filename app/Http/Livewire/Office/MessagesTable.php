@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Office;
 
+use App\Models\DigitalOffice;
 use App\Models\Thread;
+use App\Models\User;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -12,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Livewire\Component;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class MessagesTable extends Component implements HasTable
 {
@@ -38,13 +41,21 @@ class MessagesTable extends Component implements HasTable
     protected function getTableRecordUrlUsing(): Closure
     {
         return fn (Model $record): string => route(
-            'office.messages.show', ['digitalOffice' => $this->officeId, 'message' => $record->id]
+            'office.threads.show', ['digitalOffice' => $this->officeId, 'thread' => $record->id]
         );
+    }
+
+    protected function getTableRecordClassesUsing(): ?Closure
+    {
+      return function($record) {
+          $user_id = Auth::id();
+          return $record->isUnread($user_id) ? "bg-gray-200" : "";
+      };
     }
 
     protected function getTableQuery(): Builder|Relation
     {
-        return Thread::query();
+        return Thread::query()->forUser(Auth::id())->where('office_id', $this->officeId)->latest('updated_at');
     }
 
     public function render()

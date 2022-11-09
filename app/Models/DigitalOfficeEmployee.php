@@ -29,12 +29,4 @@ class DigitalOfficeEmployee extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    public function scopeCurrentUserOffice($query)
-    {
-        //$user = Auth::user();
-
-        //$employee = DigitalOfficeEmployee::where('user_id', $user->id)->first();
-
-        //$query->where('office_id', $employee->office_id);
-    }
 }

@@ -49,6 +49,18 @@ class Message extends Model
     }
 
     /**
+     * Office relationship.
+     *
+     * @return BelongsTo
+     *
+     * @codeCoverageIgnore
+     */
+    public function office()
+    {
+        return $this->belongsTo(DigitalOffice::class, 'office_id');
+    }
+
+    /**
      * Participants relationship.
      *
      * @return HasMany
@@ -79,14 +91,38 @@ class Message extends Model
      */
     public function scopeUnreadForUser(Builder $query, $userId)
     {
-        return $query->has('thread')
-            ->where('user_id', '!=', $userId)
+        return $query->where('user_id', '!=', $userId)
             ->whereHas('participants', function (Builder $query) use ($userId) {
                 $query->where('user_id', $userId)
                     ->where(function (Builder $q) {
                         $q->where('last_read', '<', $this->getConnection()->raw($this->getConnection()->getTablePrefix() . $this->getTable() . '.created_at'))
                             ->orWhereNull('last_read');
                     });
+            })->whereHas('thread', function(Builder $query) use ($userId) {
+                $query->where('user_id', $userId);
             });
     }
+
+    /**
+     * Returns unread messages given the userId and officeId.
+     *
+     * @param Builder $query
+     * @param mixed $userId
+     * @param mixed $officeId
+     * @return Builder
+     */
+    public function scopeUnreadForUserOffice(Builder $query, $userId, $officeId)
+    {
+        return $query->where('user_id', '!=', $userId)
+            ->whereHas('participants', function (Builder $query) use ($userId) {
+                $query->where('user_id', $userId)
+                    ->where(function (Builder $q) {
+                        $q->where('last_read', '<', $this->getConnection()->raw($this->getConnection()->getTablePrefix() . $this->getTable() . '.created_at'))
+                            ->orWhereNull('last_read');
+                    });
+            })->whereHas('thread', function(Builder $query) use ($userId, $officeId) {
+                $query->where('office_id', $officeId);
+            });
+    }
+
 }

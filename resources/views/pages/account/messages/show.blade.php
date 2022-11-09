@@ -5,6 +5,7 @@
     <livewire:messages.widgets.header-bar 
     :thread="$thread" 
     :showCloseConversation="true"
+    :viewer="$viewer"
     />
     <div class="mt-8">
         <div class="divide-y-2">

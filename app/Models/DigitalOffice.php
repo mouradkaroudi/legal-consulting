@@ -41,6 +41,10 @@ class DigitalOffice extends Model
         return $this->belongsToMany(Category::class, 'digital_office_categories', 'office_id', 'category_id');
     }
 
+    public function threads() {
+        return $this->hasMany(Thread::class, 'office_id', 'id');
+    }
+
     public function owner() {
        //return $this->hasOne(DigitalOfficeEmployee::class, 'user_id', '')
     }

@@ -19,7 +19,7 @@ class ThreadPolicy
      */
     public function viewAny(User $user)
     {
-        return false;
+        return $user->hasOfficePermission($user->currentOffice(), 'manage-messages');
     }
 
     /**
@@ -31,18 +31,19 @@ class ThreadPolicy
      */
     public function view(User $user, Thread $thread)
     {
-        //
+        //TODO: allow participante to also access message
+        return $user->hasOfficePermission(DigitalOffice::find($thread->office_id), 'manage-messages' );
     }
 
     /**
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\DigitalOffice  $office
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user, $office)
+    public function create(User $user, DigitalOffice $office)
     {
-        
         return $user->belongsToOffice($office) === false;
     }
 
@@ -55,7 +56,7 @@ class ThreadPolicy
      */
     public function update(User $user, Thread $thread)
     {
-        //
+        
     }
 
     /**
@@ -67,7 +68,7 @@ class ThreadPolicy
      */
     public function delete(User $user, Thread $thread)
     {
-        //
+        return $user->id === $thread->user_id;
     }
 
     /**

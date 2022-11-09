@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Events\Account\DepositAdded;
 use App\Events\Account\TransactionProcessed;
+use App\Events\Office\InviteSent;
 use App\Events\TransactionCompleted;
 use App\Listeners\Account\SaveTransaction;
 use App\Listeners\Account\updateAccountBalance;
+use App\Listeners\SendInvitationNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -26,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
         TransactionProcessed::class => [
             updateAccountBalance::class
         ],
+        InviteSent::class => [
+            SendInvitationNotification::class
+        ]
     ];
 
     /**

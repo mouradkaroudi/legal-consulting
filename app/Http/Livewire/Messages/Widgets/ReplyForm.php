@@ -4,7 +4,9 @@ namespace App\Http\Livewire\Messages\Widgets;
 
 use App\Models\Message;
 use App\Models\Thread;
+use Filament\Forms\Components\Actions\Modal\Actions\Action;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Concerns\HasFormComponentActions;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Http\Request;
@@ -16,7 +18,7 @@ class ReplyForm extends Component implements HasForms
 {
 
     use InteractsWithForms;
-
+    
     public $threadId;
     public $message;
 
@@ -28,7 +30,7 @@ class ReplyForm extends Component implements HasForms
                     'class' => 'p-4 w-full bg-white border-0 focus:ring-0'
                 ])
                 ->label('')
-                ->required()
+                ->required(),
         ];
     }
 

@@ -1,23 +1,22 @@
 <?php
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardHomeController;
+use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\OfficeListingController;
+use App\Http\Controllers\RegistrationController;
 
 use App\Http\Controllers\Account\SettingsController as AccountSettingsController;
 use App\Http\Controllers\Account\BalanceController;
 use App\Http\Controllers\Account\DashboardController;
 use App\Http\Controllers\Account\NotificationController;
 use App\Http\Controllers\Account\OrdersController as AccountOrdersController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardHomeController;
-use App\Http\Controllers\MessagesController;
 
 use App\Http\Controllers\Office\AppointmentsController;
 use App\Http\Controllers\Office\EmployeesController;
 use App\Http\Controllers\Office\InviteController;
 use App\Http\Controllers\Office\MessagesController as OfficeMessagesController;
 use App\Http\Controllers\Office\SettingsController;
-
-use App\Http\Controllers\OfficeListingController;
 use App\Http\Controllers\Office\OrdersController;
-use App\Http\Controllers\RegistrationController;
 
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;

@@ -10,13 +10,13 @@ class InviteController extends Controller
 {
   public function invite(DigitalOffice $digitalOffice)
   {
-    return view('pages.office.invite.index', [
-      'office' => $digitalOffice
+    return view("pages.office.invite.index", [
+      "office" => $digitalOffice,
     ]);
   }
 
   public function accept($token)
   {
-    return view('pages.invitation.accept');
+    return view("pages.invitation.accept");
   }
 }

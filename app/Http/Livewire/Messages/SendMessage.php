@@ -78,7 +78,7 @@ class SendMessage extends Component implements HasForms
             ]);
         }
 
-        return redirect()->route('messages');
+        return redirect()->route('account.messages');
         
     }
     

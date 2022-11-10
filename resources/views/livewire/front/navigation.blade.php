@@ -1,6 +1,6 @@
 <nav class="bg-white border-gray-30 border-b">
     <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2">
-        <a href="/" class="flex items-center">
+        <a href="{{ route('home') }}" class="flex items-center">
             <livewire:shared.site-logo />
         </a>
         <button data-collapse-toggle="mega-menu-full" type="button" class="inline-flex items-center p-2 mr-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="mega-menu-full" aria-expanded="false">

@@ -19,12 +19,9 @@ class PaymentSummary extends Component implements HasTable
   protected function getTableColumns(): array
   {
     return [
-      Grid::make([
-        "lg" => 2,
-      ])->schema([
-        TextColumn::make("subject")->label("الموضوع"),
-        TextColumn::make("office.name"),
-      ]),
+      TextColumn::make("office.name")->label('المكتب'),
+      TextColumn::make("subject")->label("الموضوع"),
+      TextColumn::make("fee")->label("التكلفة")
     ];
   }
 

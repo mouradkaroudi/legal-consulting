@@ -6,6 +6,7 @@ use App\Events\Account\DepositAdded;
 use App\Events\Account\TransactionProcessed;
 use App\Events\Office\InviteSent;
 use App\Events\TransactionCompleted;
+use App\Listeners\Account\Orders as AccountOrdersListeners;
 use App\Listeners\Account\SaveTransaction;
 use App\Listeners\Account\updateAccountBalance;
 use App\Listeners\SendInvitationNotification;
@@ -26,7 +27,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         TransactionProcessed::class => [
-            updateAccountBalance::class
+            updateAccountBalance::class,
+            AccountOrdersListeners\updateStatus::class
         ],
         InviteSent::class => [
             SendInvitationNotification::class

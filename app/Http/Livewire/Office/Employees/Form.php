@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Office\Employees;
 
-use App\Models\DigitalOffice;
 use App\Models\DigitalOfficeEmployee;
 use App\Models\User;
 use Filament\Forms\Components\MultiSelect;
@@ -20,34 +19,42 @@ class Form extends Component implements HasForms
     use InteractsWithForms;
     public DigitalOfficeEmployee $digitalOfficeEmployee;
 
+    public $permissions;
+
     public function mount($digitalOfficeEmployee) {
+
+        $permissions = [];
+
+        foreach( $digitalOfficeEmployee->getAllPermissions() as $permission ) {
+            $permissions[$permission['name']] = $permission['name'];
+        }
+
         $this->form->fill([
-            'name' => $digitalOfficeEmployee->name,
+            'name' => $digitalOfficeEmployee->user->name,
+            'email' => $digitalOfficeEmployee->user->email,
+            'permissions' => $permissions
         ]);
     }
 
-    private function save( $office_id, $data ) {
-
-    }
-
     public function submit() {
-        $data = $this->form->getState();
-        print_r($data);
-        $this->digitalOfficeEmployee->assignRole($data['role']);
+        $data = $this->form->getState();   
     }
 
     protected function getFormSchema(): array
     {
 
-        $rolesArray = Role::all()->toArray();
+        $permissionsArray = Role::findByName('OfficeEmployee')->permissions->toArray();
+        $permissions = [];
 
-        foreach( $rolesArray as $role ) {
-            $roles[$role['name']] = $role['name'];
+        foreach( $permissionsArray as $permission ) {
+            $permissions[$permission['name']] = $permission['name'];
         }
 
         return [
+            TextInput::make('name')->label('الإسم')->disabled(),
+            TextInput::make('email')->label('البريد الإلكتروني')->disabled(),
             TextInput::make('role_name')->label('المسمى الوظيفي'),
-            Select::make('role')->label('الوظيفة')->options($roles)
+            Select::make('permissions')->multiple()->label('الصلاحيات')->options($permissions)
         ];
     }
     protected function getFormModel(): string 

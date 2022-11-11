@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class NotificationController extends Controller
+class NotificationsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,10 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        return view('pages.account.notifications');
+
+        $notifications = auth()->user()->unreadNotifications;
+
+        return view('pages.account.notifications.index', compact('notifications'));
     }
 
     /**

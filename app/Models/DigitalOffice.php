@@ -46,7 +46,7 @@ class DigitalOffice extends Model
     }
 
     public function owner() {
-       //return $this->hasOne(DigitalOfficeEmployee::class, 'user_id', '')
+       return $this->hasOne(User::class);
     }
 
 

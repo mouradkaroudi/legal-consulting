@@ -1,8 +1,10 @@
 <div>
     <form wire:submit.prevent="submit">
-        <div class="mb-4">
-            {{ $this->form }}
+        {{ $this->form }}
+        <div class="mt-4">
+            <x-filament-support::button type="submit">
+            ادفع الآن
+            </x-filament-support::button>
         </div>
-        <x-filament::button wire:target="submit" type="submit">دفع</x-filament::button>
     </form>
 </div>

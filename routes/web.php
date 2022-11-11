@@ -8,7 +8,7 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\Account\SettingsController as AccountSettingsController;
 use App\Http\Controllers\Account\BalanceController;
 use App\Http\Controllers\Account\DashboardController;
-use App\Http\Controllers\Account\NotificationController;
+use App\Http\Controllers\Account\NotificationsController;
 use App\Http\Controllers\Account\OrdersController as AccountOrdersController;
 
 use App\Http\Controllers\Office\AppointmentsController;
@@ -66,7 +66,7 @@ Route::name('account.')->prefix('/account')->middleware(Authenticate::class)->gr
     Route::get('/', [DashboardController::class, 'index'])->name('overview');
     Route::get('/settings', [AccountSettingsController::class, 'index'])->name('settings');
     Route::get('/balance', [BalanceController::class, 'index'])->name('balance');
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notification');
+    Route::get('/notifications', [NotificationsController::class, 'index'])->name('notification');
 
     Route::resource('/orders', AccountOrdersController::class);
 

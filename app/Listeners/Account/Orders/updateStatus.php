@@ -7,37 +7,30 @@ use App\Models\Order;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class updateStatus
+class OrderEventSubscriber
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
+     * Handle user login events.
      */
-    public function __construct()
-    {
-        //
-    }
-
+    public function handleTransctionProcessed($event) {}
+ 
     /**
-     * Handle the event.
+     * Handle user logout events.
+     */
+    public function handleUserLogout($event) {}
+ 
+    /**
+     * Register the listeners for the subscriber.
      *
-     * @param  object  $event
+     * @param  \Illuminate\Events\Dispatcher  $events
      * @return void
      */
-    public function handle(TransactionProcessed $event)
+    public function subscribe($events)
     {
-        $txn = $event->txn;
-
-        if($txn->type === 'pay_dues') {
-            $metadata = json_decode($txn->metadata);
-            $orderId = isset($metadata['orderId']) && !empty($metadata['orderId']) ? $metadata['orderId'] : null;
-            if($orderId) {
-                $order = Order::find($orderId);
-                $order->status = 'paid';
-                $order->save();
-            }
-        }
+        $events->listen(
+            TransactionProcessed::class,
+            [OrderEventSubscriber::class, 'handleUserLogin']
+        );
 
     }
 }

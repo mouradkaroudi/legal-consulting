@@ -19,42 +19,30 @@ class Form extends Component implements HasForms
     use InteractsWithForms;
     public DigitalOfficeEmployee $digitalOfficeEmployee;
 
-    public $permissions;
-
     public function mount($digitalOfficeEmployee) {
 
-        $permissions = [];
-
-        foreach( $digitalOfficeEmployee->getAllPermissions() as $permission ) {
-            $permissions[$permission['name']] = $permission['name'];
-        }
 
         $this->form->fill([
             'name' => $digitalOfficeEmployee->user->name,
             'email' => $digitalOfficeEmployee->user->email,
-            'permissions' => $permissions
+            //'permissions' => $permissions
         ]);
     }
 
     public function submit() {
-        $data = $this->form->getState();   
+        $data = $this->form->getState();
     }
 
     protected function getFormSchema(): array
     {
 
-        $permissionsArray = Role::findByName('OfficeEmployee')->permissions->toArray();
-        $permissions = [];
-
-        foreach( $permissionsArray as $permission ) {
-            $permissions[$permission['name']] = $permission['name'];
-        }
+        $permissions = Role::findByName('OfficeEmployee')->permissions->pluck('name', 'id')->toArray();
 
         return [
             TextInput::make('name')->label('الإسم')->disabled(),
             TextInput::make('email')->label('البريد الإلكتروني')->disabled(),
             TextInput::make('role_name')->label('المسمى الوظيفي'),
-            Select::make('permissions')->multiple()->label('الصلاحيات')->options($permissions)
+            Select::make('role_permissions')->multiple()->preload()->label('الصلاحيات')->relationship('permissions', 'name')
         ];
     }
     protected function getFormModel(): string 

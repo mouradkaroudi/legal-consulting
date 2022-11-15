@@ -1,5 +1,5 @@
 {
   "tabWidth": 2,
-  "useTabs": false,
+  "useTabs": true,
   "html.format.wrapAttributes": "force-expand-multiline"
 }

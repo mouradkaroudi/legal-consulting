@@ -40,6 +40,10 @@ class Navigation extends Component
                 'label' => 'الرصيد',
                 'routeName' => 'account.balance'
             ],
+            [
+                'label' => 'الدعوات',
+                'routeName' => 'account.invites'
+            ],
         ];
 
         return view('livewire.account.navigation', [

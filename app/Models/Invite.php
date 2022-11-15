@@ -18,6 +18,13 @@ class Invite extends Model
   protected $fillable = ["office_id", "email", "token"];
 
   /**
+   * 
+   */
+  public function office() {
+    return $this->hasOne(DigitalOffice::class, 'id', 'office_id');
+  }
+
+  /**
    * The "booted" method of the model.
    *
    * @return void

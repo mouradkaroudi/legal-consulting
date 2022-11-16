@@ -25,6 +25,13 @@ class Invite extends Model
   }
 
   /**
+   * 
+   */
+  public function user() {
+    return $this->hasOne(User::class, 'email', 'email');
+  }
+
+  /**
    * The "booted" method of the model.
    *
    * @return void

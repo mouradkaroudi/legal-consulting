@@ -15,8 +15,9 @@ class NotificationsController extends Controller
      */
     public function index()
     {
-
-        $notifications = auth()->user()->unreadNotifications;
+        $user = auth()->user();
+        $notifications = $user->notifications;
+        $user->unreadNotifications->markAsRead();
 
         return view('pages.account.notifications.index', compact('notifications'));
     }

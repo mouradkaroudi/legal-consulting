@@ -29,7 +29,7 @@ class InvitationRequestNotification extends Notification
      */
     public function via($notifiable)
     {
-        return $notifiable ? ['database', 'mail'] : ['mail'];
+        return $notifiable ? ['database'] : [];
     }
 
     /**

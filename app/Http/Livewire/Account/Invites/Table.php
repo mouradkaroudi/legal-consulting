@@ -33,7 +33,8 @@ class Table extends Component implements HasTable
 			Action::make("accpet")
 				->label("قبول الدعوة")
                 ->action(function (Invite $record, array $data): void {
-                    $user = auth()->user();
+
+                    $user = User::where('email', $record->email)->first();
                     $user_id = $user->id;
                     $employee = DigitalOfficeEmployee::create([
                         'office_id' => $record->office_id,
@@ -42,11 +43,10 @@ class Table extends Component implements HasTable
             
                     $employee->assignRole('OfficeEmployee');
             
-                    if($user->profile() > 0) {
-
-                        Profile::create([
-                            'user_id' => $user_id
-                        ]);
+                    if(!$user->profile) {
+						$profile = new Profile;
+						$profile->user_id = $user_id;
+						$profile->save();
                     }
 
                     $record->delete();

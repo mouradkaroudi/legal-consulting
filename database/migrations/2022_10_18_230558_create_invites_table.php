@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('token', 40)->unique();
             $table->foreignId('office_id')->constrained('digital_offices');
             $table->timestamps();
+
+            // TODO: add unique to email and office_id
+
         });
     }
 

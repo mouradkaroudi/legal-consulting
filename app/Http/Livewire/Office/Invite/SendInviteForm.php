@@ -8,6 +8,7 @@ use App\Models\User;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Livewire\Component;
 use Illuminate\Support\Str;
 
@@ -46,6 +47,11 @@ class SendInviteForm extends Component implements HasForms
         ]);
 
         InviteSent::dispatch($invite);
+
+        Notification::make() 
+        ->title('تم ارسال الدعوة')
+        ->success()
+        ->send();
 
     }
 }

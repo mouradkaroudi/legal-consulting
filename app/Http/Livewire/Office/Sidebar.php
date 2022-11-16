@@ -43,6 +43,11 @@ class Sidebar extends Component
   {
     $user = auth()->user();
 
+    $this->sidebarLinks[] = [
+      "label" => "التنبيهات",
+      "routeName" => "office.notifications",
+    ];
+
     if (
       $user->hasOfficePermission($user->currentOffice(), "manage-employees")
     ) {
@@ -63,6 +68,7 @@ class Sidebar extends Component
         "routeName" => "office.threads.index",
       ];
     }
+
     if ($user->hasOfficePermission($user->currentOffice(), "manage-office")) {
       $this->sidebarLinks[] = [
         "label" => "إعدادات المكتب",

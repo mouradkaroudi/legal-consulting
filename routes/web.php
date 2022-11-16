@@ -16,6 +16,7 @@ use App\Http\Controllers\Office\AppointmentsController;
 use App\Http\Controllers\Office\EmployeesController;
 use App\Http\Controllers\Office\InviteController;
 use App\Http\Controllers\Office\MessagesController as OfficeMessagesController;
+use App\Http\Controllers\Office\NotificationsController as OfficeNotificationsController;
 use App\Http\Controllers\Office\SettingsController;
 use App\Http\Controllers\Office\OrdersController;
 
@@ -54,6 +55,7 @@ Route::name('office.')->prefix('/office/{digitalOffice}')->middleware('office')-
 
     Route::resource('/employees', EmployeesController::class);
     Route::resource('/appointments', AppointmentsController::class);
+    Route::get('/notifications', OfficeNotificationsController::class)->name('notifications');
     Route::resource('/threads', OfficeMessagesController::class);
     Route::get('/invite', [InviteController::class, 'invite'])->name('invite');
 });

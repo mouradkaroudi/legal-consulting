@@ -214,6 +214,6 @@ class User extends Authenticatable
    */
   public function canAccessFilament()
   {
-    return true;
+    return false;
   }
 }

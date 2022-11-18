@@ -7,6 +7,7 @@ use App\Models\DigitalOffice;
 use Filament\Forms;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
@@ -82,7 +83,6 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
         $data = $this->form->getState();
         $currentStatus = $this->digitalOffice->status;
 
-        
         //TODO: add approirate logic to update status
         if($currentStatus == 'uncomplete') {
             $status = 'available';
@@ -103,6 +103,12 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
                 'status' => $status
             ]
         );
+
+        Notification::make() 
+        ->title('تم تحديث المعلومات بنجاح')
+        ->success()
+        ->send();
+
     }
 
     protected function getFormModel(): DigitalOffice

@@ -14,7 +14,6 @@ class NotificationsController extends Controller
         $notifications = $user->currentOffice()->notifications;
         $user->currentOffice()->unreadNotifications->markAsRead();
 
-
         return view('pages.office.notifications.index', compact('notifications'));
     }
 

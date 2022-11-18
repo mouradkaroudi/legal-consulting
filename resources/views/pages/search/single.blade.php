@@ -73,37 +73,21 @@
                         <div class="grid md:grid-cols-2 text-sm">
                             <div class="grid grid-cols-2">
                                 <div class="px-4 py-2 font-semibold">الإسم الكامل</div>
-                                <div class="px-4 py-2">Jane</div>
-                            </div>
-                            <div class="grid grid-cols-2">
-                                <div class="px-4 py-2 font-semibold">Last Name</div>
-                                <div class="px-4 py-2">Doe</div>
+                                <div class="px-4 py-2">{{ $office->owner->name }}</div>
                             </div>
                             <div class="grid grid-cols-2">
                                 <div class="px-4 py-2 font-semibold">الجنس</div>
-                                <div class="px-4 py-2">Female</div>
+                                <div class="px-4 py-2">{{ $office->owner->profile?->gender_label }}</div>
                             </div>
                             <div class="grid grid-cols-2">
-                                <div class="px-4 py-2 font-semibold">رقم الهاتف.</div>
-                                <div class="px-4 py-2">+11 998001001</div>
+                                <div class="px-4 py-2 font-semibold">رقم الهاتف</div>
+                                <div class="px-4 py-2">{{ $office->owner->phone_number }}</div>
                             </div>
                             <div class="grid grid-cols-2">
-                                <div class="px-4 py-2 font-semibold">عنوان المكتب</div>
-                                <div class="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
-                            </div>
-                            <div class="grid grid-cols-2">
-                                <div class="px-4 py-2 font-semibold">Permanant Address</div>
-                                <div class="px-4 py-2">Arlington Heights, IL, Illinois</div>
-                            </div>
-                            <div class="grid grid-cols-2">
-                                <div class="px-4 py-2 font-semibold">Email.</div>
+                                <div class="px-4 py-2 font-semibold">البريد الإلكتروني</div>
                                 <div class="px-4 py-2">
-                                    <a class="text-blue-800" href="mailto:jane@example.com">jane@example.com</a>
+                                    <a class="text-blue-800" href="mailto:jane@example.com">{{ $office->owner->email }}</a>
                                 </div>
-                            </div>
-                            <div class="grid grid-cols-2">
-                                <div class="px-4 py-2 font-semibold">Birthday</div>
-                                <div class="px-4 py-2">Feb 06, 1998</div>
                             </div>
                         </div>
                     </div>

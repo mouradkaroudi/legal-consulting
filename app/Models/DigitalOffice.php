@@ -27,10 +27,10 @@ class DigitalOffice extends Model
         'country_code',
         'city',
         'license_attachment',
-        'lat',
-        'lng',
+        'location',
         'status'
     ];
+
     /**
      * 
      */
@@ -58,7 +58,7 @@ class DigitalOffice extends Model
      * 
      */
     public function owner() {
-       return $this->hasOne(User::class);
+       return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     function getLocationAttribute($value)
@@ -72,12 +72,5 @@ class DigitalOffice extends Model
     public function scopeUserOffice($query)
     {
     }
-
-
-
-    function setLocationAttribute($value)
-    {
-        $this->attributes['lat'] = $value["lat"];
-        $this->attributes['lng'] = $value["lng"];
-    }
+    
 }

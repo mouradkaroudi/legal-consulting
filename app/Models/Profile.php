@@ -22,4 +22,8 @@ class Profile extends Model
         'national_id_attachment'
     ];
 
+    public function getGenderLabelAttribute() {
+        return $this->gender ? ($this->gender == 'male' ? 'ذكر' : 'أنثى') : '-';
+    }
+
 }

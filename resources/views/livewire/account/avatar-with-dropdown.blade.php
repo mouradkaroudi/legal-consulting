@@ -17,7 +17,7 @@
 
         <a href="{{ route('account.balance') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">الرصيد: {{ $user->available_balance ?? "0.00" }} SAR</a>
 
-        <a href="{{ route('logout') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2">تسجيل الخروج</a>
+        <a href="{{ route('auth.logout') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2">تسجيل الخروج</a>
     </div>
 </div>
 @else

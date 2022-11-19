@@ -42,9 +42,24 @@ class DigitalOffice extends Model
     /**
      * 
      */
-    public function categories()
+    public function service()
     {
-        return $this->belongsToMany(Category::class, 'digital_office_categories', 'office_id', 'category_id');
+        return $this->belongsTo(Service::class);
+    }
+
+    /**
+     * 
+     */
+    public function profession()
+    {
+        return $this->belongsTo(Profession::class);
+    }
+    /**
+     * 
+     */
+    public function specializations()
+    {
+        return $this->belongsToMany(Specialization::class, 'digital_office_specializations', 'specialization_id', 'office_id');
     }
     
     /**

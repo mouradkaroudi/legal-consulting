@@ -10,7 +10,7 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                'sans': ['"Noto Sans Arabic", sans-serif', ...defaultTheme.fontFamily.sans],
+                'sans': ['"Vazirmatn", sans-serif', ...defaultTheme.fontFamily.sans],
             },
             colors: { 
                 danger: colors.rose,

@@ -23,14 +23,10 @@ class DigitalOffice extends Middleware
 
         $user = $guard->user();
 
-        if($user->is_admin) {
-            abort(403);
-        }
-
     }
 
     protected function redirectTo($request): string
     {
-        return route('login');
+        return route('auth.login');
     }
 }

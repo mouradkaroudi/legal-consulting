@@ -15,6 +15,7 @@ class Sidebar extends Component
     [
       "label" => "لوحة التحكم",
       "routeName" => "office.overview",
+      'icon' => 'heroicon-o-home'
     ],
   ];
 
@@ -46,6 +47,7 @@ class Sidebar extends Component
     $this->sidebarLinks[] = [
       "label" => "التنبيهات",
       "routeName" => "office.notifications",
+      'icon' => 'heroicon-o-bell'
     ];
 
     if (
@@ -54,18 +56,21 @@ class Sidebar extends Component
       $this->sidebarLinks[] = [
         "label" => "الموظفين",
         "routeName" => "office.employees.index",
+        'icon' => 'heroicon-o-users'
       ];
     }
 
     $this->sidebarLinks[] = [
       "label" => "الطلبات",
       "routeName" => "office.orders.index",
+      'icon' => 'heroicon-o-shopping-cart'
     ];
 
     if ($user->hasOfficePermission($user->currentOffice(), "manage-messages")) {
       $this->sidebarLinks[] = [
         "label" => "المحادثات",
         "routeName" => "office.threads.index",
+        'icon' => 'heroicon-o-chat-alt-2'
       ];
     }
 
@@ -73,12 +78,14 @@ class Sidebar extends Component
       $this->sidebarLinks[] = [
         "label" => "إعدادات المكتب",
         "routeName" => "office.settings",
+        'icon' => 'heroicon-o-cog'
       ];
     }
     if ($user->hasOfficePermission($user->currentOffice(), "send-invites")) {
       $this->sidebarLinks[] = [
         "label" => "ارسال دعوة",
         "routeName" => "office.invite",
+        'icon' => 'heroicon-o-user-add'
       ];
     }
   }

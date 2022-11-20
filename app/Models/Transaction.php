@@ -23,4 +23,9 @@ class Transaction extends Model
         'due_date',
         'metadata'
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
 }

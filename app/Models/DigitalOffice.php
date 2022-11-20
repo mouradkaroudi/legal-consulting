@@ -44,7 +44,7 @@ class DigitalOffice extends Model
      */
     public function service()
     {
-        return $this->belongsTo(Service::class);
+        //return $this->belongsTo(Service::class);
     }
 
     /**
@@ -52,14 +52,14 @@ class DigitalOffice extends Model
      */
     public function profession()
     {
-        return $this->belongsTo(Profession::class);
+        //return $this->belongsTo(Profession::class);
     }
     /**
      * 
      */
     public function specializations()
     {
-        return $this->belongsToMany(Specialization::class, 'digital_office_specializations', 'specialization_id', 'office_id');
+        //return $this->belongsToMany(Specialization::class, 'digital_office_specializations', 'specialization_id', 'office_id');
     }
     
     /**
@@ -69,6 +69,10 @@ class DigitalOffice extends Model
         return $this->hasMany(Thread::class, 'office_id', 'id');
     }
     
+    public function scopeAvailable($query) {
+        //return $query->where('status', 'available');
+    }
+
     /**
      * 
      */
@@ -82,10 +86,6 @@ class DigitalOffice extends Model
             "lat" => (float)$this->lat,
             "lng" => (float)$this->lng,
         ]);
-    }
-
-    public function scopeUserOffice($query)
-    {
     }
     
 }

@@ -7,7 +7,16 @@
             <img class="h-8 w-8 rounded-full" src="{{ $user->avatar_url() }}" alt="">
         </button>
     </div>
-    <div @click.away="isOpen = false" x-show.transition.opacity="isOpen" class="absolute left-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+    <div 
+        @click.away="isOpen = false" 
+        x-show.transition.opacity="isOpen" 
+        class="absolute left-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        role="menu" 
+        aria-orientation="vertical" 
+        aria-labelledby="user-menu-button" 
+        tabindex="-1"
+        style="display: none;"
+    >
         <div class="py-3 px-4 text-sm text-gray-900 dark:text-white border-b">
             <div>{{ $user->name }}</div>
             <div class="font-medium truncate">{{ $user->email }}</div>

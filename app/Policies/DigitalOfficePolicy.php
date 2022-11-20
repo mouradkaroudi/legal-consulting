@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Admin;
 use App\Models\DigitalOffice;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -16,8 +17,13 @@ class DigitalOfficePolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User|Admin $user)
     {
+
+        if($user instanceof Admin) {
+            return true;
+        }
+
         return false;
     }
 
@@ -28,7 +34,7 @@ class DigitalOfficePolicy
      * @param  \App\Models\DigitalOffice  $digitalOffice
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, DigitalOffice $digitalOffice)
+    public function view(User|Admin $user, DigitalOffice $digitalOffice)
     {
         return true;
     }
@@ -39,7 +45,7 @@ class DigitalOfficePolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User|Admin $user)
     {
         return false;
     }
@@ -51,7 +57,7 @@ class DigitalOfficePolicy
      * @param  \App\Models\DigitalOffice  $digitalOffice
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, DigitalOffice $digitalOffice)
+    public function update(User|Admin $user, DigitalOffice $digitalOffice)
     {
         return true;
     }
@@ -63,7 +69,7 @@ class DigitalOfficePolicy
      * @param  \App\Models\DigitalOffice  $digitalOffice
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, DigitalOffice $digitalOffice)
+    public function delete(User|Admin $user, DigitalOffice $digitalOffice)
     {
         return false;
     }
@@ -75,7 +81,7 @@ class DigitalOfficePolicy
      * @param  \App\Models\DigitalOffice  $digitalOffice
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, DigitalOffice $digitalOffice)
+    public function restore(User|Admin $user, DigitalOffice $digitalOffice)
     {
         return false;
     }
@@ -87,7 +93,7 @@ class DigitalOfficePolicy
      * @param  \App\Models\DigitalOffice  $digitalOffice
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, DigitalOffice $digitalOffice)
+    public function forceDelete(User|Admin $user, DigitalOffice $digitalOffice)
     {
         return false;
     }

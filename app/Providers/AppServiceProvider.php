@@ -23,6 +23,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \Filament\Facades\Filament::serving(function () {
+            
+            \Filament\Facades\Filament::registerNavigationGroups([
+                \Filament\Navigation\NavigationGroup::make('Entities'),
+                \Filament\Navigation\NavigationGroup::make('Appearance'),
+                \Filament\Navigation\NavigationGroup::make('Finance'),
+            ]);
+
+            \RyanChandler\FilamentNavigation\Filament\Resources\NavigationResource::navigationGroup('Appearance');
+
+        });
+
     }
 }

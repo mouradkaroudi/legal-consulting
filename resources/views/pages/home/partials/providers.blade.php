@@ -17,7 +17,7 @@
         </div>
 
         <div class="container px-6 py-10 mx-auto -mt-72 sm:-mt-80 md:-mt-96">
-            <livewire:front.widgets.list-offices/>
+            
         </div>
     </div>
 </section>

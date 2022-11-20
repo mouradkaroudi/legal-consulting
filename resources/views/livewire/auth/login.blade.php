@@ -12,7 +12,7 @@
         <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">هل نسيت كلمة السر</a>
     </div>
 
-    <x-filament-support::button type="submit" class="w-full">
+    <x-filament-support::button :form="'submit'" :type="'submit'" class="w-full">
         تسجيل الدخول
     </x-filament-support::button>
     <p class="text-sm font-light text-gray-500 dark:text-gray-400">

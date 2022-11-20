@@ -11,7 +11,7 @@ class OfficeListingController extends Controller
 {
     public function index(Request $request)
     {
-        $offices = DigitalOffice::all();
+        $offices = DigitalOffice::available()->get();
         return view('pages.search.index', ['offices' => $offices]);
     }
 

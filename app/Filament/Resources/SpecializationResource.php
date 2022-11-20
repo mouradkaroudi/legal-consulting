@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
-use App\Models\Category;
+use App\Filament\Resources\SpecializationResource\Pages;
+use App\Filament\Resources\SpecializationResource\RelationManagers;
+use App\Models\Specialization;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -13,34 +13,25 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CategoryResource extends Resource
+class SpecializationResource extends Resource
 {
-    protected static ?string $model = Category::class;
+    protected static ?string $model = Specialization::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'Entities';
     
-
     public static function form(Form $form): Form
     {
-
-        $categories = Category::all()->toArray();
-        $parentFieldOptions = [];
-
-        foreach($categories as $category) {
-            $parentFieldOptions[$category['id']] = $category['name'];
-        }
-
         return $form
             ->schema([
+                Forms\Components\TextInput::make('profession_id')
+                    ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('description')
-                    ->maxLength(255),
-                Forms\Components\Select::make('parent')->options($parentFieldOptions)
             ]);
     }
 
@@ -48,8 +39,13 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('profession_id'),
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('parent'),
+                Tables\Columns\TextColumn::make('slug'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime(),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime(),
             ])
             ->filters([
                 //
@@ -72,9 +68,9 @@ class CategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCategories::route('/'),
-            'create' => Pages\CreateCategory::route('/create'),
-            'edit' => Pages\EditCategory::route('/{record}/edit'),
+            'index' => Pages\ListSpecializations::route('/'),
+            'create' => Pages\CreateSpecialization::route('/create'),
+            'edit' => Pages\EditSpecialization::route('/{record}/edit'),
         ];
     }    
 }

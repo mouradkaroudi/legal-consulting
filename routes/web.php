@@ -42,13 +42,9 @@ Route::get('/', function () {
 Route::name('auth.')->middleware(RedirectIfAuthenticated::class)->group(function() {
     Route::get('/registration', [RegistrationController::class, 'create'])->name('registration');
     Route::get('/login', [AuthController::class, 'index'])->name('login');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::name('search.')->prefix('{service:slug?}')->group(function () {
-    Route::get('/', [OfficeListingController::class, 'index'])->name('listing');
-    Route::get('/{digitalOffice}', [OfficeListingController::class, 'show'])->name('office');
-});
+Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 Route::name('office.')->prefix('/office/{digitalOffice}')->middleware('office')->group(function () {
     Route::get('/', [DashboardHomeController::class, 'index'])->name('overview');
@@ -79,3 +75,7 @@ Route::name('account.')->prefix('/account')->middleware(Authenticate::class)->gr
     Route::get('/messages/{id}', [MessagesController::class, 'show'])->name('messages.show');
 
 });
+
+Route::name('search.listing')->prefix('{service:slug?}')->get('/', [OfficeListingController::class, 'index']);
+
+Route::name('search.office')->get('listing/office/{digitalOffice}', [OfficeListingController::class, 'show']);

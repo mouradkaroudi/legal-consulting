@@ -31,6 +31,7 @@ class SpecializationsRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('profession_id'),
+                Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
                 //

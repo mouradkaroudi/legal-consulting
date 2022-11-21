@@ -35,8 +35,6 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Toggle::make('is_admin')
-                    ->required(),
                 Forms\Components\TextInput::make('balance')
                     ->required(),
             ]);
@@ -50,7 +48,6 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime(),
-                Tables\Columns\BooleanColumn::make('is_admin'),
                 Tables\Columns\TextColumn::make('balance'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),

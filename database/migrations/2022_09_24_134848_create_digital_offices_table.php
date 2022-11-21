@@ -24,8 +24,11 @@ return new class extends Migration
             $table->string('country_code')->nullable();
             $table->string('city')->nullable();
             $table->integer('license_attachment')->nullable();
-            $table->string('lat')->nullable();
-            $table->string('lng')->nullable();
+            $table->json("location")->nullable();
+            $table->foreignId('service_id')->nullable();
+            $table->foreignId('profession_id')->nullable();
+            $table->float('hold_balance')->default(0);
+            $table->float('available_balance')->default(0);
             $table->string('status')->default('uncomplete'); // uncomplete, busy, available
             $table->timestamp('banned_at')->nullable();
             $table->timestamps();

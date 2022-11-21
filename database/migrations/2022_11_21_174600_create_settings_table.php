@@ -13,8 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('digital_offices', function (Blueprint $table) {
-            $table->foreignId('service_id')->nullable()->constrained();
+        Schema::create('settings', function (Blueprint $table) {
+            $table->id();
+            $table->string('option');
+            $table->longText('value');
+            //$table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('digital_offices', function (Blueprint $table) {
-            $table->removeColumn('service_id');
-        });
+        Schema::dropIfExists('settings');
     }
 };

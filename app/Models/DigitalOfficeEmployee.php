@@ -8,6 +8,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 
+// TODO: make model notifable
 class DigitalOfficeEmployee extends Model
 {
     use HasFactory, HasRoles;

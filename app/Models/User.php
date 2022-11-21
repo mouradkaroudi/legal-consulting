@@ -209,6 +209,22 @@ class User extends Authenticatable
     return (new UiAvatarsProvider())->get(User::find($this->id));
   }
 
+  public function transactions() {
+    return $this->morphMany(Transaction::class, 'transactionable');
+  }
+
+  public function holdBalance( $amount ) {
+    $this->hold_balance += $amount;
+  }
+
+  public function creditBalance( $amount ) {
+    $this->available_balance += $amount;
+  }
+
+  public function debitBalance( $amount ) {
+    $this->available_balance -= $amount;
+  }
+
   /**
    *
    */

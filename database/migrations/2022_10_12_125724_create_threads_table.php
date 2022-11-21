@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('office_id')->constrained('digital_offices');
             $table->string('subject');
+            $table->timestamp('closed_at')->nullable();
+            $table->foreignId('closed_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

@@ -83,7 +83,7 @@ class ListOffices extends Component implements HasForms
 
 	public function render()
 	{
-		$offices = DigitalOffice::available()->where('name', 'like', $this->officeName. '%')->get();
+		$offices = DigitalOffice::available()->where('name', 'like', '%'.$this->officeName. '%')->get();
 		return view("livewire.front.widgets.list-offices", ["offices" => $offices]);
 	}
 }

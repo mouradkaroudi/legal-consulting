@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
             $table->float('amount');
             $table->enum('type', ['debit', 'credit']);
             $table->string('source'); // deposit, payment, earning, refund
@@ -23,6 +22,7 @@ return new class extends Migration
             $table->timestamps();
             $table->timestamp('due_date')->nullable();
             $table->longText('metadata')->nullable();
+            $table->morphs('transactionable');
         });
     }
 

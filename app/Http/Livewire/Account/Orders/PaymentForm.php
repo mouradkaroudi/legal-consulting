@@ -61,20 +61,19 @@ class PaymentForm extends Component implements HasForms
         );
       } else {
         $office = DigitalOffice::find($order->office_id);
-
-        $txnBenifeciary = Transaction::create([
-          "user_id" => $user->id,
+        $officeOwner = $office->owner;
+        
+        $user->transactions->create([
           "amount" => $order->fee,
           "type" => "credit",
           "source" => "pay_dues",
           "status" => "completed",
           "metadata" => json_encode([
             "orderId" => $order->id,
-          ]),
+          ])
         ]);
 
-        $txnOfficeOwner = Transaction::create([
-          "user_id" => $office->owner->id,
+        $officeOwner->transactions->create([
           "amount" => $order->fee,
           "type" => "debit",
           "source" => "recieve_earnings",
@@ -84,8 +83,8 @@ class PaymentForm extends Component implements HasForms
           ]),
         ]);
 
-        TransactionProcessed::dispatch($txnBenifeciary);
-        TransactionProcessed::dispatch($txnOfficeOwner);
+        //TransactionProcessed::dispatch($txnBenifeciary);
+        //TransactionProcessed::dispatch($txnOfficeOwner);
 
         // TODO: send notification for every successfull transaction
         $order->status = "paid";

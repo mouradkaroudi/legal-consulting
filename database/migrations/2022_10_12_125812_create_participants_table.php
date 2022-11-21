@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('thread_id')->constrained();
             $table->foreignId('user_id')->constrained();
+            $table->timestamp('last_read')->nullable();
             $table->timestamps();
         });
     }

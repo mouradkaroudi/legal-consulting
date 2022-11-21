@@ -9,13 +9,16 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    public const PENDING = 'PENDING';
+    public const FAILED = 'FAILED';
+    public const SUCCESS = 'SUCCESS';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
         'amount',
         'type',
         'source',
@@ -24,8 +27,20 @@ class Transaction extends Model
         'metadata'
     ];
 
-    public function user() {
-        return $this->belongsTo(User::class);
+    public function transactionable()
+    {
+        return $this->morphTo();
     }
 
+    public function completeTransaction()
+    {
+        $this->status = self::SUCCESS;
+        $this->save();
+    }
+
+    public function failedTransaction()
+    {
+        $this->status = self::FAILED;
+        $this->save();
+    }
 }

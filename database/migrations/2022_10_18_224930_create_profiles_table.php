@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('nationality')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('national_id_attachment')->nullable();
+            $table->json('experiences')->nullable();
+            $table->json('education')->nullable();
             $table->string('status')->default('uncompleted'); // available, busy, uncompleted
             $table->timestamp('banned_at')->nullable();
             $table->timestamp('last_seen_at')->nullable();

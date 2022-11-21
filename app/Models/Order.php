@@ -32,6 +32,18 @@ class Order extends Model
     return $this->hasOne(DigitalOffice::class, "id", "office_id");
   }
 
+  public function payOrder() {
+    
+  }
+
+  public function completeOrder() {
+
+  }
+
+  public function cancelOrder() {
+
+  }
+
   public function getFormattedFeeAttribute()
   {
     return $this->fee . ' SAR';

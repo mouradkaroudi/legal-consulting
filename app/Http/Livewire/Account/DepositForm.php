@@ -42,8 +42,7 @@ class DepositForm extends Component implements HasForms
         $user = auth()->user();
         $data = $this->form->getState();
 
-        Transaction::create([
-            'user_id' => $user->id,
+        $user->transactions()->create([
             'amount' => $data['amount'],
             'type' => 'debit',
             'source' => 'deposit',

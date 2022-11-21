@@ -31,6 +31,7 @@ class ProfessionsRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('service_id'),
+                Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
                 //

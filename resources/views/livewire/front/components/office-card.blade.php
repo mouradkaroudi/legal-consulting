@@ -1,4 +1,4 @@
-<a href="{{ route('search.office', ['digitalOffice' => $office->id]) }}" class="block border rounded-xl">
+<a href="{{ route('search.office', ['digitalOffice' => $office->id]) }}" class="block border rounded-xl bg-white">
     @if($office->image)
     <img class="object-cover w-full rounded-xl rounded-bl-none rounded-br-none aspect-square" src="{{ asset('storage/' . $office->image) }}" alt="">
     @else

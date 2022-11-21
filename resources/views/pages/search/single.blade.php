@@ -1,39 +1,44 @@
-<!DOCTYPE html>
-<html dir="rtl" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@php
+    $experiences = [];
+    $education = [];
+    $gender = null;
+    $specializations = $office->specializations ? $office->specializations : [];
+    $professionName = $office->profession ? $office->profession->name : null;
 
-<head>
-    <meta charset="utf-8">
+    if(!empty($office->profile)) {
+        $experiences = $office->owner->profile->experiences;
+        $education = $office->owner->profile->education;
+        $gender = $office->owner->profile->gender;
+    }
 
-    <meta name="application-name" content="{{ config('app.name') }}">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>{{ config('app.name') }}</title>
-
-    <style>
-        [x-cloak] {
-            display: none !important;
-        }
-    </style>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
-    @livewireScripts
-    @stack('scripts')
-</head>
-
-<body class="bg-gray-50">
-    <livewire:front.navigation />
-    <div class="mx-auto max-w-screen-xl px-4 md:px-6 my-12">
+@endphp
+@extends('layouts.front.index')
+@section('content')
+<div class="mx-auto max-w-screen-xl px-4 md:px-6 my-12 min-h-[580px]">
         <div class="md:flex no-wrap md:-mx-2">
             <!-- Left Side -->
             <div class="w-full md:w-3/12 md:mx-2">
                 <!-- Profile Card -->
-                <div class="bg-white p-3 border-t-4 border-green-400">
-                    <div class="image overflow-hidden">
-                        <img class="h-auto w-full mx-auto" src="{{ asset('storage/' . $office->image) }}" alt="">
+                <div class="bg-white p-3 border-t-4 border-green-700">
+                    <div class="mb-4 overflow-hidden">
+                        @if($office->image)
+                            <img class="h-auto w-full mx-auto" src="{{ asset('storage/' . $office->image) }}" alt="{{ $office->name }}">
+                        @else
+                            <div class="bg-gray-200 w-full text-center rounded-lg min-h-[180px]">
+                                <x-heroicon-o-photograph class="mx-auto top-2/4 translate-y-2/4 text-gray-400 w-24 h-24"/>
+                            </div>
+                        @endif
                     </div>
+                    
                     <h1 class="text-gray-900 font-bold text-xl leading-8 my-1">{{ $office->name }}</h1>
-                    <h3 class="text-gray-600 font-lg text-semibold leading-6">Owner at Her Company Inc.</h3>
+                    <div class="flex gap-4">
+                        <span class="bg-blue-700 py-1 px-2 rounded text-white text-sm">{{ $professionName }}</span>
+                        <div class="flex gap-2 divide-x">
+                            @foreach( $specializations as $specialization )
+                                <span>{{ $specialization['name'] }}</span>
+                            @endforeach
+                        </div>
+                    </div>
                     <div>
                         @if($displayMessagingForm)
                         <livewire:messages.send-message :officeId="$office->id"/>
@@ -41,8 +46,10 @@
                     </div>
                     <ul class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                         <li class="flex items-center py-3">
-                            <span>Status</span>
-                            <span class="mr-auto"><span class="bg-success-500 py-1 px-2 rounded text-white text-sm">Active</span></span>
+                            <span>الحالة</span>
+                            <span class="mr-auto"><span class="bg-success-500 py-1 px-2 rounded text-white text-sm">
+                                {{ __('offices.' . $office->status) }}
+                            </span></span>
                         </li>
                         <li class="flex items-center py-3">
                             <span>إنضم في</span>
@@ -53,7 +60,7 @@
                 <!-- End of profile card -->
             </div>
             <!-- Right Side -->
-            <div class="w-full md:w-9/12 mx-2 h-64">
+            <div class="w-full md:w-9/12 mx-2">
                 <!-- Profile tab -->
                 <!-- About Section -->
                 <div class="bg-white p-3 shadow-sm rounded-sm">
@@ -77,7 +84,7 @@
                             </div>
                             <div class="grid grid-cols-2">
                                 <div class="px-4 py-2 font-semibold">الجنس</div>
-                                <div class="px-4 py-2">{{ $office->owner->profile?->gender_label }}</div>
+                                <div class="px-4 py-2">{{ $gender }}</div>
                             </div>
                             <div class="grid grid-cols-2">
                                 <div class="px-4 py-2 font-semibold">رقم الهاتف</div>
@@ -110,22 +117,14 @@
                                 <span class="tracking-wide">الخبرة</span>
                             </div>
                             <ul class="list-inside space-y-2">
+                                @forelse($experiences as $experience)
                                 <li>
-                                    <div class="text-teal-600">Owner at Her Company Inc.</div>
-                                    <div class="text-gray-500 text-xs">March 2020 - Now</div>
+                                <div class="text-teal-600">{{ $experience['title'] }}</div>
+                                    <div class="text-gray-500 text-xs">{{ $experience['start_date'] }} - {{ $experience['end_date'] }}</div>
                                 </li>
-                                <li>
-                                    <div class="text-teal-600">Owner at Her Company Inc.</div>
-                                    <div class="text-gray-500 text-xs">March 2020 - Now</div>
-                                </li>
-                                <li>
-                                    <div class="text-teal-600">Owner at Her Company Inc.</div>
-                                    <div class="text-gray-500 text-xs">March 2020 - Now</div>
-                                </li>
-                                <li>
-                                    <div class="text-teal-600">Owner at Her Company Inc.</div>
-                                    <div class="text-gray-500 text-xs">March 2020 - Now</div>
-                                </li>
+                                @empty
+                                <p>-</p>
+                                @endforelse
                             </ul>
                         </div>
                         <div>
@@ -140,14 +139,14 @@
                                 <span class="tracking-wide">الدارسة</span>
                             </div>
                             <ul class="list-inside space-y-2">
+                                @forelse($education as $education)
                                 <li>
-                                    <div class="text-teal-600">Masters Degree in Oxford</div>
-                                    <div class="text-gray-500 text-xs">March 2020 - Now</div>
+                                    <div class="text-teal-600">{{ $education['title'] }}</div>
+                                    <div class="text-gray-500 text-xs">{{ $education['start_date'] }} - {{ $education['end_date'] }}</div>
                                 </li>
-                                <li>
-                                    <div class="text-teal-600">Bachelors Degreen in LPU</div>
-                                    <div class="text-gray-500 text-xs">March 2020 - Now</div>
-                                </li>
+                                @empty
+                                <p>-</p>
+                                @endforelse
                             </ul>
                         </div>
                     </div>
@@ -169,18 +168,14 @@
                     <div class="grid grid-cols-6">
                         @foreach( $office->employees as $employee )
                         <div class="text-center my-2">
-                            <img class="h-16 w-16 rounded-full mx-auto" src="https://cdn.australianageingagenda.com.au/wp-content/uploads/2015/06/28085920/Phil-Beckett-2-e1435107243361.jpg" alt="">
+                            <img class="h-16 w-16 rounded-full mx-auto" src="{{ $employee->user->avatar_url() }}" alt="">
                             <a href="#" class="text-main-color">{{ $employee->user->name }}</a>
                         </div>
                         @endforeach
                     </div>
                 </div>
                 <!-- End of friends card -->
-
             </div>
         </div>
     </div>
-
-</body>
-
-</html>
+@endsection

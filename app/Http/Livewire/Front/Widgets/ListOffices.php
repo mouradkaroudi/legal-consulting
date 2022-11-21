@@ -12,13 +12,13 @@ class ListOffices extends Component implements HasForms
 {
 	use InteractsWithForms;
 
-    public $officeName;
+    public $officeName = '';
 	public $countryId;
 	public $cityId;
 	public $professionId;
 	public $specializationId;
     
-    protected $queryString = ['officeName'];
+    protected $queryString = ['officeName', 'countryId', 'cityId', 'professionId', 'specializationId'];
 
 	protected function getForms(): array
 	{
@@ -83,7 +83,7 @@ class ListOffices extends Component implements HasForms
 
 	public function render()
 	{
-		$offices = DigitalOffice::available()->get();
+		$offices = DigitalOffice::available()->where('name', 'like', $this->officeName. '%')->get();
 		return view("livewire.front.widgets.list-offices", ["offices" => $offices]);
 	}
 }

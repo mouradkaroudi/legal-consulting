@@ -24,7 +24,7 @@
     @stack('scripts')
 </head>
 
-<body class="antialiased">
+<body class="bg-gray-100">
     <livewire:front.navigation />
     @yield('content')
     @include('footer')

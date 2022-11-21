@@ -38,12 +38,6 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 
 	protected function getFormSchema(): array
 	{
-		$categories = Category::all();
-		$options = [];
-
-		foreach ($categories as $category) {
-			$options[$category->id] = $category->name;
-		}
 
 		$fields = [
 			Grid::make(2)->schema([

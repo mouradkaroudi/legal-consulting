@@ -29,7 +29,7 @@ class Admin extends Authenticatable implements FilamentUser
 	/**
 	 *
 	 */
-	public function canAccessFilament()
+	public function canAccessFilament():bool
 	{
 		return true;
 	}

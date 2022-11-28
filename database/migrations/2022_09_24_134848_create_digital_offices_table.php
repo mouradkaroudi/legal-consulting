@@ -20,7 +20,10 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->string('image')->nullable();
             $table->string('phone_number')->nullable();
-            $table->string('license_number')->nullable();
+            $table->string('professional_license_number')->nullable();
+            $table->string('commercial_registration_number')->nullable();
+            $table->string('municipal_license_number')->nullable();
+            $table->string('tax_establishment_number')->nullable();
             $table->string('country_code')->nullable();
             $table->string('city')->nullable();
             $table->integer('license_attachment')->nullable();

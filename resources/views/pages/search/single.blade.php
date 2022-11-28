@@ -1,13 +1,13 @@
 @php
     $experiences = [];
-    $education = [];
+    $educations = [];
     $gender = null;
     $specializations = $office->specializations ? $office->specializations : [];
     $professionName = $office->profession ? $office->profession->name : null;
 
-    if(!empty($office->profile)) {
-        $experiences = $office->owner->profile->experiences;
-        $education = $office->owner->profile->education;
+    if(!empty($office->owner->profile)) {
+        $experiences = $office->owner->profile->experiences ?? [];
+        $educations = $office->owner->profile->education ?? [];
         $gender = $office->owner->profile->gender;
     }
 
@@ -32,7 +32,9 @@
                     
                     <h1 class="text-gray-900 font-bold text-xl leading-8 my-1">{{ $office->name }}</h1>
                     <div class="flex gap-4">
-                        <span class="bg-blue-700 py-1 px-2 rounded text-white text-sm">{{ $professionName }}</span>
+                        @if(!empty($professionName))
+                            <span class="bg-blue-700 py-1 px-2 rounded text-white text-sm">{{ $professionName }}</span>
+                        @endif
                         <div class="flex gap-2 divide-x">
                             @foreach( $specializations as $specialization )
                                 <span>{{ $specialization['name'] }}</span>
@@ -139,7 +141,7 @@
                                 <span class="tracking-wide">الدارسة</span>
                             </div>
                             <ul class="list-inside space-y-2">
-                                @forelse($education as $education)
+                                @forelse($educations as $education)
                                 <li>
                                     <div class="text-teal-600">{{ $education['title'] }}</div>
                                     <div class="text-gray-500 text-xs">{{ $education['start_date'] }} - {{ $education['end_date'] }}</div>

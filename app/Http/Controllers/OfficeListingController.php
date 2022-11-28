@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\DigitalOffice;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,8 +12,11 @@ class OfficeListingController extends Controller
 {
     public function index(Request $request)
     {
-        $offices = DigitalOffice::available()->get();
-        return view('pages.search.index', ['offices' => $offices]);
+        $offices = DigitalOffice::all();
+        return view('pages.search.index', [
+            'offices' => $offices,
+            'service' => Service::where('slug', request('service'))->first() 
+        ]);
     }
 
     public function show( DigitalOffice $digitalOffice ) {

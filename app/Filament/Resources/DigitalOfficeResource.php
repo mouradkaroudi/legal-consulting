@@ -36,7 +36,7 @@ class DigitalOfficeResource extends Resource
                 Forms\Components\TextInput::make('phone_number')
                     ->tel()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('license_number')
+                Forms\Components\TextInput::make('professional_license_number')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('country_code')
                     ->maxLength(255),
@@ -62,7 +62,7 @@ class DigitalOfficeResource extends Resource
                 Tables\Columns\TextColumn::make('description'),
                 Tables\Columns\TextColumn::make('image'),
                 Tables\Columns\TextColumn::make('phone_number'),
-                Tables\Columns\TextColumn::make('license_number'),
+                Tables\Columns\TextColumn::make('professional_license_number'),
                 Tables\Columns\TextColumn::make('country_code'),
                 Tables\Columns\TextColumn::make('city'),
                 Tables\Columns\TextColumn::make('license_attachment'),

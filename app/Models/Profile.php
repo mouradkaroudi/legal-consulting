@@ -16,12 +16,12 @@ class Profile extends Model
 	 */
 	protected $fillable = [
 		"national_ID",
-		"degree",
-		"nationality",
+		"original_country",
 		"gender",
 		"national_id_attachment",
 		"experiences",
 		"education",
+		"status"
 	];
 
 	// automatically handles json_encode, json_decode to php object
@@ -29,6 +29,10 @@ class Profile extends Model
 		"experiences" => "array",
 		"education" => "array",
 	];
+
+	public function getIsCompletedAttribute() {
+		return $this->status !== 'uncompleted';
+	}
 
 	public function getGenderLabelAttribute()
 	{

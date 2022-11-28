@@ -13,59 +13,68 @@ use Yemenpoint\FilamentGoogleMapLocationPicker\Forms\Components\LocationPicker;
 
 class LocationForm extends Component implements Forms\Contracts\HasForms
 {
-    use Forms\Concerns\InteractsWithForms, AuthorizesRequests;
+	use Forms\Concerns\InteractsWithForms, AuthorizesRequests;
 
-    public DigitalOffice $digitalOffice;
+	public DigitalOffice $digitalOffice;
 
-    public function mount(): void
-    {
-        $this->form->fill([
-            'country_code' => $this->digitalOffice->country_code,
-            'city' => $this->digitalOffice->city,
-            'location' => $this->digitalOffice->location
-        ]);
-    }
+	public function mount(): void
+	{
+		$this->form->fill([
+			"country_code" => $this->digitalOffice->country_code,
+			"city" => $this->digitalOffice->city,
+			"location" => $this->digitalOffice->location,
+		]);
+	}
 
-    protected function getFormSchema(): array
-    {
+	protected function getFormSchema(): array
+	{
+		$countries = Country::all()->pluck("name", "id");
 
-        $countries = Country::all()->pluck('name', 'id');
+		return [
+			Grid::make(2)->schema([
+				Forms\Components\Select::make("country_code")
+					->label("الدولة")
+					->options($countries)
+                    ->reactive(),
+				Forms\Components\Select::make("city")
+					->label("المدينة")
+					->reactive()
+					->options(function (callable $get) {
+						$countryId = $get("country_code");
+						if (!$countryId) {
+							return [];
+						}
+						$country = Country::find($countryId);
+						return $country->cities->pluck("name", "id");
+					}),
+			]),
+			LocationPicker::make("location")->label("الموقع الجغرافي"),
+		];
+	}
 
-        return [
+	public function save(): void
+	{
+	}
 
-            Grid::make(2)->schema([
-                Forms\Components\Select::make('country_code')
-                    ->label('الدولة')
-                    ->options($countries),
-                Forms\Components\Select::make('city')->label('المدينة'),
-            ]),
-            LocationPicker::make("location")->label('الموقع الجغرافي'),
-        ];
-    }
+	public function submit(): void
+	{
+		$this->authorize("update", $this->digitalOffice);
+		$data = $this->form->getState();
 
-    public function save(): void
-    {
-    }
+		$this->digitalOffice->update($data);
+		Notification::make()
+			->title("تم تحديث بنجاح")
+			->success()
+			->send();
+	}
 
-    public function submit(): void
-    {
-        $this->authorize('update', $this->digitalOffice);
-        $data = $this->form->getState();
-        
-        $this->digitalOffice->update($data);
-        Notification::make() 
-        ->title('تم تحديث بنجاح')
-        ->success()
-        ->send();
-    }
+	protected function getFormModel(): DigitalOffice
+	{
+		return $this->digitalOffice;
+	}
 
-    protected function getFormModel(): DigitalOffice
-    {
-        return $this->digitalOffice;
-    }
-
-    public function render()
-    {
-        return view('livewire.office.location-form');
-    }
+	public function render()
+	{
+		return view("livewire.office.location-form");
+	}
 }

@@ -46,7 +46,7 @@ Route::name('auth.')->middleware(RedirectIfAuthenticated::class)->group(function
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-Route::name('office.')->prefix('/office/{digitalOffice}')->middleware('office')->group(function () {
+Route::name('office.')->prefix('/office/{digitalOffice}')->middleware(['office', 'settled'])->group(function () {
     Route::get('/', [DashboardHomeController::class, 'index'])->name('overview');
     Route::get('/settings', SettingsController::class)->name('settings');
     // add middleware here
@@ -60,7 +60,7 @@ Route::name('office.')->prefix('/office/{digitalOffice}')->middleware('office')-
     Route::get('/invite', [InviteController::class, 'invite'])->name('invite');
 });
 
-Route::name('account.')->prefix('/account')->middleware(Authenticate::class)->group(function () {
+Route::name('account.')->prefix('/account')->middleware(['auth', 'settled'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('overview');
     Route::get('/settings', [AccountSettingsController::class, 'index'])->name('settings');
     Route::get('/balance', [BalanceController::class, 'index'])->name('balance');

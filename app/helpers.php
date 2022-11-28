@@ -2,6 +2,7 @@
 
 use App\Models\DigitalOffice;
 use App\Models\DigitalOfficeEmployee;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -9,15 +10,6 @@ use Illuminate\Support\Facades\Auth;
  * 
  * @return int|null
  */
-function get_current_office_id() {
-
-    $user = Auth::user();
-
-    if(!$user) {
-        return;
-    }
-
-    var_dump(request()->input('officeId'));
-
-
+function get_option( $name ) {
+    return Setting::option($name)->first()->value;
 }

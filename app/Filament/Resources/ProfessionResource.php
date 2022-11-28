@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProfessionResource\Pages;
 use App\Filament\Resources\ProfessionResource\RelationManagers;
 use App\Models\Profession;
+use App\Models\Service;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -19,18 +20,25 @@ class ProfessionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'Entities';
-    
+    protected static ?string $navigationLabel = 'المهن';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('service_id')
+                Forms\Components\Select::make('service_id')->options(function() {
+                    return Service::all()->pluck('name', 'id');
+                })->label('اختر الخدمة')
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->reactive()
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', str_replace(' ', '-', $state)))
+                    ->label('الإسم')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
                     ->required()
+                    ->label('الإسم اللطيف')
                     ->maxLength(255),
             ]);
     }
@@ -39,13 +47,7 @@ class ProfessionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('service_id'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('slug'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                Tables\Columns\TextColumn::make('name')
             ])
             ->filters([
                 //

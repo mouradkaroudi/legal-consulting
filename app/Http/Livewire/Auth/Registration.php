@@ -93,9 +93,13 @@ class Registration extends Component implements HasForms
         }else{
             if ($account_type === 'provider') {
 
+                $profile = new Profile;
+                $profile->user_id = $user->id;
+                $profile->save();
+
                 $digitalOffice = DigitalOffice::create([
                     'user_id' => $user->id,
-                    'name' => ''
+                    'name' => 'مكتب ' . $user->name
                 ]);
     
                 return $digitalOffice;
@@ -111,11 +115,8 @@ class Registration extends Component implements HasForms
         $data = $this->form->getState();
         $register = $this->register($data);
         if(!empty($register)) {
-            return redirect()->to("/office/$register->id/settings");
+            return redirect()->to('/account/settings');
         }
-
-        return redirect()->to('/account');
-
     }
 
     public function render()

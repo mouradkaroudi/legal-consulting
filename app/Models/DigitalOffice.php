@@ -18,7 +18,6 @@ class DigitalOffice extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
         'name',
         'description',
         'image',
@@ -26,6 +25,10 @@ class DigitalOffice extends Model
         'license_number',
         'country_code',
         'city',
+        'professional_license_number',
+        'commercial_registration_number',
+        'municipal_license_number',
+        'tax_establishment_number',
         'license_attachment',
         'location',
         'status'
@@ -69,8 +72,11 @@ class DigitalOffice extends Model
         return $this->hasMany(Thread::class, 'office_id', 'id');
     }
     
-    public function scopeAvailable($query) {
-        return $query->where('status', 'available');
+    /**
+     * 
+     */
+    public function scopeCompleted($query) {
+        return $query->where('status', '!=', 'uncomplete');
     }
 
     /**
@@ -82,9 +88,14 @@ class DigitalOffice extends Model
 
     function getLocationAttribute($value)
     {
+
+        if(!is_array($value)) {
+            $value = json_decode($value, true);
+        }
+
         return json_encode([
-            "lat" => (float)$this->lat,
-            "lng" => (float)$this->lng,
+            "lat" => (float)$value['lat'],
+            "lng" => (float)$value['lng'],
         ]);
     }
     

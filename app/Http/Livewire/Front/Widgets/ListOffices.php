@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Front\Widgets;
 
 use App\Models\DigitalOffice;
 use App\Models\Country;
+use App\Models\Profession;
+use App\Models\Service;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
@@ -13,12 +15,13 @@ class ListOffices extends Component implements HasForms
 	use InteractsWithForms;
 
     public $officeName = '';
+	public Service $service;
 	public $countryId;
 	public $cityId;
 	public $professionId;
-	public $specializationId;
+	public $specializationsIds;
     
-    protected $queryString = ['officeName', 'countryId', 'cityId', 'professionId', 'specializationId'];
+    protected $queryString = ['officeName', 'countryId', 'cityId', 'professionId', 'specializationsIds'];
 
 	protected function getForms(): array
 	{
@@ -64,6 +67,8 @@ class ListOffices extends Component implements HasForms
 
 	protected function getMainFormSchema(): array
 	{
+
+
 		return [
 			\Filament\Forms\Components\Grid::make()
 				->schema([
@@ -72,10 +77,23 @@ class ListOffices extends Component implements HasForms
 					),
 					\Filament\Forms\Components\Select::make("professionId")
 						->label("المهنة")
-						->name("professionId"),
-					\Filament\Forms\Components\Select::make("specializationId")
+						->options(function() {
+							return Service::where('slug', $this->service->slug)->first()->professions->pluck('name', 'id');
+					
+						}),
+					\Filament\Forms\Components\Select::make("specializationsIds")
 						->label("التخصص")
-						->name("specializationId"),
+						->reactive()
+						->multiple()
+						->preload()
+						->options(function (callable $get) {
+							$professionId = $get("professionId");
+							if (!$professionId) {
+								return [];
+							}
+							$profession = Profession::find($professionId);
+							return $profession->specializations->pluck("name", "id");
+						})
 				])
 				->columns(3),
 		];
@@ -83,7 +101,23 @@ class ListOffices extends Component implements HasForms
 
 	public function render()
 	{
-		$offices = DigitalOffice::available()->where('name', 'like', '%'.$this->officeName. '%')->get();
+		
+		$offices = DigitalOffice::completed()->where('service_id', $this->service->id);
+
+		if(!empty($this->officeName)) {
+			$offices = $offices->where('name', 'like', '%'.$this->officeName. '%');
+		}
+
+		if(!empty($this->professionId)) {
+			$offices = $offices->where('profession_id', $this->professionId);
+		}
+
+		if(!empty($this->specializationsIds)) {
+
+		}
+
+		$offices = $offices->get();
+
 		return view("livewire.front.widgets.list-offices", ["offices" => $offices]);
 	}
 }

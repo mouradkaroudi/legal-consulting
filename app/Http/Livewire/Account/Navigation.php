@@ -9,6 +9,7 @@ class Navigation extends Component
 {
     public $show_office_link = false;
     public $officeId = null;
+    public $navigationLinks;
 
     public function __construct()
     {
@@ -18,12 +19,8 @@ class Navigation extends Component
             $this->show_office_link = true;
             $this->officeId = $offices[0]['id'];
         }
-    }
 
-    public function render()
-    {
-
-        $navigationLinks = [
+        $this->navigationLinks = [
             [
                 'label' => 'الرئيسية',
                 'routeName' => 'account.overview'
@@ -40,15 +37,22 @@ class Navigation extends Component
                 'label' => 'الرصيد',
                 'routeName' => 'account.balance'
             ],
-            [
-                'label' => 'الدعوات',
-                'routeName' => 'account.invites'
-            ],
+
         ];
 
+        if($user->profile) {
+            $this->navigationLinks[] = [
+                'label' => 'الدعوات',
+                'routeName' => 'account.invites'
+            ];
+        }
+
+    }
+
+    public function render()
+    {
         return view('livewire.account.navigation', [
-            'officeId' => $this->officeId,
-            'navigationLinks' => $navigationLinks
+            'officeId' => $this->officeId
         ]);
     }
 }

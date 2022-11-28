@@ -1,6 +1,11 @@
 @extends('layouts.account', ['title' => 'الحساب'])
 @section('content')
 <div>
+    @if($profile && $profile->status == 'uncompleted')
+        <x-alert>
+            يرجى إكمال الحقول المطلوبة في ملف التعريف الخاص بك لتتمكن من استخدام حسابك.
+        </x-alert>
+    @endif
     <div class="md:grid md:grid-cols-3 md:gap-6">
         <div class="md:col-span-1">
             <div class="px-4 sm:px-0">

@@ -19,7 +19,8 @@ class SpecializationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'Entities';
-    
+    protected static ?string $navigationLabel = 'التخصصات';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -28,6 +29,7 @@ class SpecializationResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', str_replace(' ', '-', $state)))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
                     ->required()
@@ -39,13 +41,7 @@ class SpecializationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('profession_id'),
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('slug'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
             ])
             ->filters([
                 //

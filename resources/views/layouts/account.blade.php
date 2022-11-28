@@ -38,6 +38,7 @@
             </div>
         </main>
     </div>
+    @livewire('notifications')
 </body>
 
 </html>

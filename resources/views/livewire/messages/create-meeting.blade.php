@@ -15,16 +15,20 @@
             استعمل احدى خدمات الإجتماعات الافتراضية لتسهيل التواصل.
         </p>
         <div class="grid gap-4">
+            <a href="https://www.microsoft.com/fr/microsoft-teams" class="p-4 border items-center justify-between rounded-lg flex hover:shadow-sm hover:-translate-y-1 duration-300">
+                <span class="font-bold text-base">Microsoft Teams</span>
+                <x-heroicon-o-external-link class="w-4 h-4 text-gray-400"/>
+            </a>
+            <a href="https://www.wibox.fr/" class="p-4 border items-center justify-between rounded-lg flex hover:shadow-sm hover:-translate-y-1 duration-300">
+                <span class="font-bold text-base">Wibox</span>
+                <x-heroicon-o-external-link class="w-4 h-4 text-gray-400"/>
+            </a>
             <a href="#" class="p-4 border items-center justify-between rounded-lg flex hover:shadow-sm hover:-translate-y-1 duration-300">
-                <span class="font-bold text-base">Zoom (زوم)</span>
+                <span class="font-bold text-base">Zoom</span>
                 <x-heroicon-o-external-link class="w-4 h-4 text-gray-400"/>
             </a>
             <a href="https://meet.google.com/" target="_blank" class="p-4 border items-center justify-between rounded-lg flex hover:shadow-sm hover:-translate-y-1 duration-300">
-                <span class="font-bold text-base">Google Meet (جوجل ميت)</span>
-                <x-heroicon-o-external-link class="w-4 h-4 text-gray-400"/>
-            </a>
-            <a href="#" class="p-4 border items-center justify-between rounded-lg flex hover:shadow-sm hover:-translate-y-1 duration-300">
-                <span class="font-bold text-base">Skype (سكايب)</span>
+                <span class="font-bold text-base">Google Meet</span>
                 <x-heroicon-o-external-link class="w-4 h-4 text-gray-400"/>
             </a>
         </div>

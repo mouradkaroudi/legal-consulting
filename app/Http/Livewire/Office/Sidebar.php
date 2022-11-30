@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Office;
 
+use App\Models\Message;
+use App\Models\Thread;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Livewire\Component;
@@ -70,7 +72,8 @@ class Sidebar extends Component
       $this->sidebarLinks[] = [
         "label" => "المحادثات",
         "routeName" => "office.threads.index",
-        'icon' => 'heroicon-o-chat-alt-2'
+        'icon' => 'heroicon-o-chat-alt-2',
+        'badge' => Message::unreadForUserOffice(Auth::id(), $user->currentOffice()->id)->count()
       ];
     }
 

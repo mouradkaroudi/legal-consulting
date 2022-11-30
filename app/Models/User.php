@@ -213,15 +213,24 @@ class User extends Authenticatable
     return $this->morphMany(Transaction::class, 'transactionable');
   }
 
-  public function holdBalance( $amount ) {
+  /**
+   * 
+   */
+  public function addToHoldBalance( $amount ) {
     $this->hold_balance += $amount;
   }
 
-  public function creditBalance( $amount ) {
+  /**
+   * 
+   */
+  public function addToCreditBalance( $amount ) {
     $this->available_balance += $amount;
   }
 
-  public function debitBalance( $amount ) {
+  /**
+   * 
+   */
+  public function addToDebitBalance( $amount ) {
     $this->available_balance -= $amount;
   }
 

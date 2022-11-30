@@ -16,7 +16,9 @@ class OrdersController extends Controller
      */
     public function index(Request $request, DigitalOffice $digitalOffice)
     {
-        return view('pages.office.orders.index');
+        return view('pages.office.orders.index', [
+            'office' => $digitalOffice
+        ]);
     }
 
     /**

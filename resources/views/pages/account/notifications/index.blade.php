@@ -2,9 +2,11 @@
 @section('content')
 <div class="grid grid-cols-1 gap-6">
     @forelse ($notifications as $notification)
+    @php
+    @endphp
     <div class="{{ $notification->read_at ? 'bg-white' : 'bg-blue-50'}} w-full p-3 rounded shadow flex flex-shrink-0">
         <div class="w-full">
-            @include('pages.account.notifications.partials.invitation-request-notification')
+            @include('pages.account.notifications.partials.order-created-notification')
         </div>
     </div>
     @empty

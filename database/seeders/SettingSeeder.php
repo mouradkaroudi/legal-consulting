@@ -23,6 +23,8 @@ class SettingSeeder extends Seeder
 			["option" => "registration_open", "value" => true],
 			["option" => "balance_hold_duration", "value" => 0],
 			["option" => "balance_min_withdrawals", "value" => 0],
+			["option" => "transactions_bank_transfer", "value" => 0],
+			["option" => "transactions_bank_rib", "value" => ""],
 		];
 
 		\App\Models\Setting::insert($settings);

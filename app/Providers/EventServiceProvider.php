@@ -10,6 +10,7 @@ use App\Listeners\Account\Orders as AccountOrdersListeners;
 use App\Listeners\Account\SaveTransaction;
 use App\Listeners\Account\updateAccountBalance;
 use App\Listeners\SendInvitationNotification;
+use App\Listeners\TransactionEventSubscriber;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -44,6 +45,15 @@ class EventServiceProvider extends ServiceProvider
     {
         //
     }
+
+    /**
+     * The subscriber classes to register.
+     *
+     * @var array
+     */
+    protected $subscribe = [
+        TransactionEventSubscriber::class,
+    ];
 
     /**
      * Determine if events and listeners should be automatically discovered.

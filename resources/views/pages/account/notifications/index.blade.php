@@ -3,10 +3,11 @@
 <div class="grid grid-cols-1 gap-6">
     @forelse ($notifications as $notification)
     @php
+        $notificationView = Str::kebab(class_basename($notification->type));
     @endphp
     <div class="{{ $notification->read_at ? 'bg-white' : 'bg-blue-50'}} w-full p-3 rounded shadow flex flex-shrink-0">
         <div class="w-full">
-            @include('pages.account.notifications.partials.order-created-notification')
+            @include('pages.account.notifications.partials.' . $notificationView)
         </div>
     </div>
     @empty

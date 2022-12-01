@@ -3,10 +3,12 @@
 namespace App\Http\Livewire\Account;
 
 use App\Models\Transaction;
+use App\Models\User;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class TransactionsTable extends Component implements Tables\Contracts\HasTable 
@@ -24,7 +26,8 @@ class TransactionsTable extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder 
     {
-        return Transaction::query()->where('status', 'completed');
+
+        return User::query()->whereMorphedTo('transactions', '\App\Models\User');
     } 
 
     public function render()

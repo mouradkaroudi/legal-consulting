@@ -218,6 +218,7 @@ class User extends Authenticatable
    */
   public function addToHoldBalance( $amount ) {
     $this->hold_balance += $amount;
+    $this->save();
   }
 
   /**
@@ -225,6 +226,7 @@ class User extends Authenticatable
    */
   public function addToCreditBalance( $amount ) {
     $this->available_balance += $amount;
+    $this->save();
   }
 
   /**
@@ -232,13 +234,7 @@ class User extends Authenticatable
    */
   public function addToDebitBalance( $amount ) {
     $this->available_balance -= $amount;
+    $this->save();
   }
 
-  /**
-   *
-   */
-  public function canAccessFilament()
-  {
-    return false;
-  }
 }

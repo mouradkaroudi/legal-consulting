@@ -17,9 +17,11 @@ class Settings extends Page
 
 	public function mount()
 	{
-		$settings = Setting::all()->pluck('value', 'option')->toArray();
-        
-        $this->form->fill($settings);
+		$settings = Setting::all()
+			->pluck("value", "option")
+			->toArray();
+
+		$this->form->fill($settings);
 	}
 
 	protected function getBreadcrumbs(): array
@@ -29,39 +31,58 @@ class Settings extends Page
 		];
 	}
 
-    public function submit()
-    {
-        $settings = $this->form->getState();
-        foreach( $settings as $option=>$value ) {
-            Setting::where('option', $option)->update([
-                'value' => $value
-            ]);
-        }
-    }
+	public function submit()
+	{
+		$settings = $this->form->getState();
+		foreach ($settings as $option => $value) {
+			Setting::where("option", $option)->update([
+				"value" => $value,
+			]);
+		}
+	}
 
 	protected function getFormSchema(): array
 	{
 		$digitalOfficeSettingsScheme = [
-            Components\Grid::make(2)->schema([
-                Components\TextInput::make("digital_office_registration_fee")->label(
-                    "رسوم التسجيل"
-                ),
-                Components\Toggle::make("digital_office_direct_registration")->label(
-                    "تسجيل مباشر"
-                ),
-            ])
+			Components\Grid::make(2)->schema([
+				Components\TextInput::make("digital_office_registration_fee")->label(
+					"رسوم التسجيل"
+				),
+				Components\Toggle::make("digital_office_direct_registration")->label(
+					"تسجيل مباشر"
+				),
+			]),
 		];
 
 		$orderSettingsScheme = [
-            Components\Grid::make(3)->schema([
-                Components\TextInput::make("order_min_fee")->label('الحد الأدنى للرسوم'),
-                Components\TextInput::make("order_max_fee")->label('الحد الأقصى للرسوم'),
-                Components\TextInput::make("order_percentage_fee")->label('نسبة الرسوم'),    
-            ])
+			Components\Grid::make(3)->schema([
+				Components\TextInput::make("order_min_fee")->label(
+					"الحد الأدنى للرسوم"
+				),
+				Components\TextInput::make("order_max_fee")->label(
+					"الحد الأقصى للرسوم"
+				),
+				Components\TextInput::make("order_percentage_fee")->label(
+					"نسبة الرسوم"
+				),
+			]),
 		];
 
 		$registrationSettingsScheme = [
-			Components\Toggle::make("registration_open")->label('التسجيل مفتوح'),
+			Components\Toggle::make("registration_open")->label("التسجيل مفتوح"),
+		];
+
+		$paymentSettingScheme = [
+			Components\Toggle::make("transactions_bank_transfer")->label(
+				"استقبال التحويلات البكنية"
+			)
+			->reactive(),
+			Components\TextInput::make("transactions_bank_rib")
+				->label("رقم معرف الحساب البنكي")
+				->helperText("رقم الحساب البنكي الذي تريد استقبال الحولات فيه.")
+				->reactive()
+				->hidden(fn ($state, callable $get) => $get('transactions_bank_transfer') == 0)
+				->helperText("رقم الحساب البنكي الذي تريد استقبال الحولات فيه."),
 		];
 
 		return [
@@ -74,6 +95,9 @@ class Settings extends Page
 			Components\Fieldset::make("order")
 				->label("إعدادت التسجيل")
 				->schema($registrationSettingsScheme),
+			Components\Fieldset::make("payment")
+				->label("إعدادت الدفع")
+				->schema($paymentSettingScheme)->columns(1),
 		];
 	}
 }

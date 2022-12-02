@@ -17,7 +17,7 @@
             <h4 class="leading-4 text-xl font-bold">شحن الرصيد</h4>
         </div>
         <div class="p-6">
-            <livewire:account.deposit-form />
+            <livewire:account.balance.recharge-form />
         </div>
     </div>
 

@@ -42,7 +42,7 @@ class TransactionEventSubscriber
     public function subscribe($events)
     {
         return [
-            TransactionEvents\Accpeted::class => 'handleTransactionAccpeted',
+            TransactionEvents\Accepted::class => 'handleTransactionAccpeted',
             TransactionEvents\Refused::class => 'handleTransactionRefused'
         ];
  

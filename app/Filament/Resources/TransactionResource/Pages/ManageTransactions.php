@@ -16,7 +16,7 @@ class ManageTransactions extends ManageRecords
 
     protected function getTableQuery(): Builder
     {
-        return parent::getTableQuery()->with('transactionable');
+        return parent::getTableQuery()->with('transactionable')->latest();
     }
     protected function getTableActions(): array
     {

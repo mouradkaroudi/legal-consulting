@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Account;
+namespace App\Http\Livewire\Account\Balance;
 
 use App\Models\Transaction;
 use App\Models\Withdrawal;
@@ -10,13 +10,12 @@ use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Livewire\Component;
 
-class DepositForm extends Component implements HasForms
+class RechargeForm extends Component implements HasForms
 {
 	use InteractsWithForms;
-
-	public Transaction $transaction;
 
 	public $txn_id;
 	public $receipt_attachment;
@@ -53,7 +52,7 @@ class DepositForm extends Component implements HasForms
 		$user->transactions()->create([
 			"amount" => $data["amount"],
 			"type" => "debit",
-			"source" => "deposit",
+			"source" => Transaction::RECHARGE,
 			"status" => Transaction::PENDING,
 			"metadata" => json_encode([
 				"txn_id" => $data["txn_id"],
@@ -65,10 +64,19 @@ class DepositForm extends Component implements HasForms
 	public function submit()
 	{
 		$this->save();
+
+		Notification::make()
+		->title("تم ارسال طلب الشحن بنجاح")
+		->body('سيتم اضافة الرصيد الى حسابك فور تحقق ادارة الموقع من التحويل البنكي. شكرا على تفهمك')
+		->success()
+		->send();
+
+		$this->reset();
+
 	}
 
 	public function render()
 	{
-		return view("livewire.account.deposit-form");
+		return view("livewire.account.balance.recharge-form");
 	}
 }

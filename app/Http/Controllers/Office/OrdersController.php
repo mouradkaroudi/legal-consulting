@@ -14,10 +14,10 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, DigitalOffice $digitalOffice)
+    public function index(Request $request)
     {
         return view('pages.office.orders.index', [
-            'office' => $digitalOffice
+            'office' => auth()->user()->currentOffice
         ]);
     }
 

@@ -165,10 +165,10 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 
 		$currentStatus = $this->digitalOffice->status;
 
-		if ($currentStatus == "uncomplete") {
-			$data["status"] = "available";
+		if ($currentStatus == DigitalOffice::UNCOMPLETED) {
+			$data["status"] = DigitalOffice::AVAILABLE;
 			$redirect = true;
-		} elseif (in_array($data["status"], ["busy", "available"])) {
+		} elseif (in_array($data["status"], [DigitalOffice::BUSY, DigitalOffice::AVAILABLE])) {
 			$data["status"] = $data["status"];
 		} else {
 			$data["status"] = $currentStatus;

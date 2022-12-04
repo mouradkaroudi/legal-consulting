@@ -59,7 +59,7 @@ class MessagesTable extends Component implements HasTable
 
         $query = Thread::query();
 
-        if (!$user->hasOfficePermission($user->currentOffice(), "manage-messages")) {
+        if (!$user->hasOfficePermission($user->currentOffice, "manage-messages")) {
             $query = $query->forUser(Auth::id());
         }
 

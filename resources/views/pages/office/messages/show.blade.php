@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="mx-auto max-w-screen-xl flex flex-col">
-    <livewire:messages.widgets.header-bar 
+    <livewire:messages.widgets.header-bar
     :thread="$thread" 
     :showCloseConversation="true"
-    :showCreateOffer="true"
+    :showCreateOffer="$showCreateOffer"
     />
     <div class="mt-8">
         <div class="divide-y-2">

@@ -7,6 +7,7 @@ use App\Http\Controllers\RegistrationController;
 
 use App\Http\Controllers\Account\SettingsController as AccountSettingsController;
 use App\Http\Controllers\Account\BalanceController;
+use App\Http\Controllers\Account\CurrentOfficeController;
 use App\Http\Controllers\Account\DashboardController;
 use App\Http\Controllers\Account\InvitesController;
 use App\Http\Controllers\Account\NotificationsController;
@@ -46,7 +47,7 @@ Route::name('auth.')->middleware(RedirectIfAuthenticated::class)->group(function
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-Route::name('office.')->prefix('/office/{digitalOffice}')->middleware(['office', 'settled'])->group(function () {
+Route::name('office.')->prefix('/office')->middleware(['office', 'settled'])->group(function () {
     Route::get('/', [DashboardHomeController::class, 'index'])->name('overview');
     Route::get('/settings', SettingsController::class)->name('settings');
     // add middleware here
@@ -73,6 +74,8 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'settled'])->gr
 
     Route::get('/messages', [MessagesController::class, 'index'])->name('messages');
     Route::get('/messages/{id}', [MessagesController::class, 'show'])->name('messages.show');
+
+    Route::put('/current-office', [CurrentOfficeController::class, 'update'])->name('current-office.update');
 
 });
 

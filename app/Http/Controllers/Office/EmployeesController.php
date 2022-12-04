@@ -14,10 +14,10 @@ class EmployeesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index( DigitalOffice $digitalOffice )
+    public function index()
     {
         return view('pages.office.employees.index', [
-            'officeId' => $digitalOffice->id
+            'officeId' => auth()->user()->currentOffice->id
         ]);
     }
 

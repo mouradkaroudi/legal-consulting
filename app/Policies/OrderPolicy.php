@@ -2,12 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\DigitalOffice;
-use App\Models\Thread;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ThreadPolicy
+class OrderPolicy
 {
     use HandlesAuthorization;
 
@@ -19,66 +18,64 @@ class ThreadPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasOfficePermission($user->currentOffice, 'manage-messages');
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Thread  $thread
+     * @param  \App\Models\Order  $order
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Thread $thread)
+    public function view(User $user, Order $order)
     {
-        //TODO: allow participante to also access message
-        return $user->hasOfficePermission(DigitalOffice::find($thread->office_id), 'manage-messages' );
+        //
     }
 
     /**
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DigitalOffice  $office
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user, DigitalOffice $office)
+    public function create(User $user)
     {
-        return $user->belongsToOffice($office) === false;
+        return $user->hasOfficePermission($user->currentOffice, 'manage-orders');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Thread  $thread
+     * @param  \App\Models\Order  $order
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Thread $thread)
+    public function update(User $user, Order $order)
     {
-        
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Thread  $thread
+     * @param  \App\Models\Order  $order
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Thread $thread)
+    public function delete(User $user, Order $order)
     {
-        return $user->id === $thread->user_id;
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Thread  $thread
+     * @param  \App\Models\Order  $order
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Thread $thread)
+    public function restore(User $user, Order $order)
     {
         //
     }
@@ -87,10 +84,10 @@ class ThreadPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Thread  $thread
+     * @param  \App\Models\Order  $order
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Thread $thread)
+    public function forceDelete(User $user, Order $order)
     {
         //
     }

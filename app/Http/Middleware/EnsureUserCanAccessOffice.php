@@ -22,14 +22,8 @@ class EnsureUserCanAccessOffice
         if(!$user) {
             return redirect('login');
         }
-        
-        $office = $request->route()->parameters()['digitalOffice'];
 
-        if(!$office instanceof DigitalOffice) {
-            $office = DigitalOffice::find($office);
-        }
-
-        if(!$user->belongsToOffice($office)) {
+        if(!$user->belongsToOffice($user->currentOffice)) {
             abort(404);
         }
 

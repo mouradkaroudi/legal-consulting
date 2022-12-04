@@ -45,7 +45,7 @@
                         <li class="flex items-center py-3">
                             <span>الحالة</span>
                             <span class="mr-auto"><span class="bg-success-500 py-1 px-2 rounded text-white text-sm">
-                                {{ __('offices.' . $office->status) }}
+                                {{ __('offices.status.' . \Illuminate\Support\Str::lower($office->status)) }}
                             </span></span>
                         </li>
                         <li class="flex items-center py-3">

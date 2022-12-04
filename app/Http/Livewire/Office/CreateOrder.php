@@ -5,10 +5,12 @@ namespace App\Http\Livewire\Office;
 use App\Models\Order;
 use App\Models\User;
 use App\Notifications\OrderCreatedNotification;
+use App\Services\OrderService;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Actions\DeleteAction;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification as FacadesNotification;
@@ -17,7 +19,7 @@ use Livewire\Component;
 class CreateOrder extends Component implements HasForms
 {
 
-    use InteractsWithForms;
+    use InteractsWithForms, AuthorizesRequests;
 
     public $officeId;
     public $beneficiaryId;
@@ -39,21 +41,15 @@ class CreateOrder extends Component implements HasForms
     }
 
     public function submit() {
+        
+        $this->authorize('create', Order::class);
 
         $data = $this->form->getState();
 
         $subject = $data['subject'];
         $fee = $data['fee'];
 
-        $order = Order::create([
-            'office_id' => $this->officeId,
-            'beneficiary_id' => $this->beneficiaryId,
-            'subject' => $subject,
-            'fee' => $fee,
-            'status' => 'unpaid'
-        ]);
-
-        FacadesNotification::send( User::find($this->beneficiaryId), new OrderCreatedNotification($order) );
+        OrderService::createOrder($subject, $this->beneficiaryId, $this->officeId, $fee);
 
     }
 

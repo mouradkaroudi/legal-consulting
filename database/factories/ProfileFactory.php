@@ -18,10 +18,9 @@ class ProfileFactory extends Factory
     {
         return [
             'national_ID' => fake()->nationalIdNumber(),
-            'degree' => 'BA',
-            'nationality' => 'سعودي',
             'gender' => 'male',
-            'status' => 'available'
+            'status' => 'available',
+            'original_country' => '0'
         ];
     }
 }

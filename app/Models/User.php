@@ -8,233 +8,263 @@ use Filament\AvatarProviders\UiAvatarsProvider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-  use HasApiTokens, HasFactory, Notifiable, HasRoles;
+	use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array<int, string>
-   */
-  protected $fillable = ["name", "email", "password", "available_balance"];
+	
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array<int, string>
+	 */
+	protected $fillable = ["name", "email", "password", "available_balance"];
 
-  /**
-   * The attributes that should be hidden for serialization.
-   *
-   * @var array<int, string>
-   */
-  protected $hidden = ["password", "remember_token"];
+	/**
+	 * The attributes that should be hidden for serialization.
+	 *
+	 * @var array<int, string>
+	 */
+	protected $hidden = ["password", "remember_token"];
 
-  /**
-   * The attributes that should be cast.
-   *
-   * @var array<string, string>
-   */
-  protected $casts = [
-    "email_verified_at" => "datetime",
-  ];
+	/**
+	 * The attributes that should be cast.
+	 *
+	 * @var array<string, string>
+	 */
+	protected $casts = [
+		"email_verified_at" => "datetime",
+	];
 
-  /**
-   * Determine if the given office is the current office.
-   *
-   * @param  mixed  $digitalOffice
-   * @return bool
-   */
-  public function isCurrentOffice($digitalOffice)
-  {
-    return $digitalOffice->id === $this->currentOffice->id;
-  }
+	/**
+	 * Determine if the given office is the current office.
+	 *
+	 * @param  mixed  $digitalOffice
+	 * @return bool
+	 */
+	public function isCurrentOffice($digitalOffice)
+	{
+		return $digitalOffice->id === $this->currentOffice->id;
+	}
 
-  /**
-   * Get the current office of the user's context.
-   *
-   * @return \App\Models\DigitalOffice|null
-   */
-  public function currentOffice()
-  {
+	/**
+	 * Get the current office of the user's context.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function currentOffice()
+	{
+		if (is_null($this->current_office_id) && $this->id) {
+			//$this->switchOffice($this->personalTeam());
+		}
 
-    $office = Route::current()->parameter('digitalOffice');
+		return $this->belongsTo(DigitalOffice::class, "current_office_id");
+	}
 
-    if(empty($office)) {
-      return null;
-    }
+	/**
+	 * Switch the user's context to the given office.
+	 *
+	 * @param  mixed  $office
+	 * @return bool
+	 */
+	public function switchOffice($office)
+	{
+		if (!$this->belongsToOffice($office)) {
+			return false;
+		}
 
-    return $office instanceof DigitalOffice ? $office : DigitalOffice::find($office);
-  }
+		$this->forceFill([
+			"current_office_id" => $office->id,
+		])->save();
 
-  /**
-   * Get all of the offices the user owns or belongs to.
-   *
-   * @return \Illuminate\Support\Collection
-   */
-  public function allOffices()
-  {
-    return $this->ownedOffices->merge($this->offices)->sortBy("name");
-  }
+		$this->setRelation("currentOffice", $office);
 
-  /**
-   * Get all of the offices the user owns.
-   *
-   * @return \Illuminate\Database\Eloquent\Relations\HasMany
-   */
-  public function ownedOffices()
-  {
-    return $this->hasMany(DigitalOffice::class, "user_id");
-  }
+		return true;
+	}
 
-  /**
-   * Get all of the offices the user belongs to.
-   *
-   * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-   */
-  public function offices()
-  {
-    return $this->belongsToMany(
-      DigitalOffice::class,
-      DigitalOfficeEmployee::class,
-      "user_id",
-      "office_id"
-    );
-  }
+	/**
+	 * Get all of the offices the user owns or belongs to.
+	 *
+	 * @return \Illuminate\Support\Collection
+	 */
+	public function allOffices()
+	{
+		return $this->ownedOffices->merge($this->offices)->sortBy("name");
+	}
 
-  /**
-   * Determine if the user owns the given team.
-   *
-   * @param  mixed  $team
-   * @return bool
-   */
-  public function ownsOffice($office)
-  {
-    if (is_null($office)) {
-      return false;
-    }
+	/**
+	 * Get all of the offices the user owns.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function ownedOffices()
+	{
+		return $this->hasMany(DigitalOffice::class, "user_id");
+	}
 
-    return $this->id == $office->user_id;
-  }
+	/**
+	 * Get all of the offices the user belongs to.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function offices()
+	{
+		return $this->belongsToMany(
+			DigitalOffice::class,
+			DigitalOfficeEmployee::class,
+			"user_id",
+			"office_id"
+		);
+	}
 
-  /**
-   * Determine if the user belongs to the given office.
-   *
-   * @param  mixed  $office
-   * @return bool
-   */
-  public function belongsToOffice($office)
-  {
-    if (is_null($office)) {
-      return false;
-    }
+	/**
+	 * Determine if the user owns the given office.
+	 *
+	 * @param  mixed  $office
+	 * @return bool
+	 */
+	public function ownsOffice($office)
+	{
+		if (is_null($office)) {
+			return false;
+		}
 
-    return $this->ownsOffice($office) ||
-      $this->offices->contains(function ($t) use ($office) {
-        return $t->id === $office->id;
-      });
-  }
+		return $this->id == $office->user_id;
+	}
 
-  /**
-   * Determine if the user have specific permission in an office
-   * 
-   * @param  mixed  $office
-   * @param string $permission
-   * @return boolean
-   */
-  public function hasOfficePermission( $office, $permission ) {
-    // Grant all permissions to office owner
-    if ($this->ownsOffice($office)) {
-      return true;
-    }
+	/**
+	 * Determine if the user belongs to the given office.
+	 *
+	 * @param  mixed  $office
+	 * @return bool
+	 */
+	public function belongsToOffice($office)
+	{
+		if (is_null($office)) {
+			return false;
+		}
 
-    if (!$this->belongsToOffice($office)) {
-      return;
-    }
-    return $office->employees->where("user_id", $this->id)->first()->hasPermissionTo($permission);
-  }
+		return $this->ownsOffice($office) ||
+			$this->offices->contains(function ($t) use ($office) {
+				return $t->id === $office->id;
+			});
+	}
 
-  /**
-   * 
-   * @param $office \App\Models\DigitalOffice
-   */
-  public function officePermissions( $office ) {
-    return $office->employees->where("user_id", $this->id)->first()->getAllPermissions();
-  }
+	/**
+	 * Determine if the user have specific permission in an office
+	 *
+	 * @param  mixed  $office
+	 * @param string $permission
+	 * @return boolean
+	 */
+	public function hasOfficePermission($office, $permission)
+	{
+		// Grant all permissions to office owner
+		if ($this->ownsOffice($office)) {
+			return true;
+		}
 
-  /**
-   * Get the role that the user has on the office.
-   *
-   * @param  mixed  $office
-   * @return \Laravel\Jetstream\Role|null
-   */
-  public function officeRole($office)
-  {
-    if ($this->ownsOffice($office)) {
-      //return new OwnerRole;
-    }
+		if (!$this->belongsToOffice($office)) {
+			return;
+		}
+		return $office->employees
+			->where("user_id", $this->id)
+			->first()
+			->hasPermissionTo($permission);
+	}
 
-    if (!$this->belongsToOffice($office)) {
-      return;
-    }
+	/**
+	 *
+	 * @param $office \App\Models\DigitalOffice
+	 */
+	public function officePermissions($office)
+	{
+		return $office->employees
+			->where("user_id", $this->id)
+			->first()
+			->getAllPermissions();
+	}
 
-    $role = $office->employees->where("user_id", $this->id)->first()->role;
+	/**
+	 * Get the role that the user has on the office.
+	 *
+	 * @param  mixed  $office
+	 * @return \Laravel\Jetstream\Role|null
+	 */
+	public function officeRole($office)
+	{
+		if ($this->ownsOffice($office)) {
+			//return new OwnerRole;
+		}
 
-    return $role ? Role::findByName($role) : null;
-  }
+		if (!$this->belongsToOffice($office)) {
+			return;
+		}
 
-  /**
-   *
-   */
-  public function profile()
-  {
-    return $this->hasOne(Profile::class, "user_id", "id");
-  }
+		$role = $office->employees->where("user_id", $this->id)->first()->role;
 
-  /**
-   * 
-   */
-  public function invites() {
-    return $this->hasMany(Invite::class, 'email', 'email');
-  }
-  /**
-   *
-   */
-  public function avatar_url()
-  {
-    if (!empty($this->avatar_url)) {
-      return asset("storage/" . $this->avatar_url);
-    }
-    return (new UiAvatarsProvider())->get(User::find($this->id));
-  }
+		return $role ? Role::findByName($role) : null;
+	}
 
-  public function transactions() {
-    return $this->morphMany(Transaction::class, 'transactionable');
-  }
+	/**
+	 *
+	 */
+	public function profile()
+	{
+		return $this->hasOne(Profile::class, "user_id", "id");
+	}
 
-  /**
-   * 
-   */
-  public function addToHoldBalance( $amount ) {
-    $this->hold_balance += $amount;
-    $this->save();
-  }
+	/**
+	 *
+	 */
+	public function invites()
+	{
+		return $this->hasMany(Invite::class, "email", "email");
+	}
+	/**
+	 *
+	 */
+	public function avatar_url()
+	{
+		if (!empty($this->avatar_url)) {
+			return asset("storage/" . $this->avatar_url);
+		}
+		return (new UiAvatarsProvider())->get(User::find($this->id));
+	}
 
-  /**
-   * 
-   */
-  public function addToCreditBalance( $amount ) {
-    $this->available_balance += $amount;
-    $this->save();
-  }
+	public function transactions()
+	{
+		return $this->morphMany(Transaction::class, "transactionable");
+	}
 
-  /**
-   * 
-   */
-  public function addToDebitBalance( $amount ) {
-    $this->available_balance -= $amount;
-    $this->save();
-  }
+	/**
+	 *
+	 */
+	public function addToHoldBalance($amount)
+	{
+		$this->hold_balance += $amount;
+		$this->save();
+	}
 
+	/**
+	 *
+	 */
+	public function addToCreditBalance($amount)
+	{
+		$this->available_balance += $amount;
+		$this->save();
+	}
+
+	/**
+	 *
+	 */
+	public function addToDebitBalance($amount)
+	{
+		$this->available_balance -= $amount;
+		$this->save();
+	}
 }

@@ -18,7 +18,7 @@ class ImportantAlerts extends Component
 
         $user = auth()->user();
         $this->profile = $user->profile;
-        $this->digitalOffice = $user->currentOffice();
+        $this->digitalOffice = $user->currentOffice;
 
         if($this->digitalOffice->status == 'uncomplete') {
             $this->uncompletedStatusAlert = true;

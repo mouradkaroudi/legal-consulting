@@ -22,7 +22,7 @@ class Table extends Component implements HasTable
     }
 
     protected function getTableQuery() {
-        return Invite::where("office_id", auth()->user()->currentOffice()->id);
+        return Invite::where("office_id", auth()->user()->currentOffice->id);
     }
 
     public function render()

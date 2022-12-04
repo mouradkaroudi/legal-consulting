@@ -9,6 +9,10 @@ class Profile extends Model
 {
 	use HasFactory;
 
+	public const AVAILABLE = 'AVAILABLE';
+	public const BUSY = 'BUSY';
+	public const UNCOMPLETED = 'UNCOMPLETED';
+
 	/**
 	 * The attributes that are mass assignable.
 	 *
@@ -31,7 +35,7 @@ class Profile extends Model
 	];
 
 	public function getIsCompletedAttribute() {
-		return $this->status !== 'uncompleted';
+		return $this->status !== self::UNCOMPLETED;
 	}
 
 	public function getGenderLabelAttribute()

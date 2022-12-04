@@ -23,6 +23,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'manage-orders']);
         Permission::create(['name' => 'send-invites']);
         Permission::create(['name' => 'manage-notifications']);
+        Permission::create(['name' => 'view-balance']);
 
         $officeEmployeeRole = Role::create(['name' => 'OfficeEmployee']);
 

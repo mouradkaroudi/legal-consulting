@@ -17,18 +17,14 @@
         @if(!empty($ownedOffices))    
             <div>
                 @foreach($ownedOffices as $ownedOffice)
-                <a href="{{ route('office.overview', ['digitalOffice' => $ownedOffice->id]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                    {{ $ownedOffice->name }}
-                </a>
+                <x-switch-able-office :office="$ownedOffice"/>
                 @endforeach
             </div>
         @endif
         @if(!empty($offices))
             <div>
                 @foreach($offices as $office)
-                <a href="{{ route('office.overview', ['digitalOffice' => $office->id]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                    {{ $office->name }}
-                </a>
+                <x-switch-able-office :office="$office"/>
                 @endforeach
             </div>
         @endif

@@ -13,9 +13,9 @@ class SettingsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(DigitalOffice $digitalOffice)
+    public function __invoke()
     {
-        return view('pages.office.settings', ['digitalOffice' => $digitalOffice]);
+        return view('pages.office.settings', ['digitalOffice' => auth()->user()->currentOffice]);
     }
 
 }

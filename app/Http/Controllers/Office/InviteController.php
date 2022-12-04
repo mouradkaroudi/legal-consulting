@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
-use App\Models\DigitalOffice;
-use Illuminate\Http\Request;
 
 class InviteController extends Controller
 {
-  public function invite(DigitalOffice $digitalOffice)
+  public function invite()
   {
     return view("pages.office.invite.index", [
-      "office" => $digitalOffice,
+      "office" => auth()->user()->currentOffice,
     ]);
   }
 

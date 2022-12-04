@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
         $digitalOffice1 = \App\Models\DigitalOffice::create([
             'user_id' => 1,
             'name' => 'مكتب المحامي د عبدالله العجلان',
-            'status' => 'busy'
+            'status' => DigitalOffice::BUSY
         ]);
 
         $digitalOffice1Employee = DigitalOfficeEmployee::create([
@@ -67,7 +67,7 @@ class DatabaseSeeder extends Seeder
         $digitalOffice2 = \App\Models\DigitalOffice::create([
             'user_id' => 2,
             'name' => 'شركة الجبيري للمحاماة',
-            'status' => 'available'
+            'status' => DigitalOffice::AVAILABLE
         ]);
 
         $digitalOffice2Employees = DigitalOfficeEmployee::create([

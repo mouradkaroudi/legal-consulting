@@ -53,7 +53,7 @@ class Sidebar extends Component
     ];
 
     if (
-      $user->hasOfficePermission($user->currentOffice(), "manage-employees")
+      $user->hasOfficePermission($user->currentOffice, "manage-employees")
     ) {
       $this->sidebarLinks[] = [
         "label" => "الموظفين",
@@ -68,23 +68,23 @@ class Sidebar extends Component
       'icon' => 'heroicon-o-shopping-cart'
     ];
 
-    if ($user->hasOfficePermission($user->currentOffice(), "manage-messages")) {
+    if ($user->hasOfficePermission($user->currentOffice, "manage-messages")) {
       $this->sidebarLinks[] = [
         "label" => "المحادثات",
         "routeName" => "office.threads.index",
         'icon' => 'heroicon-o-chat-alt-2',
-        'badge' => Message::unreadForUserOffice(Auth::id(), $user->currentOffice()->id)->count()
+        'badge' => Message::unreadForUserOffice(Auth::id(), $user->currentOffice->id)->count()
       ];
     }
 
-    if ($user->hasOfficePermission($user->currentOffice(), "manage-office")) {
+    if ($user->hasOfficePermission($user->currentOffice, "manage-office")) {
       $this->sidebarLinks[] = [
         "label" => "إعدادات المكتب",
         "routeName" => "office.settings",
         'icon' => 'heroicon-o-cog'
       ];
     }
-    if ($user->hasOfficePermission($user->currentOffice(), "send-invites")) {
+    if ($user->hasOfficePermission($user->currentOffice, "send-invites")) {
       $this->sidebarLinks[] = [
         "label" => "ارسال دعوة",
         "routeName" => "office.invite",

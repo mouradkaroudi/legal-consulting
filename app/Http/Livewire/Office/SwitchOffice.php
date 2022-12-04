@@ -15,7 +15,7 @@ class SwitchOffice extends Component
 
     public function mount()
     {
-        $this->currentOffice = auth()->user()->currentOffice();
+        $this->currentOffice = auth()->user()->currentOffice;
         $this->ownedOffices = auth()->user()->ownedOffices->where('id', '!=', $this->currentOffice->id);
         $this->offices = auth()->user()->offices->where('id', '!=', $this->currentOffice->id);
 

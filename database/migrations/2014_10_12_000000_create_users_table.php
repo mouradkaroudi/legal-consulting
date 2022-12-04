@@ -23,7 +23,10 @@ return new class extends Migration
             $table->string('avatar_url')->nullable();
             $table->float('hold_balance')->default(0);
             $table->float('available_balance')->default(0);
+            $table->foreignId('current_office_id')->nullable();
             $table->rememberToken();
+            $table->timestamp('last_seen_at')->nullable();
+            $table->timestamp('banned_at')->nullable();
             $table->timestamps();
         });
     }

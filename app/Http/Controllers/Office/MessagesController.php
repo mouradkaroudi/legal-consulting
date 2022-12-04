@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
-use App\Models\DigitalOffice;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,19 +24,22 @@ class MessagesController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function index(Request $request, DigitalOffice $digitalOffice)
+  public function index(Request $request)
   {
     return view("pages.office.messages.index", [
-      "officeId" => $digitalOffice->id,
+      "officeId" => auth()->user()->currentOffice->id,
     ]);
   }
 
-  public function show(DigitalOffice $digitalOffice, Thread $thread)
+  public function show(Thread $thread)
   {
 
-    $userId = Auth::id();
-    $thread->markAsRead($userId);
+    $user = auth()->user();
+    $thread->markAsRead($user->id);
 
-    return view("pages.office.messages.show", ["thread" => $thread]);
+    return view("pages.office.messages.show", [
+      "thread" => $thread,
+      "showCreateOffer" => $user->can('create', \App\Models\Order::class)
+    ]);
   }
 }

@@ -87,7 +87,7 @@ class DigitalOffice extends Model
 	 */
 	public function scopeCompleted($query)
 	{
-		return $query->where("status", "!=", "uncomplete");
+		return $query->where("status", "!=", self::UNCOMPLETED);
 	}
 
 	/**

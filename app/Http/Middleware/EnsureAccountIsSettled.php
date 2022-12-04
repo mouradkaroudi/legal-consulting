@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\DigitalOffice;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,7 @@ class EnsureAccountIsSettled
         if (
 			$user &&
 			$user->profile &&
-			$user->profile->status === "uncompleted" &&
+			$user->profile->status === DigitalOffice::UNCOMPLETED &&
 			!in_array(Route::currentRouteName(), ["account.settings", "auth.logout"])
 		) {
 			return redirect()->route("account.settings");

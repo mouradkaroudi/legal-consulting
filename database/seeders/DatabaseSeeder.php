@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             ServiceSeeder::class,
             ProfessionSeeder::class,
             SpecializationSeeder::class,
+            SettingSeeder::class,
         ]);
 
         $users = \App\Models\User::factory(6)->create();

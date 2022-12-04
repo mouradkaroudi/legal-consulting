@@ -1,7 +1,7 @@
 @extends('layouts.account', ['title' => 'الحساب'])
 @section('content')
 <div>
-    @if($profile && $profile->status == 'uncompleted')
+    @if($profile && $profile->status == 'UNCOMPLETED')
         <x-alert>
             يرجى إكمال الحقول المطلوبة في ملف التعريف الخاص بك لتتمكن من استخدام حسابك.
         </x-alert>

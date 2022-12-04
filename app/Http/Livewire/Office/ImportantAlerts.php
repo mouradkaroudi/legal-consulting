@@ -20,11 +20,11 @@ class ImportantAlerts extends Component
         $this->profile = $user->profile;
         $this->digitalOffice = $user->currentOffice;
 
-        if($this->digitalOffice->status == 'uncomplete') {
+        if($this->digitalOffice->status == 'UNCOMPLETED') {
             $this->uncompletedStatusAlert = true;
         }
 
-        if( $this->profile->status === 'uncomplete' ) {
+        if( $this->profile->status === 'UNCOMPLETED' ) {
             $this->uncompletedProfile = true;
         }
 

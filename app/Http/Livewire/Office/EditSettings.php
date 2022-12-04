@@ -124,7 +124,7 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 			->columns(1)
 			->label("المرفقات");
 
-		if ($this->digitalOffice->status != "uncomplete") {
+		if ($this->digitalOffice->status != "UNCOMPLETED") {
 			$fields[] = Forms\Components\Select::make("status")
 				->label("الحالة")
 				->options([

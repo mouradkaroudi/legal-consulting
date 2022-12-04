@@ -1,6 +1,8 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors') 
- 
+
+console.log(defaultTheme.fontFamily)
+
 module.exports = {
     content: [
         './resources/**/*.blade.php',
@@ -9,15 +11,15 @@ module.exports = {
     darkMode: 'class',
     theme: {
         extend: {
-            fontFamily: {
-                'sans': ['"Vazirmatn", sans-serif', ...defaultTheme.fontFamily.sans],
-            },
             colors: { 
                 danger: colors.rose,
                 primary: colors.blue,
                 success: colors.green,
                 warning: colors.yellow,
             }, 
+            fontFamily: {
+                sans: ['"Vazirmatn", sans-serif', ...defaultTheme.fontFamily.sans],
+            }
         },
     },
     plugins: [

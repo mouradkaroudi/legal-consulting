@@ -9,50 +9,63 @@ use Filament\Resources\Pages\ManageRecords;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions;
 use Filament\Forms;
+use Illuminate\Support\Arr;
 
 class ManageTransactions extends ManageRecords
 {
-    protected static string $resource = TransactionResource::class;
+	protected static string $resource = TransactionResource::class;
 
-    protected function getTableQuery(): Builder
-    {
-        return parent::getTableQuery()->with('transactionable')->latest();
-    }
-    protected function getTableActions(): array
-    {
-        return [
-            Actions\Action::make('accept')->action( function($action) {
+	protected function getTableQuery(): Builder
+	{
+		return parent::getTableQuery()
+			->with("transactionable")
+			->latest();
+	}
 
-                $transactionService = new TransactionService($action->getRecord());
-                $transactionService->AccpetTransaction();
+	public function accept()
+	{
+		$txn = $this->mountedTableActionData;
 
-            })->requiresConfirmation(),
-            Actions\Action::make('refuse')->action( function($action, array $data) {
+		$transactionService = new TransactionService(
+			Transaction::find($txn['id'])
+		);
+		$transactionService->AccpetTransaction();
+	}
 
-                $body = $data['body'];
+	public function refuse()
+	{
+		$txn = $this->mountedTableActionData;
 
-                if(empty($body)) {
-                    abort(422);
-                }
+		$transactionService = new TransactionService(
+			Transaction::find($txn['id'])
+		);
+		$transactionService->refuseTransaction('');
+	}
 
-                $transactionService = new TransactionService($action->getRecord());
-                $transactionService->refuseTransaction($body);
+	protected function getTableActions(): array
+	{
 
-            })
-            ->form([
-                Forms\Components\Textarea::make('body')->label('السبب')->required()
-            ])
-            ->requiresConfirmation(),
-            Actions\DeleteAction::make()->hidden(function ($record) {
-                return $record->status == Transaction::PENDING;
-            }),
-        ];
-    }
-
-    protected function getActions(): array
-    {
-        return [
-            //Actions\CreateAction::make(),
-        ];
-    }
+		return [
+			Actions\EditAction::make()
+				->modalActions(
+					fn($action, $record) => [
+						$action
+							->makeModalAction("accept")
+							->button()
+							->label('موافقة')
+							->action("accept")
+							->color("success"),
+						$action
+							->makeModalAction("refuse")
+							->button()
+							->label('رفض')
+							->action("refuse", ["txn_id" => $record->id])
+							->color("danger"),
+					]
+				)
+                ->modalContent(view('filament.resources.transactions.details'))
+				->visible(fn($record) => $record->status === Transaction::PENDING)
+				->form([Forms\Components\Textarea::make("notes")->label("ملاحظات")]),
+		];
+	}
 }

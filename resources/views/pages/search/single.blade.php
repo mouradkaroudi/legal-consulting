@@ -35,17 +35,12 @@
                         @if(!empty($professionName))
                             <span class="bg-blue-700 py-1 px-2 rounded text-white text-sm">{{ $professionName }}</span>
                         @endif
-                        <div class="flex gap-2 divide-x">
-                            @foreach( $specializations as $specialization )
-                                <span>{{ $specialization['name'] }}</span>
-                            @endforeach
-                        </div>
                     </div>
-                    <div>
                         @if($displayMessagingForm)
-                        <livewire:messages.send-message :officeId="$office->id"/>
+                        <div class="mt-4">
+                            <livewire:messages.send-message :officeId="$office->id"/>
+                        </div>
                         @endif
-                    </div>
                     <ul class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                         <li class="flex items-center py-3">
                             <span>الحالة</span>

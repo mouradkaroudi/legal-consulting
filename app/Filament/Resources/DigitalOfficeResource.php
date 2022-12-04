@@ -55,31 +55,40 @@ class DigitalOfficeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('service_id'),
-                Tables\Columns\TextColumn::make('profession_id'),
-                Tables\Columns\TextColumn::make('user_id'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('description'),
-                Tables\Columns\TextColumn::make('image'),
-                Tables\Columns\TextColumn::make('phone_number'),
-                Tables\Columns\TextColumn::make('professional_license_number'),
-                Tables\Columns\TextColumn::make('country_code'),
-                Tables\Columns\TextColumn::make('city'),
-                Tables\Columns\TextColumn::make('license_attachment'),
-                Tables\Columns\TextColumn::make('status'),
-                Tables\Columns\TextColumn::make('banned_at')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('location'),
+                Tables\Columns\TextColumn::make('owner.name')->label('المالك'),
+                Tables\Columns\TextColumn::make('name')->label('الإسم'),
+                Tables\Columns\TextColumn::make('commercial_registration_number')->label('رقم سجل التجاري'),
+                Tables\Columns\TextColumn::make('country.name')->label('الدولة'),
+                Tables\Columns\BadgeColumn::make('status')->label('الحالة')->enum([
+                    DigitalOffice::AVAILABLE => __('offices.status.available'),
+                    DigitalOffice::BUSY => __('offices.status.busy'),
+                    DigitalOffice::UNCOMPLETED => __('offices.status.uncompleted'),
+                    DigitalOffice::BLOCKED => __('offices.status.blocked'),
+                ])->color(function($record) {
+
+                    if($record->status === DigitalOffice::BLOCKED) {
+                        return 'danger';
+                    }
+
+                    if($record->status === DigitalOffice::AVAILABLE) {
+                        return 'success';
+                    }
+
+                    if($record->status === DigitalOffice::BUSY) {
+                        return 'warning';
+                    }
+                    
+                    return 'secondary';
+
+                }),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('block')->label('توقيف المكتب')
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

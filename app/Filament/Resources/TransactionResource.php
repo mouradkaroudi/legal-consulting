@@ -24,8 +24,6 @@ class TransactionResource extends Resource
 	protected static ?string $navigationIcon = "heroicon-o-collection";
 	protected static ?string $navigationGroup = "Finance";
 
-
-
 	public static function table(Table $table): Table
 	{
 
@@ -59,10 +57,7 @@ class TransactionResource extends Resource
 			])
 			->filters([
 				//
-			])
-			->actions([
-			])
-			->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
+			]);
 	}
 
 	public static function getPages(): array

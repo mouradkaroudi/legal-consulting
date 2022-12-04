@@ -86,12 +86,12 @@ class Settings extends Page
 		];
 
 		return [
-			Components\Fieldset::make("digital_office")
-				->label("إعدادت المكاتب")
-				->schema($digitalOfficeSettingsScheme),
-			Components\Fieldset::make("order")
-				->label("إعدادت الطلبات")
-				->schema($orderSettingsScheme),
+			//Components\Fieldset::make("digital_office")
+				//->label("إعدادت المكاتب")
+				//->schema($digitalOfficeSettingsScheme),
+			//Components\Fieldset::make("order")
+				//->label("إعدادت الطلبات")
+				//->schema($orderSettingsScheme),
 			Components\Fieldset::make("order")
 				->label("إعدادت التسجيل")
 				->schema($registrationSettingsScheme),

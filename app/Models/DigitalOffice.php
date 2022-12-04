@@ -12,6 +12,11 @@ class DigitalOffice extends Model
 {
 	use HasFactory, Notifiable;
 
+	public const AVAILABLE = 'AVAILABLE';
+	public const BUSY = 'BUSY';
+	public const UNCOMPLETED = 'UNCOMPLETED';
+	public const BLOCKED = 'BLOCKED';
+
 	/**
 	 * The attributes that are mass assignable.
 	 *
@@ -92,6 +97,14 @@ class DigitalOffice extends Model
 	public function owner()
 	{
 		return $this->hasOne(User::class, "id", "user_id");
+	}
+
+	/**
+	 *
+	 */
+	public function country()
+	{
+		return $this->hasOne(Country::class, "id", "country_code");
 	}
 
     /**

@@ -158,7 +158,7 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 			"municipal_license_number" => $data["municipal_license_number"],
 			"tax_establishment_number" => $data["tax_establishment_number"],
 			"license_attachment" => $data["license_attachment"],
-			"status" => $data["status"]
+			"status" => $data["status"] ?? ""
 		]);
 
 		$redirect = false;

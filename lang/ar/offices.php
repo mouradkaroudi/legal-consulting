@@ -1,5 +1,10 @@
 <?php
 
 return [
-    'available' => 'متوفر'
+    'status' => [
+        'available' => 'متوفر',
+        'busy' => 'مشغول', 
+        'uncompleted' => 'غير مكتمل', 
+        'blocked' => 'مغلق', 
+    ]
 ];

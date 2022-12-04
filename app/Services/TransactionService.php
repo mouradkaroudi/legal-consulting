@@ -30,7 +30,7 @@ class TransactionService
 	/**
 	 * Refuse a pending transaction
 	 */
-	public function refuseTransaction( string $body ) {
+	public function refuseTransaction( ?string $body = '' ) {
 		if ($this->txn->status !== Transaction::PENDING) {
 			return;
 		}

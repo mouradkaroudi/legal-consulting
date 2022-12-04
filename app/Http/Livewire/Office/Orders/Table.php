@@ -23,8 +23,8 @@ class Table extends Component implements HasTable
             \Filament\Tables\Columns\TextColumn::make('id')->label('#'),
             \Filament\Tables\Columns\TextColumn::make('beneficiary.name')->label('المستفيد'),
             \Filament\Tables\Columns\TextColumn::make('subject')->label('الموضوع'),
-            \Filament\Tables\Columns\TextColumn::make('fee')->label('التكلفة'),
-            \Filament\Tables\Columns\BadgeColumn::make('status')->label(null),
+            \Filament\Tables\Columns\TextColumn::make('fee')->label('التكلفة')->money('sar', true),
+            \Filament\Tables\Columns\BadgeColumn::make('status')->label('الحالة'),
             \Filament\Tables\Columns\TextColumn::make('created_at')->label('تاريخ الإصدار')->date()
         ];
     }

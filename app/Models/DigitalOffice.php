@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
+// TODO: add hide/display offices
+// TODO: add supervisor to admin
+// hide service => hide office
+// TODO: ban users
+// TODO: add payment method
 class DigitalOffice extends Model
 {
 	use HasFactory, Notifiable;

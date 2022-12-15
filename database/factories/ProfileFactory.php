@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Profile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,7 @@ class ProfileFactory extends Factory
         return [
             'national_ID' => fake()->nationalIdNumber(),
             'gender' => 'male',
-            'status' => 'available',
+            'status' => Profile::AVAILABLE,
             'original_country' => '0'
         ];
     }

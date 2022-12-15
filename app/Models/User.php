@@ -10,11 +10,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-	use HasApiTokens, HasFactory, Notifiable, HasRoles;
+	use HasApiTokens, HasFactory, Notifiable, HasPermissions;
 
 	
 	/**
@@ -239,6 +240,10 @@ class User extends Authenticatable
 	public function transactions()
 	{
 		return $this->morphMany(Transaction::class, "transactionable");
+	}
+
+	public function can_contact_offices() {
+		return $this->contact_hidden_offices;
 	}
 
 	/**

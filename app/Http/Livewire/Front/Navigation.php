@@ -14,7 +14,6 @@ class Navigation extends Component
     public function render()
     {
         $menu = FilamentNavigation::get('home-menu');
-        
         return view('livewire.front.navigation', ['menu' => $menu]);
     }
 }

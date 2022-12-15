@@ -81,6 +81,7 @@ class DigitalOfficeResource extends Resource
                     return 'secondary';
 
                 }),
+                Tables\Columns\CheckboxColumn::make('is_hidden')->label('مخفي')
             ])
             ->filters([
                 //

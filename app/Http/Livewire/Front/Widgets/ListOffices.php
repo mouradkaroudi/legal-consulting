@@ -102,7 +102,14 @@ class ListOffices extends Component implements HasForms
 	public function render()
 	{
 		
+		$user = auth()->user();
 		$offices = DigitalOffice::completed()->where('service_id', $this->service->id);
+		
+		if(!$user) {
+			$offices = $offices->noHidden();
+		}else if(!$user->can_contact_offices()){
+			$offices = $offices->noHidden();
+		}
 
 		if(!empty($this->officeName)) {
 			$offices = $offices->where('name', 'like', '%'.$this->officeName. '%');

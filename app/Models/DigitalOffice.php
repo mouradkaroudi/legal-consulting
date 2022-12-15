@@ -95,6 +95,10 @@ class DigitalOffice extends Model
 		return $query->where("status", "!=", self::UNCOMPLETED);
 	}
 
+	public function scopeNoHidden($query) {
+		return $query->where('is_hidden', false);
+	}
+
 	/**
 	 *
 	 */

@@ -17,14 +17,18 @@
         @if(!empty($ownedOffices))    
             <div>
                 @foreach($ownedOffices as $ownedOffice)
-                <x-switch-able-office :office="$ownedOffice"/>
+                <x-switch-able-office :office="$ownedOffice">
+                    {{ $ownedOffice->name }}
+                </x-switch-able-office>
                 @endforeach
             </div>
         @endif
         @if(!empty($offices))
             <div>
                 @foreach($offices as $office)
-                <x-switch-able-office :office="$office"/>
+                <x-switch-able-office :office="$office">
+                    {{ $office->name }}
+                </x-switch-able-office>
                 @endforeach
             </div>
         @endif

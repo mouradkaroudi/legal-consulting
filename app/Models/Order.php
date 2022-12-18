@@ -9,6 +9,9 @@ class Order extends Model
 {
   use HasFactory;
 
+  public const PAID = 'PAID';
+  public const UNPAID = 'UNPAID';
+
   /**
    * The attributes that are mass assignable.
    *

@@ -11,6 +11,7 @@ use App\Http\Controllers\Account\CurrentOfficeController;
 use App\Http\Controllers\Account\DashboardController;
 use App\Http\Controllers\Account\InvitesController;
 use App\Http\Controllers\Account\NotificationsController;
+use App\Http\Controllers\Account\OfficesController;
 use App\Http\Controllers\Account\OrdersController as AccountOrdersController;
 
 use App\Http\Controllers\Office\AppointmentsController;
@@ -66,6 +67,7 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'settled'])->gr
     Route::get('/settings', [AccountSettingsController::class, 'index'])->name('settings');
     Route::get('/balance', [BalanceController::class, 'index'])->name('balance');
     Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications');
+    Route::get('/offices', OfficesController::class)->name('offices');
     Route::get('/invites', InvitesController::class)->name('invites');
 
     Route::resource('/orders', AccountOrdersController::class);

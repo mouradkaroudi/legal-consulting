@@ -12,6 +12,7 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Livewire\Component;
+use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 
 class PaymentForm extends Component implements HasForms
 {
@@ -23,15 +24,18 @@ class PaymentForm extends Component implements HasForms
 	protected function getFormSchema(): array
 	{
 		return [
-			\Filament\Forms\Components\Card::make()->schema([
-				\Filament\Forms\Components\Radio::make("paymentMethod")
-					->label("")
-					->options([
-						"balance" => "الرصيد",
-						"paypal" => "بايبال",
-					])
-					->required(),
-			]),
+			RadioButton::make("paymentMethod")
+				->label("وصيلة الدفع")
+				->options([
+					"balance" => "الرصيد",
+					"paypal" => "بايبال",
+				])
+				->descriptions([
+					"balance" => "الدفع من الرصيد المتوفر في حسابك",
+					"paypal" => "الدفع من خلال حسابك على باببال",
+				])
+				->columns(2)
+				->required(),
 		];
 	}
 
@@ -46,13 +50,12 @@ class PaymentForm extends Component implements HasForms
 			return;
 		}
 
-    $user = Auth::user();
+		$user = Auth::user();
 		$order = Order::find($this->orderId);
 
 		$data = $this->form->getState();
 
 		$paymentMethod = $data["paymentMethod"];
-
 
 		if ($paymentMethod === "balance") {
 			if ($order->fee > $user->available_balance) {
@@ -61,14 +64,13 @@ class PaymentForm extends Component implements HasForms
 					"المعذرة رصيدك غير كافي. المرجو شحن حسابك."
 				);
 			} else {
-        $this->orderPaid($order, $user);
+				$this->orderPaid($order, $user);
 			}
 		}
 	}
 
 	private function orderPaid($order, User $user)
 	{
-
 		$office = DigitalOffice::find($order->office_id);
 
 		$user->transactions()->create([

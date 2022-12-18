@@ -3,8 +3,8 @@
 @section('content')
 <div class="w-full bg-whitepx-5 py-10 text-gray-800">
         <div class="w-full">
-            <div class="-mx-3 md:flex items-start">
-                <div class="px-3 md:w-7/12 lg:pr-10">
+                
+                <div class="p-6 md:w-7/12 mx-auto border rounded-2xl mb-6">
                     <div class="w-full mx-auto text-gray-800 font-light mb-6 border-b border-gray-200 pb-6">
                         <div class="w-full flex items-center">
                             <div class="flex-grow pl-3">
@@ -44,11 +44,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="px-3 md:w-5/12">
+                <div class="p-6 border rounded-2xl md:w-7/12 mx-auto">
                     <livewire:account.orders.payment-form :orderId="$order->id"/>
                 </div>
             </div>
-        </div>
     </div>
 
 @endsection

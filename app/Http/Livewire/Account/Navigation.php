@@ -42,6 +42,10 @@ class Navigation extends Component
 
         if($user->profile) {
             $this->navigationLinks[] = [
+                'label' => 'المكاتب',
+                'routeName' => 'account.offices'
+            ];
+            $this->navigationLinks[] = [
                 'label' => 'الدعوات',
                 'routeName' => 'account.invites'
             ];

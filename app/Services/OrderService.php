@@ -5,6 +5,7 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\OrderCreatedNotification;
+use App\Notifications\OrderPaidNotification;
 
 class OrderService
 {
@@ -18,7 +19,7 @@ class OrderService
 			"beneficiary_id" => $user_id,
 			"subject" => $subject,
 			"fee" => $subtotal,
-			"status" => "unpaid",
+			"status" => Order::UNPAID,
 		]);
 
 		if ($order) {
@@ -28,4 +29,18 @@ class OrderService
 			);
 		}
 	}
+
+
+	public static function orderPaid($order) {
+		$order->status = Order::PAID;
+		$order->save();
+
+		Notification::send(
+			$order->office->employees->hasPermissionTo('manage-orders'),
+			new OrderPaidNotification($order)
+		);
+
+
+	}
+
 }

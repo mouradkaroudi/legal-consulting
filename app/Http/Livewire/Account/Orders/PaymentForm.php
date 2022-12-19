@@ -12,7 +12,6 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Livewire\Component;
-use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 
 class PaymentForm extends Component implements HasForms
 {
@@ -24,18 +23,6 @@ class PaymentForm extends Component implements HasForms
 	protected function getFormSchema(): array
 	{
 		return [
-			RadioButton::make("paymentMethod")
-				->label("وصيلة الدفع")
-				->options([
-					"balance" => "الرصيد",
-					"paypal" => "بايبال",
-				])
-				->descriptions([
-					"balance" => "الدفع من الرصيد المتوفر في حسابك",
-					"paypal" => "الدفع من خلال حسابك على باببال",
-				])
-				->columns(2)
-				->required(),
 		];
 	}
 

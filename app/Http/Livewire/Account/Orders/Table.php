@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\HtmlString;
+use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 
 class Table extends Component implements HasTable
 {
@@ -39,29 +40,44 @@ class Table extends Component implements HasTable
 		];
 	}
 
+	protected function getTableRecordActionUsing()
+	{
+		return fn(Order $record): string => $record->status === Order::UNPAID
+			? "pay"
+			: null;
+	}
+
 	protected function getTableActions(): array
 	{
 		return [
-			EditAction::make("pay")
+			Action::make("pay")
+				->label("دفع")
 				->mountUsing(
 					fn(Forms\ComponentContainer $form, Order $record) => $form->fill([
-						"authorId" => $record->id,
+						"orderId" => $record->id,
 					])
 				)
-                ->modalActions(
+				->modalActions(
 					fn($action, $record) => [
 						$action
 							->makeModalAction("pay")
 							->button()
-							->label('دفع')
-							->action("pay")
+							->label("دفع")
+							->action("pay"),
 					]
 				)
-                ->modalContent()
 				->form([
-					Forms\Components\Select::make("authorId")
-						->label("Author")
-						->options(Order::query()->pluck("fee", "id"))
+					RadioButton::make("paymentMethod")
+						->label("وصيلة الدفع")
+						->options([
+							"balance" => "الرصيد",
+							"paypal" => "بايبال",
+						])
+						->descriptions([
+							"balance" => "الدفع من الرصيد المتوفر في حسابك",
+							"paypal" => "الدفع من خلال حسابك على باببال",
+						])
+						->columns(2)
 						->required(),
 				]),
 		];
@@ -75,5 +91,26 @@ class Table extends Component implements HasTable
 	public function render()
 	{
 		return view("livewire.office.orders.table");
+	}
+
+	public function pay()
+	{
+		$data = $this->mountedTableActionData;
+		$orderId = $data["orderId"];
+
+		$user = Auth::user();
+		$order = Order::find($orderId);
+
+		$paymentMethod = $data["paymentMethod"];
+
+		if ($paymentMethod === "balance") {
+			if ($order->fee > $user->available_balance) {
+				$this->addError(
+					"paymentMethod",
+					"المعذرة رصيدك غير كافي. المرجو شحن حسابك."
+				);
+			} else {
+			}
+		}
 	}
 }

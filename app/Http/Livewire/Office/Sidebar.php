@@ -51,6 +51,11 @@ class Sidebar extends Component
       "routeName" => "office.notifications",
       'icon' => 'heroicon-o-bell'
     ];
+    $this->sidebarLinks[] = [
+      "label" => "جدول المواعيد",
+      "routeName" => "office.schedules.index",
+      'icon' => 'heroicon-o-calendar'
+    ];
 
     if (
       $user->hasOfficePermission($user->currentOffice, "manage-employees")

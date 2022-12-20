@@ -4,9 +4,7 @@ namespace App\Http\Livewire\Account\Orders;
 
 use App\Models\Order;
 use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\EditAction;
 use Filament\Forms;
-use Filament\Forms\Components\TextInput;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Support\Facades\Auth;
@@ -57,15 +55,7 @@ class Table extends Component implements HasTable
 						"orderId" => $record->id,
 					])
 				)
-				->modalActions(
-					fn($action, $record) => [
-						$action
-							->makeModalAction("pay")
-							->button()
-							->label("دفع")
-							->action("pay"),
-					]
-				)
+				->modalSubmitAction(Action::makeModalAction('pay')->label('دفع')->action('pay'))
 				->form([
 					RadioButton::make("paymentMethod")
 						->label("وصيلة الدفع")
@@ -95,22 +85,24 @@ class Table extends Component implements HasTable
 
 	public function pay()
 	{
+
+
 		$data = $this->mountedTableActionData;
 		$orderId = $data["orderId"];
-
 		$user = Auth::user();
 		$order = Order::find($orderId);
 
 		$paymentMethod = $data["paymentMethod"];
-
+		
 		if ($paymentMethod === "balance") {
 			if ($order->fee > $user->available_balance) {
 				$this->addError(
-					"paymentMethod",
+					"mountedTableActionData.paymentMethod",
 					"المعذرة رصيدك غير كافي. المرجو شحن حسابك."
 				);
 			} else {
 			}
 		}
+
 	}
 }

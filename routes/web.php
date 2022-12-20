@@ -21,7 +21,7 @@ use App\Http\Controllers\Office\MessagesController as OfficeMessagesController;
 use App\Http\Controllers\Office\NotificationsController as OfficeNotificationsController;
 use App\Http\Controllers\Office\SettingsController;
 use App\Http\Controllers\Office\OrdersController;
-
+use App\Http\Controllers\Office\SchedulesController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +55,7 @@ Route::name('office.')->prefix('/office')->middleware(['office', 'settled'])->gr
     
     Route::resource('/orders', OrdersController::class);
 
+    Route::resource('/schedules', SchedulesController::class);
     Route::resource('/employees', EmployeesController::class);
     Route::resource('/appointments', AppointmentsController::class);
     Route::get('/notifications', OfficeNotificationsController::class)->name('notifications');

@@ -14,7 +14,7 @@ class Participant extends Model
      *
      * @var array
      */
-    protected $fillable = ['thread_id', 'user_id'];
+    protected $fillable = ['thread_id', 'user_id', 'last_read'];
 
     /**
      * Thread relationship.

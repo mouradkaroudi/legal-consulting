@@ -12,37 +12,55 @@ use Illuminate\Contracts\Database\Query\Builder;
 
 class Table extends Component implements HasTable
 {
+	use InteractsWithTable;
 
-    use InteractsWithTable;
+	public DigitalOffice $office;
 
-    public DigitalOffice $office;
-
-    protected function getTableColumns(): array 
+    public function getTableModelLabel(): string
     {
-        return [
-            \Filament\Tables\Columns\TextColumn::make('id')->label('#'),
-            \Filament\Tables\Columns\TextColumn::make('beneficiary.name')->label('المستفيد'),
-            \Filament\Tables\Columns\TextColumn::make('subject')->label('الموضوع'),
-            \Filament\Tables\Columns\TextColumn::make('fee')->label('التكلفة')->money('sar', true),
-            \Filament\Tables\Columns\BadgeColumn::make('status')->label('الحالة'),
-            \Filament\Tables\Columns\TextColumn::make('created_at')->label('تاريخ الإصدار')->date()
-        ];
+        return 'الطلب';
     }
 
-    protected function getTableQuery(): Builder 
+    public function getTablePluralModelLabel(): string
     {
-        return Order::where('office_id', $this->office->id);
+        return 'الطلبات';
     }
 
-    protected function getTableActions(): array
-    {
-        return [
-            \Filament\Tables\Actions\DeleteAction::make(),
-        ];
-    }
+	protected function getTableColumns(): array
+	{
+		return [
+			\Filament\Tables\Columns\TextColumn::make("id")->label("#"),
+			\Filament\Tables\Columns\TextColumn::make("beneficiary.name")->label(
+				"المستفيد"
+			),
+			\Filament\Tables\Columns\TextColumn::make("subject")->label("الموضوع"),
+			\Filament\Tables\Columns\TextColumn::make("fee")
+				->label("التكلفة")
+				->money("sar", true),
+			\Filament\Tables\Columns\BadgeColumn::make("status")
+				->label("الحالة")
+				->enum([
+					Order::PAID => __("orders.paid"),
+					Order::UNPAID => __("orders.unpaid"),
+				]),
+			\Filament\Tables\Columns\TextColumn::make("created_at")
+				->label("تاريخ الإصدار")
+				->date(),
+		];
+	}
 
-    public function render()
-    {
-        return view('livewire.office.orders.table');
-    }
+	protected function getTableQuery(): Builder
+	{
+		return Order::where("office_id", $this->office->id);
+	}
+
+	protected function getTableActions(): array
+	{
+		return [\Filament\Tables\Actions\DeleteAction::make()];
+	}
+
+	public function render()
+	{
+		return view("livewire.office.orders.table");
+	}
 }

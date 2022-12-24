@@ -2,14 +2,20 @@
 
 namespace App\Http\Livewire\Account\Orders;
 
+use App\Models\DigitalOffice;
+use App\Models\DigitalOfficeEmployee;
 use App\Models\Order;
+use App\Models\Transaction;
+use App\Services\OrderService;
 use Filament\Tables\Actions\Action;
 use Filament\Forms;
+use Filament\Notifications\Notification;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Contracts\Database\Query\Builder;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 
@@ -42,7 +48,7 @@ class Table extends Component implements HasTable
 	{
 		return fn(Order $record): string => $record->status === Order::UNPAID
 			? "pay"
-			: null;
+			: "";
 	}
 
 	protected function getTableActions(): array
@@ -55,6 +61,14 @@ class Table extends Component implements HasTable
 						"orderId" => $record->id,
 					])
 				)
+				->modalContent(function($record) {
+					return view('pages.account.orders.order-summary', [
+						'amount' => $record->fee,
+						'orderID' => $record->id,
+						'subject' => $record->subject,
+						'officeName' => $record->office->name
+					]);
+				})
 				->modalSubmitAction(Action::makeModalAction('pay')->label('دفع')->action('pay'))
 				->form([
 					RadioButton::make("paymentMethod")
@@ -69,7 +83,7 @@ class Table extends Component implements HasTable
 						])
 						->columns(2)
 						->required(),
-				]),
+				])->hidden(fn($record) => $record->status === Order::PAID),
 		];
 	}
 
@@ -86,21 +100,55 @@ class Table extends Component implements HasTable
 	public function pay()
 	{
 
-
 		$data = $this->mountedTableActionData;
 		$orderId = $data["orderId"];
 		$user = Auth::user();
 		$order = Order::find($orderId);
+		$office = DigitalOffice::find($order->office_id);
 
 		$paymentMethod = $data["paymentMethod"];
 		
 		if ($paymentMethod === "balance") {
-			if ($order->fee > $user->available_balance) {
+			if ($user->available_balance > $order->fee) {
+		
+				$userTxn = $user->transactions()->create([
+					"amount" => $order->fee,
+					"type" => "credit",
+					"source" => Transaction::PAY_DUES,
+					"status" => Transaction::SUCCESS,
+					"metadata" => json_encode([
+						"order_id" => $order->id
+					])
+				]);
+				
+				$user->substractFromBalance($order->fee);
+
+				$officeTxn = $office->transactions()->create([
+					"amount" => $order->fee,
+					"type" => "debit",
+					"source" => Transaction::RECEIVE_EARNINGS,
+					"status" => Transaction::SUCCESS,
+					"metadata" => json_encode([
+						"order_id" => $order->id
+					])
+				]);
+
+				$office->addToBalance($order->fee);
+
+				OrderService::orderPaid($order);
+
+				Notification::make()
+				->title('مبروك ! تم دفع مستحقات الطلب بنجاح.')
+				->success()
+				->send();
+
+				return redirect()->route('account.orders.index');
+
+			} else {
 				$this->addError(
 					"mountedTableActionData.paymentMethod",
 					"المعذرة رصيدك غير كافي. المرجو شحن حسابك."
 				);
-			} else {
 			}
 		}
 

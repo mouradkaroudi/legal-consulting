@@ -41,7 +41,7 @@ class Form extends Component implements HasForms
         return [
             TextInput::make('name')->label('الإسم')->disabled(),
             TextInput::make('email')->label('البريد الإلكتروني')->disabled(),
-            TextInput::make('role_name')->label('المسمى الوظيفي'),
+            TextInput::make('job_title')->label('المسمى الوظيفي'),
             Select::make('role_permissions')->multiple()->preload()->label('الصلاحيات')->relationship('permissions', 'name')
         ];
     }

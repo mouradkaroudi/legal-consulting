@@ -56,7 +56,7 @@ class ThreadPolicy
      */
     public function update(User $user, Thread $thread)
     {
-        
+        return $user->id === $thread->user_id || $user->hasOfficePermission($thread->office, 'manage-messages');
     }
 
     /**
@@ -70,28 +70,5 @@ class ThreadPolicy
     {
         return $user->id === $thread->user_id;
     }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Thread  $thread
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user, Thread $thread)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Thread  $thread
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user, Thread $thread)
-    {
-        //
-    }
+    
 }

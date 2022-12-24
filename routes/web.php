@@ -15,6 +15,7 @@ use App\Http\Controllers\Account\OfficesController;
 use App\Http\Controllers\Account\OrdersController as AccountOrdersController;
 
 use App\Http\Controllers\Office\AppointmentsController;
+use App\Http\Controllers\Office\BalanceController as OfficeBalanceController;
 use App\Http\Controllers\Office\EmployeesController;
 use App\Http\Controllers\Office\InviteController;
 use App\Http\Controllers\Office\MessagesController as OfficeMessagesController;
@@ -54,6 +55,7 @@ Route::name('office.')->prefix('/office')->middleware(['office', 'settled'])->gr
     // add middleware here
     
     Route::resource('/orders', OrdersController::class);
+    Route::get('/balance', OfficeBalanceController::class)->name('balance');
 
     Route::resource('/schedules', SchedulesController::class);
     Route::resource('/employees', EmployeesController::class);

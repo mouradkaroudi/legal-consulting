@@ -6,9 +6,11 @@ use App\Models\Order;
 use App\Models\User;
 use App\Notifications\OrderCreatedNotification;
 use App\Services\OrderService;
+use Filament\Forms\Components\Concerns\CanBeValidated;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification as NotificationsNotification;
 use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Notifications\Notification;
@@ -19,7 +21,7 @@ use Livewire\Component;
 class CreateOrder extends Component implements HasForms
 {
 
-    use InteractsWithForms, AuthorizesRequests;
+    use InteractsWithForms, AuthorizesRequests, CanBeValidated;
 
     public $officeId;
     public $beneficiaryId;
@@ -29,9 +31,10 @@ class CreateOrder extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            TextInput::make('subject')->label('الموضوع')->helperText('الخدمة المقدمة (مثال : استشارة قانونية)')->required(),
-            TextInput::make('fee')->label('التكلفة')->helperText('أدخل المتسحقات التي يجب على المستفيد دفعها (مثال :  1000 ريال سعدوي)')->required(),
-            
+            TextInput::make('subject')->label('الموضوع')->helperText('الخدمة المقدمة (مثال : استشارة قانونية)')
+            ->required(),
+            TextInput::make('fee')->label('التكلفة')->helperText('أدخل المتسحقات التي يجب على المستفيد دفعها (مثال :  1000 ريال سعدوي)')
+            ->required(),
         ];
     }
 
@@ -44,12 +47,13 @@ class CreateOrder extends Component implements HasForms
         
         $this->authorize('create', Order::class);
 
-        $data = $this->form->getState();
+        OrderService::createOrder($this->subject, $this->beneficiaryId, $this->officeId, $this->fee);
 
-        $subject = $data['subject'];
-        $fee = $data['fee'];
-
-        OrderService::createOrder($subject, $this->beneficiaryId, $this->officeId, $fee);
+        $this->dispatchBrowserEvent('close-modal', ['id' => 'create-order-modal']);
+        NotificationsNotification::make()
+        ->title('تم انشاء الطلب بنجاح')
+        ->success()
+        ->send();
 
     }
 

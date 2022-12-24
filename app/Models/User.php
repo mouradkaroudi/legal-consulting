@@ -122,6 +122,19 @@ class User extends Authenticatable
 		);
 	}
 
+	public function officeEmployee( $office ) {
+		if ($this->ownsOffice($office)) {
+			//return new OwnerRole;
+		}
+
+		if (!$this->belongsToOffice($office)) {
+			return;
+		}
+
+		return $office->employees->where("user_id", $this->id)->first();
+
+	}
+
 	/**
 	 * Determine if the user owns the given office.
 	 *
@@ -237,11 +250,17 @@ class User extends Authenticatable
 		return (new UiAvatarsProvider())->get(User::find($this->id));
 	}
 
+	/**
+	 * 
+	 */
 	public function transactions()
 	{
 		return $this->morphMany(Transaction::class, "transactionable");
 	}
 
+	/**
+	 * 
+	 */
 	public function can_contact_offices() {
 		return $this->contact_hidden_offices;
 	}
@@ -249,16 +268,7 @@ class User extends Authenticatable
 	/**
 	 *
 	 */
-	public function addToHoldBalance($amount)
-	{
-		$this->hold_balance += $amount;
-		$this->save();
-	}
-
-	/**
-	 *
-	 */
-	public function addToCreditBalance($amount)
+	public function addToBalance(float $amount)
 	{
 		$this->available_balance += $amount;
 		$this->save();
@@ -267,9 +277,18 @@ class User extends Authenticatable
 	/**
 	 *
 	 */
-	public function addToDebitBalance($amount)
+	public function addToHoldBalance(float $amount)
 	{
-		$this->available_balance -= $amount;
+		$this->hold_balance += $amount;
+		$this->save();
+	}
+
+	/**
+	 *
+	 */
+	public function substractFromBalance(float $amount)
+	{
+		$this->available_balance = $this->available_balance - $amount;
 		$this->save();
 	}
 }

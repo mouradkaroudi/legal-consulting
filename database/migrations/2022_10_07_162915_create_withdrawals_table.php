@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float('amount');
             $table->string('status');
             $table->longText('metadata');
+            $table->morphs('withdrawalable');
             $table->timestamps();
         });
     }

@@ -15,10 +15,10 @@ class DigitalOffice extends Model
 {
 	use HasFactory, Notifiable;
 
-	public const AVAILABLE = 'AVAILABLE';
-	public const BUSY = 'BUSY';
-	public const UNCOMPLETED = 'UNCOMPLETED';
-	public const BLOCKED = 'BLOCKED';
+	public const AVAILABLE = "AVAILABLE";
+	public const BUSY = "BUSY";
+	public const UNCOMPLETED = "UNCOMPLETED";
+	public const BLOCKED = "BLOCKED";
 
 	/**
 	 * The attributes that are mass assignable.
@@ -90,13 +90,22 @@ class DigitalOffice extends Model
 	/**
 	 *
 	 */
+	public function orders()
+	{
+		return $this->hasMany(Order::class, "office_id", "id");
+	}
+
+	/**
+	 *
+	 */
 	public function scopeCompleted($query)
 	{
 		return $query->where("status", "!=", self::UNCOMPLETED);
 	}
 
-	public function scopeNoHidden($query) {
-		return $query->where('is_hidden', false);
+	public function scopeNoHidden($query)
+	{
+		return $query->where("is_hidden", false);
 	}
 
 	/**
@@ -115,12 +124,30 @@ class DigitalOffice extends Model
 		return $this->hasOne(Country::class, "id", "country_code");
 	}
 
-    /**
-     * 
-     */
+	/**
+	 *
+	 */
 	public function transactions()
 	{
 		return $this->morphMany(Transaction::class, "transactionable");
+	}
+
+	/**
+	 *
+	 */
+	public function addToBalance(float $amount)
+	{
+		$this->available_balance += $amount;
+		$this->save();
+	}
+
+	/**
+	 *
+	 */
+	public function addToHoldBalance(float $amount)
+	{
+		$this->hold_balance += $amount;
+		$this->save();
 	}
 
 	function getLocationAttribute($value)

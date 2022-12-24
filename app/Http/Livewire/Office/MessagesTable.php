@@ -26,7 +26,7 @@ class MessagesTable extends Component implements HasTable
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('office.name')->label('المستفيد'),
+            TextColumn::make('owner.name')->label('المستفيد'),
             TextColumn::make('subject')->label('الموضوع'),
         ];
     }

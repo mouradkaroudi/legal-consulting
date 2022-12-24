@@ -33,6 +33,7 @@ return new class extends Migration
             $table->float('hold_balance')->default(0);
             $table->float('available_balance')->default(0);
             $table->string('status')->default('UNCOMPLETED');
+            $table->boolean('is_hidden')->default(0);
             $table->timestamp('banned_at')->nullable();
             $table->timestamps();
         });

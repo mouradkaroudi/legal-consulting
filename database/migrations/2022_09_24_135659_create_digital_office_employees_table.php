@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('office_id')->constrained('digital_offices');
             $table->foreignId('user_id')->constrained();
-            $table->string('role_name')->nullable();
+            $table->string('job_title')->nullable();
             $table->timestamps();
         });
     }

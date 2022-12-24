@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
 class DigitalOfficeEmployee extends Model
 {
-    use HasFactory, HasRoles, Notifiable;
+    use HasFactory, HasRoles, HasPermissions, Notifiable;
     protected $guard_name = 'web';
 
     /**
@@ -22,12 +23,16 @@ class DigitalOfficeEmployee extends Model
     protected $fillable = [
         'office_id',
         'user_id',
-        'role_name',
+        'job_title',
     ];
 
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function isOwner( DigitalOffice $office ): bool {
+        return $this->id === $office->user_id;
     }
 
 }

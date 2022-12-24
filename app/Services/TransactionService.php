@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Transaction;
 use App\Events\Transaction as TransactionEvents;
+use App\Models\DigitalOffice;
+use App\Models\User;
 
 class TransactionService
 {

@@ -12,7 +12,13 @@
             @each('messenger.partials.messages', $thread->messages, 'message')
         </div>
     </div>
-    <livewire:messages.widgets.reply-form :threadId="$thread->id"/>
+    @if(!$thread->closed_at)
+        <livewire:messages.widgets.reply-form :thread="$thread"/>
+    @else
+        <x-alert>
+            تم غلق المحادثة من طرف {{ \App\Models\User::find($thread->closed_by)->name }}
+        </x-alert>
+    @endif
 </div>
 
 @stop

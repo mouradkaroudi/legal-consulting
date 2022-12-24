@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 
+use App\Models\DigitalOffice;
+use App\Models\DigitalOfficeEmployee;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
@@ -36,7 +38,13 @@ class OrderService
 		$order->save();
 
 		Notification::send(
-			$order->office->employees->hasPermissionTo('manage-orders'),
+			$order->office->employees()->permission('manage-orders')->get(),
+			new OrderPaidNotification($order)
+		);
+
+		// send notification to the office owner
+		Notification::send(
+			DigitalOfficeEmployee::where('user_id', $order->office->user_id)->get(),
 			new OrderPaidNotification($order)
 		);
 

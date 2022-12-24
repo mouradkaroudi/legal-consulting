@@ -19,6 +19,7 @@ class Thread extends Model
 	 */
 	protected $fillable = ["user_id", "office_id", "subject"];
 
+
 	/**
 	 * Messages relationship.
 	 *

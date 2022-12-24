@@ -18,7 +18,7 @@ class OrderPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return false;
     }
 
     /**
@@ -30,7 +30,7 @@ class OrderPolicy
      */
     public function view(User $user, Order $order)
     {
-        //
+        return $user->id === $order->beneficiary_id || $user->hasOfficePermission($order->office, 'manage-orders');
     }
 
     /**
@@ -53,7 +53,7 @@ class OrderPolicy
      */
     public function update(User $user, Order $order)
     {
-        //
+        return $user->id === $order->beneficiary_id || $user->hasOfficePermission($order->office, 'manage-orders');
     }
 
     /**
@@ -65,30 +65,12 @@ class OrderPolicy
      */
     public function delete(User $user, Order $order)
     {
-        //
+        if( $order->status === Order::PAID ) {
+            return false;
+        }
+
+        return $user->id === $order->beneficiary_id || $user->hasOfficePermission($order->office, 'manage-orders');
+
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user, Order $order)
-    {
-        //
-    }
 }

@@ -32,7 +32,5 @@
                 <x-heroicon-o-external-link class="w-4 h-4 text-gray-400"/>
             </a>
         </div>
-
-        
     </x-filament::modal>
 </form>

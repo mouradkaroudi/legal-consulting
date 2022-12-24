@@ -110,6 +110,7 @@ class Registration extends Component implements HasForms
 			]);
 		} else {
 			if ($account_type === "provider") {
+				
 				$profile = new Profile();
 				$profile->user_id = $user->id;
 				$profile->save();
@@ -117,6 +118,11 @@ class Registration extends Component implements HasForms
 				$digitalOffice = DigitalOffice::create([
 					"user_id" => $user->id,
 					"name" => "مكتب " . $user->name,
+				]);
+
+				$employee = $digitalOffice->employees()->create([
+					'user_id' => $user->id,
+					'job_title' => __('auth.providers.default_job_title')
 				]);
 
 				return $digitalOffice;

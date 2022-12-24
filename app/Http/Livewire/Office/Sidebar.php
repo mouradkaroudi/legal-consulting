@@ -96,5 +96,12 @@ class Sidebar extends Component
         'icon' => 'heroicon-o-user-add'
       ];
     }
+
+    $this->sidebarLinks[] = [
+      "label" => "الرصيد",
+      "routeName" => "office.balance",
+      'icon' => 'heroicon-o-user-add'
+    ];
+
   }
 }

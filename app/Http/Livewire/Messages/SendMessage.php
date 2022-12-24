@@ -15,6 +15,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Livewire\Component;
 
 class SendMessage extends Component implements HasForms
@@ -33,7 +34,7 @@ class SendMessage extends Component implements HasForms
     }
 
     public function send() {
-
+        
         $data = $this->form->getState();
         $officeId = $data['officeId'];
         $this->authorize('create', [Thread::class, DigitalOffice::find($officeId)]);
@@ -61,7 +62,7 @@ class SendMessage extends Component implements HasForms
         Participant::create([
             'thread_id' => $thread->id,
             'user_id' => Auth::id(),
-            'last_read' => new Carbon(),
+            'last_read' => Date::now(),
         ]);
 
         // Office owner
@@ -78,7 +79,7 @@ class SendMessage extends Component implements HasForms
             ]);
         }
 
-        return redirect()->route('account.messages');
+        return redirect()->route('account.messages.show', ['id' => $thread->id]);
         
     }
     

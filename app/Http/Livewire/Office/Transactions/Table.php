@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Account;
+namespace App\Http\Livewire\Office\Transactions;
 
 use App\Models\Transaction;
 use App\Models\User;
@@ -12,9 +12,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class TransactionsTable extends Component implements Tables\Contracts\HasTable
+class Table extends Component implements Tables\Contracts\HasTable
 {
-	use Tables\Concerns\InteractsWithTable;
+    use Tables\Concerns\InteractsWithTable;
 
 	protected function getTableColumns(): array
 	{
@@ -46,13 +46,13 @@ class TransactionsTable extends Component implements Tables\Contracts\HasTable
 	protected function getTableQuery(): Builder
 	{
 		return Auth::user()
-			->transactions()
+			->currentOffice->transactions()
             ->latest()
 			->getQuery();
 	}
 
-	public function render()
-	{
-		return view("livewire.account.transactions-table");
-	}
+    public function render()
+    {
+        return view('livewire.office.transactions.table');
+    }
 }

@@ -24,7 +24,7 @@ class TransactionService
 		}
 
 		$this->txn->completeTransaction();
-		$this->txn->transactionable->addToCreditBalance($this->txn->amount);
+		$this->txn->transactionable->addToBalance($this->txn->amount);
 
 		TransactionEvents\Accepted::dispatch($this->txn);
 	}

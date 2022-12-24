@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('status');
             $table->timestamps();
             $table->timestamp('closed_at')->nullable();
+            //TODO: add paid_at
         });
     }
 

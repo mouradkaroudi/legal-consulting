@@ -21,7 +21,7 @@ class CloseThread extends Component
 
     public function close() {
 
-        $this->authorize('update', $this->thread);
+        //$this->authorize('update', $this->thread);
 
         $this->thread->closed_at = Date::now();
         $this->thread->closed_by = auth()->user()->id;

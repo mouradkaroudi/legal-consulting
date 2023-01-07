@@ -5,65 +5,39 @@ namespace App\Http\Controllers\office;
 use App\Http\Controllers\Controller;
 use App\Models\DigitalOffice;
 use App\Models\DigitalOfficeEmployee;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class EmployeesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function __construct()
     {
-        return view('pages.office.employees.index', [
-            'officeId' => auth()->user()->currentOffice->id
-        ]);
+        $this->authorizeResource(DigitalOfficeEmployee::class, 'employee');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
+	{
+		return view("pages.office.employees.index", [
+			"officeId" => auth()->user()->currentOffice->id,
+		]);
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $employee = DigitalOfficeEmployee::find($id);
-        return view('pages.office.employees.edit', ['DigitalOfficeEmployee' => $employee]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit(DigitalOfficeEmployee $employee)
+	{
+		return view("pages.office.employees.edit", [
+			"DigitalOfficeEmployee" => $employee,
+		]);
+	}
 }

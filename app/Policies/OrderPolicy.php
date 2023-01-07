@@ -69,7 +69,7 @@ class OrderPolicy
             return false;
         }
 
-        return $user->id === $order->beneficiary_id || $user->hasOfficePermission($order->office, 'manage-orders');
+        return $user->ownsOffice($order->office);
 
     }
 

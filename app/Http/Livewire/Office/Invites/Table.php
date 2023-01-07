@@ -17,7 +17,7 @@ class Table extends Component implements HasTable
         return [
             \Filament\Tables\Columns\TextColumn::make('user.name')->label('الاسم'),
             \Filament\Tables\Columns\TextColumn::make('email')->label('البريد الإلكتروني'),
-            \Filament\Tables\Columns\TextColumn::make('created_at')->label('تاريخ الإرسال'),
+            \Filament\Tables\Columns\TextColumn::make('created_at')->label('تاريخ الإرسال')->date(),
         ];
     }
 

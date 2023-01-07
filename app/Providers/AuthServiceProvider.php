@@ -5,8 +5,10 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 
 use App\Models\DigitalOffice;
+use App\Models\DigitalOfficeEmployee;
 use App\Models\Order;
 use App\Models\Thread;
+use App\Policies\DigitalOfficeEmployeePolicy;
 use App\Policies\DigitalOfficePolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\ThreadPolicy;
@@ -24,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         DigitalOffice::class => DigitalOfficePolicy::class,
         Thread::class => ThreadPolicy::class,
         Order::class => OrderPolicy::class,
+        DigitalOfficeEmployee::class => DigitalOfficeEmployeePolicy::class,
     ];
 
     /**

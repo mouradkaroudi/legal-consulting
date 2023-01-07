@@ -124,8 +124,6 @@ class Registration extends Component implements HasForms
 					'user_id' => $user->id,
 					'job_title' => __('auth.providers.default_job_title')
 				]);
-
-				return $digitalOffice;
 			}
 		}
 
@@ -134,11 +132,8 @@ class Registration extends Component implements HasForms
 
 	public function submit()
 	{
-		$data = $this->form->getState();
-		$register = $this->register($data);
-		//if(!empty($register)) {
+		$this->register($this->form->getState());
 		return redirect()->to("/account/settings");
-		//}
 	}
 
 	public function render()

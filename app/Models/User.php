@@ -17,7 +17,6 @@ class User extends Authenticatable
 {
 	use HasApiTokens, HasFactory, Notifiable, HasPermissions;
 
-	
 	/**
 	 * The attributes that are mass assignable.
 	 *
@@ -74,6 +73,7 @@ class User extends Authenticatable
 	 */
 	public function switchOffice($office)
 	{
+
 		if (!$this->belongsToOffice($office)) {
 			return false;
 		}
@@ -108,7 +108,7 @@ class User extends Authenticatable
 	}
 
 	/**
-	 * Get all of the offices the user belongs to.
+	 * Get all of the offices the user belongs to (as an employee).
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	 */
@@ -119,10 +119,12 @@ class User extends Authenticatable
 			DigitalOfficeEmployee::class,
 			"user_id",
 			"office_id"
-		);
+		)
+		->wherePivot('digital_office_employees.ended_at', null);
 	}
 
-	public function officeEmployee( $office ) {
+	public function officeEmployee($office)
+	{
 		if ($this->ownsOffice($office)) {
 			//return new OwnerRole;
 		}
@@ -131,8 +133,10 @@ class User extends Authenticatable
 			return;
 		}
 
-		return $office->employees->where("user_id", $this->id)->first();
-
+		return $office->employees
+			->where("user_id", $this->id)
+			->where("office_id", $office->id)
+			->first();
 	}
 
 	/**
@@ -164,7 +168,11 @@ class User extends Authenticatable
 
 		return $this->ownsOffice($office) ||
 			$this->offices->contains(function ($t) use ($office) {
-				return $t->id === $office->id;
+				return $t->id === $office->id &&
+					!$office->employees
+						->where("office_id", $office->id)
+						->where("user_id", $this->id)
+						->where("ended_at", null)->isEmpty();
 			});
 	}
 
@@ -177,7 +185,7 @@ class User extends Authenticatable
 	 */
 	public function hasOfficePermission($office, $permission)
 	{
-		// Grant all permissions to office owner
+		// Grant all permissions to the office owner
 		if ($this->ownsOffice($office)) {
 			return true;
 		}
@@ -251,7 +259,7 @@ class User extends Authenticatable
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public function transactions()
 	{
@@ -259,9 +267,10 @@ class User extends Authenticatable
 	}
 
 	/**
-	 * 
+	 *
 	 */
-	public function can_contact_offices() {
+	public function can_contact_offices()
+	{
 		return $this->contact_hidden_offices;
 	}
 

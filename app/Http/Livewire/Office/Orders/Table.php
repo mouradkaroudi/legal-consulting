@@ -9,10 +9,11 @@ use Filament\Tables\Contracts\HasTable;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Contracts\Database\Query\Builder;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Table extends Component implements HasTable
 {
-	use InteractsWithTable;
+	use InteractsWithTable, AuthorizesRequests;
 
 	public DigitalOffice $office;
 
@@ -56,7 +57,10 @@ class Table extends Component implements HasTable
 
 	protected function getTableActions(): array
 	{
-		return [\Filament\Tables\Actions\DeleteAction::make()];
+		return [
+			\Filament\Tables\Actions\DeleteAction::make()
+			->visible(fn (Order $record): bool => auth()->user()->can('delete', $record))
+		];
 	}
 
 	public function render()

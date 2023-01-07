@@ -8,6 +8,7 @@ use App\Models\DigitalOffice;
 use App\Models\DigitalOfficeEmployee;
 use Database\Factories\ProfileFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Password;
 use Spatie\Permission\Models\Role;
 
@@ -59,7 +60,8 @@ class DatabaseSeeder extends Seeder
 
         $digitalOffice1Employee = DigitalOfficeEmployee::create([
             'office_id' => $digitalOffice1->id,
-            'user_id' => 2
+            'user_id' => 2,
+            'started_at' => Date::now()
         ]);
 
         $digitalOffice1Employee->assignRole(Role::findByName('OfficeEmployee'));
@@ -73,8 +75,10 @@ class DatabaseSeeder extends Seeder
 
         $digitalOffice2Employees = DigitalOfficeEmployee::create([
             'office_id' => $digitalOffice2->id,
-            'user_id' => 3
+            'user_id' => 3,
+            'started_at' => Date::now()
         ]);
+        
         $digitalOffice2Employees->assignRole(Role::findByName('OfficeEmployee'));
         
         //

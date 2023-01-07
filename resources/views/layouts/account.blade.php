@@ -38,6 +38,7 @@
             </div>
         </main>
     </div>
+    @include('layouts.partials.footer')
     @livewire('notifications')
 </body>
 

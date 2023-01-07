@@ -2,10 +2,8 @@
 
 namespace App\Http\Livewire\Account\Invites;
 
-use App\Models\DigitalOfficeEmployee;
 use App\Models\Invite;
-use App\Models\Profile;
-use App\Models\User;
+use App\Services\InviteService;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -33,24 +31,7 @@ class Table extends Component implements HasTable
 			Action::make("accpet")
 				->label("قبول الدعوة")
                 ->action(function (Invite $record, array $data): void {
-
-                    $user = User::where('email', $record->email)->first();
-                    $user_id = $user->id;
-                    $employee = DigitalOfficeEmployee::create([
-                        'office_id' => $record->office_id,
-                        'user_id' => $user_id
-                    ]);
-            
-                    $employee->assignRole('OfficeEmployee');
-            
-                    if(!$user->profile) {
-						$profile = new Profile;
-						$profile->user_id = $user_id;
-						$profile->save();
-                    }
-
-                    $record->delete();
-            
+					InviteService::accept($record);
 				})
 				->button(),
 			Action::make("decline")

@@ -3,10 +3,12 @@
 <div class="mb-8">
     <livewire:account.balance-overview/>
 </div>
+@if(!empty($offices)):
 <div class="mb-8">
     <h2 class="text-2xl font-bold mb-4">المكاتب</h2>
     <livewire:account.offices-listing />
 </div>
+@endif
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <div class="col-span-2">
         <h2 class="text-2xl font-bold mb-4">آخر الطلبات</h2>

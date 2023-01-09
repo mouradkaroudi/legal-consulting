@@ -13,7 +13,7 @@
             <h4 class="leading-4 text-xl font-bold">طلب سحب الرصيد</h4>
         </div>
         <div class="p-6">
-            
+            <livewire:office.balance.withdrawals/>
         </div>
     </div>
     </div>

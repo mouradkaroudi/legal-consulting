@@ -9,12 +9,16 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    // Transaction status
     public const PENDING = 'PENDING';
     public const FAILED = 'FAILED';
     public const SUCCESS = 'SUCCESS';
+
+    // Transaction source
     public const RECEIVE_EARNINGS = 'RECEIVE_EARNINGS';
     public const PAY_DUES = 'PAY_DUES';
     public const RECHARGE = 'RECHARGE';
+    public const WITHDRAWALS = 'WITHDRAWALS';
 
     /**
      * The attributes that are mass assignable.

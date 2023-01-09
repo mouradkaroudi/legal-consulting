@@ -100,7 +100,7 @@ class Sidebar extends Component
     $this->sidebarLinks[] = [
       "label" => "الرصيد",
       "routeName" => "office.balance",
-      'icon' => 'heroicon-o-user-add'
+      'icon' => 'heroicon-o-cash'
     ];
 
   }

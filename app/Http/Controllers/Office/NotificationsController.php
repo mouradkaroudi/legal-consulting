@@ -10,7 +10,10 @@ class NotificationsController extends Controller
     
     public function __invoke()
     {
+
+
         $user = auth()->user();
+
         $notifications = $user->officeEmployee($user->currentOffice)->notifications;
         $user->officeEmployee($user->currentOffice)->unreadNotifications->markAsRead();
 

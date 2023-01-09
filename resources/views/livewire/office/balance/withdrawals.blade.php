@@ -1,8 +1,10 @@
 <form wire:submit.prevent="submit">
-    $this->form
+    <div class="mb-4">
+        {{ $this->form }}
+    </div>
     
-    <x-filament::button>
-        ارسل
+    <x-filament::button :type="'submit'" :form="'submit'">
+        طلب سحب
     </x-filament::button>
 
 </form>

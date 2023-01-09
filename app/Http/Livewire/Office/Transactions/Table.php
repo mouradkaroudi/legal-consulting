@@ -45,10 +45,10 @@ class Table extends Component implements Tables\Contracts\HasTable
 
 	protected function getTableQuery(): Builder
 	{
+
 		return Auth::user()
 			->currentOffice->transactions()
-            ->latest()
-			->getQuery();
+            ->getQuery();
 	}
 
     public function render()

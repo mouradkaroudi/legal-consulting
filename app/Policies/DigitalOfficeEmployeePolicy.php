@@ -19,7 +19,7 @@ class DigitalOfficeEmployeePolicy
 	public function viewAny(User $user)
 	{
 		return $user->hasOfficePermission(
-			$user->currentOffice->first(),
+			$user->currentOffice,
 			"manage-employees"
 		);
 	}
@@ -63,10 +63,10 @@ class DigitalOfficeEmployeePolicy
 
 		if (
 			$digitalOfficeEmployee->user->belongsToOffice(
-				$user->currentOffice->first()
+				$user->currentOffice
 			) &&
 			$user->hasOfficePermission(
-				$user->currentOffice->first(),
+				$user->currentOffice,
 				"manage-employees"
 			)
 		) {

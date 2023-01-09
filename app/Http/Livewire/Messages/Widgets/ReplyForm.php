@@ -12,7 +12,7 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use PharIo\Manifest\Url;
+use Filament\Forms\Components;
 
 class ReplyForm extends Component implements HasForms
 {
@@ -21,16 +21,32 @@ class ReplyForm extends Component implements HasForms
     
     public $threadId;
     public $message;
+    public $attachment;
 
-    protected function getFormSchema(): array
+    protected function getReplyFormSchema(): array {
+
+        return [
+            Components\Textarea::make('message')
+            ->extraAttributes([
+                'class' => 'p-4 w-full bg-white border-0 focus:ring-0'
+            ])
+            ->label('')
+            ->required(),
+        ];
+
+    }
+
+    protected function getUploadFormSchema(): array {
+        return [
+            Components\FileUpload::make('attachment')
+        ];
+    }
+
+    protected function getForms(): array
     {
         return [
-            Textarea::make('message')
-                ->extraAttributes([
-                    'class' => 'p-4 w-full bg-white border-0 focus:ring-0'
-                ])
-                ->label('')
-                ->required(),
+            'uploadForm' => $this->makeForm()->schema($this->getUploadFormSchema()),
+            'replyForm' => $this->makeForm()->schema($this->getReplyFormSchema())
         ];
     }
 

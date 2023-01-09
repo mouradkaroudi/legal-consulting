@@ -11,7 +11,7 @@
             <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white">دفع الطلب</span>
             <div class="mb-2 text-sm font-normal">
                 تم دفع مستحقات الطلب رقم 
-                <a href="{{ route('account.invites') }}" class="font-bold text-blue-700 underline">#{{ $order->id }}</a>
+                <a href="{{ route('office.orders.index') }}" class="font-bold text-blue-700 underline">#{{ $order->id }}</a>
                 من طرف {{ $order->beneficiary->name }}
             </div> 
             <div class="flex flex-wrap items-center gap-4 justify-start">

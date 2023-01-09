@@ -3,21 +3,24 @@
 namespace App\Http\Livewire\Account\Orders;
 
 use App\Models\DigitalOffice;
-use App\Models\DigitalOfficeEmployee;
 use App\Models\Order;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Services\OrderService;
+use Digikraaft\ReviewRating\Models\Review;
 use Filament\Tables\Actions\Action;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Contracts\Database\Query\Builder;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\HtmlString;
 use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
+use Yepsua\Filament\Forms\Components\Rating;
 
 class Table extends Component implements HasTable
 {
@@ -46,22 +49,23 @@ class Table extends Component implements HasTable
 
 	protected function getTableRecordActionUsing()
 	{
-		return fn(Order $record): string => $record->status === Order::UNPAID
+		return fn (Order $record): string => $record->status === Order::UNPAID
 			? "pay"
 			: "";
 	}
 
 	protected function getTableActions(): array
 	{
+
 		return [
 			Action::make("pay")
 				->label("دفع")
 				->mountUsing(
-					fn(Forms\ComponentContainer $form, Order $record) => $form->fill([
+					fn (Forms\ComponentContainer $form, Order $record) => $form->fill([
 						"orderId" => $record->id,
 					])
 				)
-				->modalContent(function($record) {
+				->modalContent(function ($record) {
 					return view('pages.account.orders.order-summary', [
 						'amount' => $record->fee,
 						'orderID' => $record->id,
@@ -83,13 +87,58 @@ class Table extends Component implements HasTable
 						])
 						->columns(2)
 						->required(),
-				])->hidden(fn($record) => $record->status === Order::PAID),
+				])->hidden(fn ($record) => $record->status === Order::PAID),
+			Action::make('add_review')
+				->mountUsing(function (Forms\ComponentContainer $form, Order $record) {
+					if ($record->hasReview()) {
+						$form->fill([
+							"rating" => $record->latestReview()->rating,
+							"title" => $record->latestReview()->title,
+							"review" => $record->latestReview()->review,
+							"review_id" => $record->latestReview()->id,
+						]);
+					}
+				})
+				->label(fn ($record): string => $record->hasReviewed(auth()->user()) ? 'تعديل التقييم' : 'أضف تقييم')
+				->action(function (Order $record, array $data): void {
+
+					if (isset($data['review_id']) && !empty($data['review_id'])) {
+
+						Review::find($data['review_id'])->update([
+							'rating' => $data['rating'],
+							'title' => $data['title'],
+							'review' => $data['review'],
+						]);
+					} else {
+						$record->review($data['review'], User::find(auth()->user()->id), $data['rating'], $data['title']);
+					}
+
+					Notification::make()
+						->title('تم اضافة التقييم بنجاح.')
+						->success()
+						->send();
+				})
+				->form(function ($record) {
+
+					$form = [
+						Rating::make('rating')->label('تقييم')->helperText('تقييمك لجودة الخدمة من 1 الى 5.')->required(),
+						TextInput::make('title')->label('عنوان التقييم'),
+						Textarea::make('review')->label('نص')->required(),
+					];
+
+					if ($record->hasReview()) {
+						$form[] = Hidden::make('review_id');
+					}
+
+					return $form;
+				})
+				->visible(fn($record): bool => $record->hasReview())
 		];
 	}
 
 	protected function getTableQuery(): Builder
 	{
-		return Order::where("beneficiary_id", Auth::id());
+		return Order::where("beneficiary_id", Auth::id())->latest();
 	}
 
 	public function render()
@@ -107,10 +156,10 @@ class Table extends Component implements HasTable
 		$office = DigitalOffice::find($order->office_id);
 
 		$paymentMethod = $data["paymentMethod"];
-		
+
 		if ($paymentMethod === "balance") {
 			if ($user->available_balance > $order->fee) {
-		
+
 				$userTxn = $user->transactions()->create([
 					"amount" => $order->fee,
 					"type" => "credit",
@@ -120,7 +169,7 @@ class Table extends Component implements HasTable
 						"order_id" => $order->id
 					])
 				]);
-				
+
 				$user->substractFromBalance($order->fee);
 
 				$officeTxn = $office->transactions()->create([
@@ -138,12 +187,11 @@ class Table extends Component implements HasTable
 				OrderService::orderPaid($order);
 
 				Notification::make()
-				->title('مبروك ! تم دفع مستحقات الطلب بنجاح.')
-				->success()
-				->send();
+					->title('مبروك ! تم دفع مستحقات الطلب بنجاح.')
+					->success()
+					->send();
 
 				return redirect()->route('account.orders.index');
-
 			} else {
 				$this->addError(
 					"mountedTableActionData.paymentMethod",
@@ -151,6 +199,5 @@ class Table extends Component implements HasTable
 				);
 			}
 		}
-
 	}
 }

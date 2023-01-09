@@ -1,7 +1,7 @@
 <form wire:submit.prevent="submit">
     <div class="mb-4 w-full bg-gray-50 rounded-lg border border-gray-200">
         <div class="bg-white rounded-t-lg">
-        {{ $this->form }}
+        {{ $this->replyForm }}
         </div>
         <div class="flex justify-between items-center py-2 px-3 border-t">
             <x-filament-support::button :type="'submit'">

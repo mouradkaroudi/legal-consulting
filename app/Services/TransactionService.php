@@ -9,6 +9,8 @@ use App\Models\User;
 
 class TransactionService
 {
+	public $txn = null;
+
 	public function __construct(Transaction $txn)
 	{
 		$this->txn = $txn;
@@ -43,5 +45,22 @@ class TransactionService
 		TransactionEvents\Refused::dispatch($this->txn, $body);
 
 	}
-	
+
+	/**
+	 * 
+	 */
+	public static function withdraw( $holder, $amount, $metadata = [] ) {
+
+		$holder->transactions()->create([
+			"amount" => $amount,
+			"type" => "credit",
+			"source" => Transaction::WITHDRAWALS,
+			"status" => Transaction::PENDING,
+			"metadata" => json_encode($metadata),
+		]);
+
+		$holder->substractFromBalance($amount);
+
+	}
+
 }

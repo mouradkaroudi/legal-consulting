@@ -27,9 +27,12 @@ class OfficeListingController extends Controller
             $displayMessagingForm = false;
         }
 
+        $orders = $digitalOffice->orders()->latest()->get();
+
         return view('pages.search.single', [
             'office' => $digitalOffice,
-            'displayMessagingForm' => $displayMessagingForm
+            'displayMessagingForm' => $displayMessagingForm,
+            'orders' => $orders
         ]);
     }
 

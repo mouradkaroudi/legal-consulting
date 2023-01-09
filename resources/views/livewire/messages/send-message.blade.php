@@ -2,7 +2,7 @@
     @auth()
     <form method="POST" wire:submit.prevent="send">
         {{ $this->form }}
-        <x-filament-support::button :type="'submit'" class="w-full mt-4">
+        <x-filament-support::button :type="'submit'" :form="'send'" class="w-full mt-4">
             أرسل
         </x-filament-support::button>
     </form>

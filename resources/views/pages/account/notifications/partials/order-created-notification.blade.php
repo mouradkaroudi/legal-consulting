@@ -10,8 +10,8 @@
         <div class="mr-3 text-sm font-normal">
             <span class="mb-1 text-sm font-semibold text-gray-900 dark:text-white">تسديد فاتورة الطلب #{{ $order->id }}</span>
             <div class="mb-2 text-sm font-normal">
-                قام مكتب {{ $order->office->name }} بتسجيل فاتورة بقيمة {{ $order->fee }} من اجل {{ $order->subject }}
-                <a href="{{ route('account.invites') }}" class="font-bold text-blue-700 underline">{{ $order->office->name }}</a>
+                قام مكتب {{ $order->office->name }} بتسجيل فاتورة بقيمة @money($order->fee, 'sar', true) من اجل {{ $order->subject }}
+                <a href="{{ route('account.orders.index') }}" class="font-bold text-blue-700 underline">{{ $order->office->name }}</a>
             </div> 
             <div class="flex flex-wrap items-center gap-4 justify-start">
             </div>    

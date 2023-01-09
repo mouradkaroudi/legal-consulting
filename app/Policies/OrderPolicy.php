@@ -18,7 +18,10 @@ class OrderPolicy
      */
     public function viewAny(User $user)
     {
-        return false;
+		return $user->hasOfficePermission(
+			$user->currentOffice,
+			"manage-orders"
+		);
     }
 
     /**

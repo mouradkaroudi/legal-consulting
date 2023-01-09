@@ -36,7 +36,7 @@ class ListEmployees extends Component implements Tables\Contracts\HasTable
 						["employee" => $record->id]
 					)
 				)
-				->hidden(fn($record): bool => $record->ended_at != null),
+				->hidden(fn($record): bool => $record->ended_at != null || $record->isOwner( auth()->user()->currentOffice )),
 		];
 	}
 

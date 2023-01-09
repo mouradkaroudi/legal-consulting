@@ -66,6 +66,7 @@ class DigitalOffice extends Model
 	{
 		return $this->belongsTo(Profession::class);
 	}
+
 	/**
 	 *
 	 */
@@ -135,6 +136,14 @@ class DigitalOffice extends Model
 	/**
 	 *
 	 */
+	public function withdrawals()
+	{
+		return $this->morphMany(Withdrawal::class, "withdrawalable");
+	}
+
+	/**
+	 *
+	 */
 	public function addToBalance(float $amount)
 	{
 		$this->available_balance += $amount;
@@ -147,6 +156,15 @@ class DigitalOffice extends Model
 	public function addToHoldBalance(float $amount)
 	{
 		$this->hold_balance += $amount;
+		$this->save();
+	}
+
+	/**
+	 *
+	 */
+	public function substractFromBalance(float $amount)
+	{
+		$this->available_balance = $this->available_balance - $amount;
 		$this->save();
 	}
 

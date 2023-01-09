@@ -5,87 +5,71 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\DigitalOffice;
-use App\Models\DigitalOfficeEmployee;
-use Database\Factories\ProfileFactory;
+use App\Models\Service;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Password;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
-    {
-        $this->call([
-            RoleAndPermissionSeeder::class,
-            CountriesSeeder::class,
-            CitySeeder::class,
-            AdminSeeder::class,
-            ServiceSeeder::class,
-            ProfessionSeeder::class,
-            SpecializationSeeder::class,
-            SettingSeeder::class,
-        ]);
+	/**
+	 * Seed the application's database.
+	 *
+	 * @return void
+	 */
+	public function run()
+	{
+		$this->call([
+			RoleAndPermissionSeeder::class,
+			CountriesSeeder::class,
+			CitySeeder::class,
+			AdminSeeder::class,
+			ServiceSeeder::class,
+			ProfessionSeeder::class,
+			SpecializationSeeder::class,
+			SettingSeeder::class,
+		]);
 
-        $users = \App\Models\User::factory(6)->create();
+		$users = \App\Models\User::factory(6)->create();
 
-        // Profiles
-        
-        \App\Models\Profile::factory()->create([
-            'user_id' => 1
-        ]);
-        \App\Models\Profile::factory()->create([
-            'user_id' => 2
-        ]);
-        \App\Models\Profile::factory()->create([
-            'user_id' => 3
-        ]);
-        \App\Models\Profile::create([
-            'user_id' => 4
-        ]);
-        // ==============
-        
-        // Digital offices and employees
-        // 1
-        $digitalOffice1 = \App\Models\DigitalOffice::create([
-            'user_id' => 1,
-            'name' => 'مكتب المحامي د عبدالله العجلان',
-            'status' => DigitalOffice::BUSY
-        ]);
+		$users->slice(0, 2)->each(function ($user) {
+			$randService = Service::inRandomOrder()->first();
 
-        $digitalOffice1Employee = DigitalOfficeEmployee::create([
-            'office_id' => $digitalOffice1->id,
-            'user_id' => 2,
-            'started_at' => Date::now()
-        ]);
+			$randServiceProfession = $randService
+			->professions()
+			->inRandomOrder()
+			->first();
 
-        $digitalOffice1Employee->assignRole(Role::findByName('OfficeEmployee'));
+			\App\Models\DigitalOffice::create([
+				"user_id" => $user->id,
+				"name" => "مكتب " . $user->name,
+				"status" => DigitalOffice::AVAILABLE,
+				"service_id" => $randService->id,
+				"profession_id" => $randServiceProfession->id,
+			])
+				->employees()
+				->create([
+					"user_id" => $user->id,
+				]);
 
-        //
-        $digitalOffice2 = \App\Models\DigitalOffice::create([
-            'user_id' => 2,
-            'name' => 'شركة الجبيري للمحاماة',
-            'status' => DigitalOffice::AVAILABLE
-        ]);
+			// create profiles
+			\App\Models\Profile::factory()->create([
+				"user_id" => $user->id,
+			]);
+		});
 
-        $digitalOffice2Employees = DigitalOfficeEmployee::create([
-            'office_id' => $digitalOffice2->id,
-            'user_id' => 3,
-            'started_at' => Date::now()
-        ]);
-        
-        $digitalOffice2Employees->assignRole(Role::findByName('OfficeEmployee'));
-        
-        //
-        $digitalOffice3 = \App\Models\DigitalOffice::create([
-            'user_id' => 4,
-            'name' => 'مكتب المحامي محمد العليوي للمحاماة والاستشارات القانونية'
-        ]);
+		$users->slice(3, 5)->each(function ($user) {
+			// create profiles
+			\App\Models\Profile::factory()->create([
+				"user_id" => $user->id,
+			]);
 
-    }
+			\App\Models\DigitalOffice::inRandomOrder()
+				->first()
+				->employees()
+				->create([
+					"user_id" => $user->id,
+				])
+				->assignRole(Role::findByName("OfficeEmployee"));
+		});
+	}
 }

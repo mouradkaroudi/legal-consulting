@@ -151,7 +151,7 @@ class User extends Authenticatable
 			return false;
 		}
 
-		return $this->id == $office->user_id;
+		return $this->id === $office->user_id;
 	}
 
 	/**
@@ -185,6 +185,7 @@ class User extends Authenticatable
 	 */
 	public function hasOfficePermission($office, $permission)
 	{
+
 		// Grant all permissions to the office owner
 		if ($this->ownsOffice($office)) {
 			return true;

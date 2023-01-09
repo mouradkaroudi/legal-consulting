@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Digikraaft\ReviewRating\Traits\HasReviewRating;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-  use HasFactory;
+  use HasFactory, HasReviewRating;
 
   public const PAID = 'PAID';
   public const UNPAID = 'UNPAID';
@@ -30,6 +31,7 @@ class Order extends Model
     return $this->hasOne(User::class, "id", "beneficiary_id");
   }
 
+  // FIXME: belongs to
   public function office()
   {
     return $this->hasOne(DigitalOffice::class, "id", "office_id");

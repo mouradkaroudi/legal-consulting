@@ -47,7 +47,6 @@ class TransactionsTable extends Component implements Tables\Contracts\HasTable
 	{
 		return Auth::user()
 			->transactions()
-            ->latest()
 			->getQuery();
 	}
 

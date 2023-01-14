@@ -41,6 +41,7 @@ class DigitalOffice extends Model
 		"license_attachment",
 		"location",
 		"status",
+		"withdrawal_methods"
 	];
 
 	/**
@@ -94,6 +95,13 @@ class DigitalOffice extends Model
 	public function orders()
 	{
 		return $this->hasMany(Order::class, "office_id", "id");
+	}
+
+	/**
+	 * 
+	 */
+	public function subscription() {
+		return $this->morphOne(Subscription::class, 'subscriber');
 	}
 
 	/**

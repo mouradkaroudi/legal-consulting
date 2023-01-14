@@ -26,7 +26,14 @@ class TransactionService
 		}
 
 		$this->txn->completeTransaction();
-		$this->txn->transactionable->addToBalance($this->txn->amount);
+
+		if($this->txn->source !== Transaction::WITHDRAWALS) {
+			if($this->txn->isDebit()) {
+				$this->txn->transactionable->addToBalance($this->txn->amount);
+			}else{
+				$this->txn->transactionable->substractFromBalance($this->txn->amount);
+			}
+		}
 
 		TransactionEvents\Accepted::dispatch($this->txn);
 	}

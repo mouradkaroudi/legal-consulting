@@ -16,13 +16,13 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
 	use HasApiTokens, HasFactory, Notifiable, HasPermissions;
-
+	//FIXME: remove available balance from fillable
 	/**
 	 * The attributes that are mass assignable.
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = ["name", "email", "password", "available_balance"];
+	protected $fillable = ["name", "email", "password", "available_balance", "withdrawal_methods"];
 
 	/**
 	 * The attributes that should be hidden for serialization.

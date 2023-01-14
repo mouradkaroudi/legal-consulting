@@ -1,4 +1,7 @@
 <form wire:submit.prevent="submit">
+    <p>
+    نرسل أرباحك إلى طرق السحب المتاحة في منطقتك.   
+    </p>
     <div class="mb-4">
         {{ $this->form }}
     </div>

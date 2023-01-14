@@ -45,28 +45,23 @@ class Settings extends Page
 	{
 		$digitalOfficeSettingsScheme = [
 			Components\Grid::make(2)->schema([
-				Components\TextInput::make("digital_office_registration_fee")->label(
-					"رسوم التسجيل"
-				),
 				Components\Toggle::make("digital_office_direct_registration")->label(
 					"تسجيل مباشر"
-				),
+				)->helperText('تسجيل مكتب وظهوره في الموقع دون الحاجة لموافقة ادارة الموقع.'),
+				Components\Toggle::make("digital_office_hide_unsubscribed_offices")->label(
+					"حجب المكاتب غير مشتركة"
+				)->helperText('سيتم حجب كل المكاتب غير مشتركة او انتهت مدة اشتراكها. (هذه الخاصية تعمل اذا اكانت خاصية الإشتراكات مفعلة)'),
 			]),
 		];
 
-		$orderSettingsScheme = [
-			Components\Grid::make(3)->schema([
-				Components\TextInput::make("order_min_fee")->label(
-					"الحد الأدنى للرسوم"
-				),
-				Components\TextInput::make("order_max_fee")->label(
-					"الحد الأقصى للرسوم"
-				),
-				Components\TextInput::make("order_percentage_fee")->label(
-					"نسبة الرسوم"
-				),
+		$subscriptionsSettingsScheme = [
+			Components\Grid::make(2)->schema([
+				Components\Toggle::make("subscriptions_enable_subscription")->label(
+					"تفعيل الإشتراك للمكاتب"
+				)->helperText('سيتم طلب من مكتب دفع رسوم اشتراك على حسب المهنة التي يمارسها.'),
 			]),
 		];
+
 
 		$registrationSettingsScheme = [
 			Components\Toggle::make("registration_open")->label("التسجيل مفتوح"),
@@ -86,9 +81,12 @@ class Settings extends Page
 		];
 
 		return [
-			//Components\Fieldset::make("digital_office")
-				//->label("إعدادت المكاتب")
-				//->schema($digitalOfficeSettingsScheme),
+			Components\Fieldset::make("digital_office")
+				->label("إعدادت المكاتب")
+				->schema($digitalOfficeSettingsScheme),
+			Components\Fieldset::make("subscriptions")
+				->label("إعدادت الإشتراك")
+				->schema($subscriptionsSettingsScheme),
 			//Components\Fieldset::make("order")
 				//->label("إعدادت الطلبات")
 				//->schema($orderSettingsScheme),

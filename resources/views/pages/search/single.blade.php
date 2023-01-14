@@ -185,34 +185,34 @@ $gender = $office->owner->profile->gender;
                 </div>
                 <div class="grid grid-cols-1">
 
-                    @forelse( $orders as $order )
+                    @forelse( $orders->reviews as $review )
                     <article>
                         <div class="flex items-center mb-4 -space-x-4">
-                            <img class="w-10 h-10 rounded-full ml-2" src="{{ $order->latestReview()->author->avatar_url() }}" alt="">
+                            <img class="w-10 h-10 rounded-full ml-2" src="{{ $review->author->avatar_url() }}" alt="">
                             <div class="space-y-1 font-medium dark:text-white">
                                 <p>
-                                    {{ $order->latestReview()->author->name }} 
-                                    <time datetime="{{ $order->latestReview()->author->created_at }}" class="block text-sm text-gray-500 dark:text-gray-400">إنضم في {{ $order->latestReview()->author->created_at }}</time>
+                                    {{ $review->author->name }} 
+                                    <time datetime="{{ $review->author->created_at }}" class="block text-sm text-gray-500 dark:text-gray-400">إنضم في {{ $order->latestReview()->author->created_at }}</time>
                                 </p>
                             </div>
                         </div>
                         <div class="flex items-center mb-1">
-                            @for ($i = 0; $i < $order->latestReview()->rating; $i++)
+                            @for ($i = 0; $i < $review->rating; $i++)
                             <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <title>{{ $i }} star</title>
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                             </svg>
                             @endfor
-                            @if(!empty($order->latestReview()->title))
-                                <h3 class="ml-2 text-sm font-semibold text-gray-900 dark:text-white">$order->latestReview()->title</h3>
+                            @if(!empty($review->title))
+                                <h3 class="ml-2 text-sm font-semibold text-gray-900 dark:text-white">$review->title</h3>
                             @endif
                         </div>
                         <footer class="mb-5 text-sm text-gray-500 dark:text-gray-400">
-                            <p><time datetime="{{ $order->latestReview()->created_at }}">{{ $order->latestReview()->created_at }}</time></p>
+                            <p><time datetime="{{ $review->created_at }}">{{ $review->created_at }}</time></p>
                         </footer>
                        
                         <p class="mb-2 font-light text-gray-500 dark:text-gray-400">
-                            {{ $order->latestReview()->review }}
+                            {{ $review->review }}
                         </p>
                     </article>
 

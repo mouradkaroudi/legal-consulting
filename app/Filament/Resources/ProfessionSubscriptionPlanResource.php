@@ -2,16 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProfessionSubscriptionFeeResource\Pages;
-use App\Filament\Resources\ProfessionSubscriptionFeeResource\RelationManagers;
-use App\Models\ProfessionSubscriptionFee;
+use App\Filament\Resources\ProfessionSubscriptionPlanResource\Pages;
+use App\Filament\Resources\ProfessionSubscriptionPlanResource\RelationManagers;
+use App\Models\ProfessionSubscriptionPlan;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 
-class ProfessionSubscriptionFeeResource extends Resource
+class ProfessionSubscriptionPlanResource extends Resource
 {
-    protected static ?string $model = ProfessionSubscriptionFee::class;
+    protected static ?string $model = ProfessionSubscriptionPlan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -19,6 +19,12 @@ class ProfessionSubscriptionFeeResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('name')
+                    ->label('الإسم')
+                    ->required()
+                    ,
+                Forms\Components\TextInput::make('description')
+                    ->label('وصف')->required(),
                 Forms\Components\Select::make('profession_id')
                     ->label('المهنة')
                     ->preload()
@@ -45,9 +51,9 @@ class ProfessionSubscriptionFeeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProfessionSubscriptionFees::route('/'),
-            'create' => Pages\CreateProfessionSubscriptionFee::route('/create'),
-            'edit' => Pages\EditProfessionSubscriptionFee::route('/{record}/edit'),
+            'index' => Pages\ListProfessionSubscriptionPlans::route('/'),
+            'create' => Pages\CreateProfessionSubscriptionPlan::route('/create'),
+            'edit' => Pages\EditProfessionSubscriptionPlan::route('/{record}/edit'),
         ];
     }
 }

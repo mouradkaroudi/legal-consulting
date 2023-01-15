@@ -23,6 +23,8 @@ use App\Http\Controllers\Office\NotificationsController as OfficeNotificationsCo
 use App\Http\Controllers\Office\SettingsController;
 use App\Http\Controllers\Office\OrdersController;
 use App\Http\Controllers\Office\SchedulesController;
+use App\Http\Controllers\Office\SetupOfficeController;
+use App\Http\Controllers\Office\SubscriptionController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
@@ -49,23 +51,39 @@ Route::name('auth.')->middleware(RedirectIfAuthenticated::class)->group(function
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-Route::name('office.')->prefix('/office')->middleware(['office', 'settled'])->group(function () {
-    Route::get('/', [DashboardHomeController::class, 'index'])->name('overview');
-    Route::get('/settings', SettingsController::class)->name('settings');
-    // add middleware here
-    
-    Route::resource('/orders', OrdersController::class);
-    Route::get('/balance', OfficeBalanceController::class)->name('balance');
+Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrentOffice', 'account.settled'])->group(function () {
 
-    Route::resource('/schedules', SchedulesController::class);
-    Route::resource('/employees', EmployeesController::class);
-    Route::resource('/appointments', AppointmentsController::class);
-    Route::get('/notifications', OfficeNotificationsController::class)->name('notifications');
-    Route::resource('/threads', OfficeMessagesController::class);
-    Route::get('/invite', [InviteController::class, 'invite'])->name('invite');
+    Route::name('setup.')->prefix('/setup')->group(function() {
+        Route::get('/', [SetupOfficeController::class, 'index'])->name('index');
+        Route::get('/approval', [SetupOfficeController::class, 'approval'])->name('approval');
+    });
+
+    Route::name('subscription.')->prefix('/subscription')->group(function() {
+        Route::get('/', [SubscriptionController::class, 'index'])->name('index');
+        Route::get('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
+        Route::get('/success', [SubscriptionController::class, 'success'])->name('success');
+        Route::get('/failed', [SubscriptionController::class, 'failed'])->name('failed');
+        Route::get('/{profession_subscription_plan}/pay', [SubscriptionController::class, 'pay'])->name('pay');
+    });
+
+    Route::middleware(['office.settled'])->group(function() {
+        Route::get('/', [DashboardHomeController::class, 'index'])->name('overview');
+        Route::get('/settings', SettingsController::class)->name('settings');
+        
+        Route::resource('/orders', OrdersController::class);
+        Route::get('/balance', OfficeBalanceController::class)->name('balance');
+    
+        Route::resource('/schedules', SchedulesController::class);
+        Route::resource('/employees', EmployeesController::class);
+        Route::resource('/appointments', AppointmentsController::class);
+        Route::get('/notifications', OfficeNotificationsController::class)->name('notifications');
+        Route::resource('/threads', OfficeMessagesController::class);
+        Route::get('/invite', [InviteController::class, 'invite'])->name('invite');    
+    });
+
 });
 
-Route::name('account.')->prefix('/account')->middleware(['auth', 'settled'])->group(function () {
+Route::name('account.')->prefix('/account')->middleware(['auth', 'account.settled'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('overview');
     Route::get('/settings', [AccountSettingsController::class, 'index'])->name('settings');
     Route::get('/balance', [BalanceController::class, 'index'])->name('balance');

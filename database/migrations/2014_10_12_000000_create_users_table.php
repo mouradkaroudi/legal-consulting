@@ -25,7 +25,7 @@ return new class extends Migration
             $table->float('available_balance')->default(0);
             $table->foreignId('current_office_id')->nullable();
             $table->boolean('contact_hidden_offices')->default(0);
-            $table->json('withdrawal_methods');
+            $table->json('withdrawal_methods')->nullable();
             $table->rememberToken();
             $table->timestamp('last_seen_at')->nullable();
             $table->timestamp('banned_at')->nullable();

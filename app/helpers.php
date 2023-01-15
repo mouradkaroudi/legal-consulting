@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Auth;
 /**
  * 
  * 
- * @return int|null
+ * @return string
  */
 function get_option( $name ) {
-    return Setting::option($name)->first()->value;
+    $opt = Setting::option($name)->first();
+    return  $opt ? $opt->value : null;
 }

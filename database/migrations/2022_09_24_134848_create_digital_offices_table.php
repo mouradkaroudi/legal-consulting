@@ -34,7 +34,7 @@ return new class extends Migration
             $table->float('available_balance')->default(0);
             $table->string('status')->default('UNCOMPLETED');
             $table->boolean('is_hidden')->default(0);
-            $table->json('withdrawal_methods');
+            $table->json('withdrawal_methods')->nullable();
             $table->timestamp('banned_at')->nullable();
             $table->timestamps();
         });

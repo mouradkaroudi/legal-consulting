@@ -35,7 +35,8 @@ class Settings extends Page
 	{
 		$settings = $this->form->getState();
 		foreach ($settings as $option => $value) {
-			Setting::where("option", $option)->update([
+			Setting::where("option", $option)->updateOrCreate([
+				"option" => $option,
 				"value" => $value,
 			]);
 		}

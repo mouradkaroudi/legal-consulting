@@ -63,7 +63,8 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'office' => \App\Http\Middleware\EnsureUserCanAccessOffice::class,
-        'settled' => \App\Http\Middleware\EnsureAccountIsSettled::class,
+        'account.canAccessCurrentOffice' => \App\Http\Middleware\EnsureUserCanAccessOffice::class,
+        'office.settled' => \App\Http\Middleware\EnsureOfficeIsSettled::class,
+        'account.settled' => \App\Http\Middleware\EnsureAccountIsSettled::class,
     ];
 }

@@ -17,8 +17,12 @@ class DigitalOffice extends Model
 
 	public const AVAILABLE = "AVAILABLE";
 	public const BUSY = "BUSY";
+
 	public const UNCOMPLETED = "UNCOMPLETED";
-	public const BLOCKED = "BLOCKED";
+	public const BLOCKED = "BLOCKED"; // TODO: consider remove this
+
+	public const PENDING = 'PENDING';
+	public const PENDING_PAYMENT = 'PENDING_PAYMENT';
 
 	/**
 	 * The attributes that are mass assignable.

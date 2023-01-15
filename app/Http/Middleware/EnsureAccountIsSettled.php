@@ -23,7 +23,7 @@ class EnsureAccountIsSettled
 			$user &&
 			$user->profile &&
 			$user->profile->status === DigitalOffice::UNCOMPLETED &&
-			!in_array(Route::currentRouteName(), ["account.settings", "auth.logout"])
+			!in_array(Route::currentRouteName(), ["account.settings", "auth.logout"]) // FIXME: You may exclude this route in routes/web.php
 		) {
 			return redirect()->route("account.settings");
 		}

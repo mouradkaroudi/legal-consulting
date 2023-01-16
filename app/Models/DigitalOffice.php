@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -106,6 +107,24 @@ class DigitalOffice extends Model
 	 */
 	public function subscription() {
 		return $this->morphOne(Subscription::class, 'subscriber');
+	}
+
+	/**
+	 * Determine wether the office profession have subscription plan
+	 * 
+	 * @return bool
+	 */
+	public function haveSubscriptionPlan(): bool {
+		return !$this->profession->subscriptions->isEmpty();
+	}
+
+	/**
+	 * Determine if the office have active subscription
+	 * 
+	 * @return bool
+	 */
+	public function isSubscribed(): bool {
+		return !$this->subscription->where('expire_at', null)->orWhere('expire_at', '>', Carbon::now())->get()->isEmpty();
 	}
 
 	/**

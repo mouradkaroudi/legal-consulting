@@ -121,7 +121,7 @@ class Table extends Component implements HasTable
 				->form(function ($record) {
 
 					$form = [
-						Rating::make('rating')->label('تقييم')->helperText('تقييمك لجودة الخدمة من 1 الى 5.')->required(),
+						Rating::make('rating')->label('تقييم')->helperText('تقييمك لجودة الخدمة من 1 الى 5.'),
 						TextInput::make('title')->label('عنوان التقييم'),
 						Textarea::make('review')->label('نص')->required(),
 					];
@@ -132,7 +132,7 @@ class Table extends Component implements HasTable
 
 					return $form;
 				})
-				->visible(fn($record): bool => $record->hasReview())
+				->visible(fn($record): bool => $record->status === Order::PAID)
 		];
 	}
 

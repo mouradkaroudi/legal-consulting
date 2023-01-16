@@ -53,31 +53,6 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 				->label("معلومات عامة"),
 			Fieldset::make("categorization")
 				->schema([
-					Grid::make(2)
-						->schema([
-							Select::make("service_id")
-								->label("اختر الخدمة")
-								->relationship("service", "name")
-								->reactive()
-								->preload()
-								->required(),
-							Select::make("profession_id")
-								->label("اختر المهنة")
-								->relationship("profession", "name")
-								->reactive()
-								->options(function (callable $get) {
-									$serviceId = $get("service_id");
-
-									if (!$serviceId) {
-										return [];
-									}
-
-									$service = Service::find($serviceId);
-									return $service->professions->pluck("name", "id");
-								})
-								->required(),
-						])
-						->label("التصنيف"),
 					Select::make("specializations")
 						->label("اختر التخصصات")
 						->relationship("specializations", "name")
@@ -143,8 +118,6 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 
 		$validatedData = $this->validate([
 			"name" => "required|string|min:6",
-			"service_id" => ["required", "exists:App\Models\Service,id"],
-			"profession_id" => ["required", "exists:App\Models\Profession,id"],
 			"commercial_registration_number" => "required|min:4",
 		]);
 

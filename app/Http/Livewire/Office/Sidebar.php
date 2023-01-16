@@ -82,13 +82,6 @@ class Sidebar extends Component
       ];
     }
 
-    if ($user->hasOfficePermission($user->currentOffice, "manage-office")) {
-      $this->sidebarLinks[] = [
-        "label" => "إعدادات المكتب",
-        "routeName" => "office.settings",
-        'icon' => 'heroicon-o-cog'
-      ];
-    }
     if ($user->hasOfficePermission($user->currentOffice, "send-invites")) {
       $this->sidebarLinks[] = [
         "label" => "ارسال دعوة",
@@ -96,12 +89,6 @@ class Sidebar extends Component
         'icon' => 'heroicon-o-user-add'
       ];
     }
-
-    $this->sidebarLinks[] = [
-      "label" => "الرصيد",
-      "routeName" => "office.balance",
-      'icon' => 'heroicon-o-cash'
-    ];
 
   }
 }

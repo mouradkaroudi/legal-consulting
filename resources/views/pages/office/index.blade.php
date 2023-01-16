@@ -2,4 +2,5 @@
 
 @section('content')
   <livewire:office.office-stats />
+  <livewire:office.messages-table/>
 @endsection

@@ -28,4 +28,13 @@ class Profession extends Model
         return $this->hasMany(Specialization::class);
     }
 
+    /**
+     * Each profession may have many subscription plans
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subscriptions() {
+        return $this->hasMany(ProfessionSubscriptionPlan::class, 'profession_id', 'id');
+    }
+
 }

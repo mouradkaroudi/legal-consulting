@@ -184,7 +184,7 @@ $gender = $office->owner->profile->gender;
                     <span>التقييمات</span>
                 </div>
                 <div class="grid grid-cols-1">
-
+                    @if(!empty($orders->reviews))
                     @forelse( $orders->reviews as $review )
                     <article>
                         <div class="flex items-center mb-4 -space-x-4">
@@ -219,7 +219,7 @@ $gender = $office->owner->profile->gender;
                     @empty
                     <p>لاتوجد اي تقييمات حاليا.</p>
                     @endforelse
-
+                    @endif
 
                 </div>
             </div>

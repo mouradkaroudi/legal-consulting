@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\Office\Setup;
 
+use App\Models\City;
 use App\Models\Country;
 use App\Models\DigitalOffice;
+use App\Models\Profession;
 use App\Models\ProfessionSubscriptionPlan;
 use App\Models\Service;
 use App\Models\Subscription;
@@ -60,7 +62,6 @@ class RequiredInformationForm extends Component implements HasForms
         if($status === DigitalOffice::PENDING_PAYMENT) {
             return redirect()->route('office.subscription.index');
         }
-
        
     }
 
@@ -80,9 +81,11 @@ class RequiredInformationForm extends Component implements HasForms
                             ->relationship("service", "name")
                             ->reactive()
                             ->preload()
+                            ->exists(table: Service::class, column: 'id')
                             ->required(),
                         Forms\Components\Select::make("profession_id")
                             ->label("اختر المهنة")
+                            ->exists(table: Profession::class, column: 'id')
                             ->relationship("profession", "name")
                             ->reactive()
                             ->options(function (callable $get) {
@@ -98,14 +101,18 @@ class RequiredInformationForm extends Component implements HasForms
                             ->required(),
                         Forms\Components\TextInput::make("commercial_registration_number")
                             ->label("رقم سجل التجاري")
+                            ->unique(table: DigitalOffice::class, column: 'commercial_registration_number')
                             ->required(),
                         Forms\Components\Grid::make(2)->schema([
                             Forms\Components\Select::make("country_code")
                                 ->label("الدولة")
+                                ->exists(table: Country::class, column: 'id')
                                 ->options($countries)
-                                ->reactive(),
+                                ->reactive()
+                                ->required(),
                             Forms\Components\Select::make("city")
                                 ->label("المدينة")
+                                ->exists(table: City::class, column: 'id')
                                 ->reactive()
                                 ->options(function (callable $get) {
                                     $countryId = $get("country_code");

@@ -36,7 +36,7 @@ class Form extends Component implements HasForms
 
         return [
             RadioButton::make('plan_id')->options(function() use ($plans) {
-                return $plans->pluck('fee', 'id');
+                return $plans->pluck('fee_label', 'id');
             })->descriptions(function() use ($plans) {
                 return $plans->pluck('name', 'id');
             })->label(false)->required(),

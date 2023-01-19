@@ -17,11 +17,11 @@
             <x-filament::card>
                 <div class="flex justify-between align-middle">
                     <h2 class="text-xl font-bold mb-2">{{ $professionSubscriptionPlan->name }}</h2>
-                    <h2 class="text-xl font-bold">{{ $professionSubscriptionPlan->fee }}</h2>
+                    <h2 class="text-xl font-bold">{{ $professionSubscriptionPlan->fee_label }}</h2>
                 </div>
                 <p>{{ $professionSubscriptionPlan->description }}</p>
             </x-filament::card>
-            <livewire:payment.form :professionSubscriptionPlan="$professionSubscriptionPlan"/>
+            <livewire:payment.form :type="'subscription'" :params="['plan_id' => $professionSubscriptionPlan->id]"/>
         </div>
 
     </div>

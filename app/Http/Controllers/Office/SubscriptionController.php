@@ -39,33 +39,39 @@ class SubscriptionController extends Controller
     public function subscribe(Request $request)
     {
 
+        //$provider = new PayPal();
+        //$provider->setApiCredentials(config('paypal'));
+        //$provider->getAccessToken();
+        //$response = $provider->capturePaymentOrder($request['token']);
+
+        //if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+
+            //$office = auth()->user()->currentOffice;
+
+            //SubscriptionService::createSubscription($office, ProfessionSubscriptionPlan::find($request['plan_id']));
+            
+            //if(get_option('digital_office_direct_registration') == 1) {
+              //  $office->status = DigitalOffice::AVAILABLE;
+            //}else{
+              //  $office->status = DigitalOffice::PENDING;
+            //}
+
+           // $office->save();
+
+            //return redirect()->route('office.subscription.success');
+       // } else {
+            //return redirect()->route('office.subscription.failed');
+        //}
+    }
+
+    public function success( Request $request )
+    {
         $provider = new PayPal();
         $provider->setApiCredentials(config('paypal'));
         $provider->getAccessToken();
         $response = $provider->capturePaymentOrder($request['token']);
 
-        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-
-            $office = auth()->user()->currentOffice;
-
-            SubscriptionService::createSubscription($office, ProfessionSubscriptionPlan::find($request['plan_id']));
-            
-            if(get_option('digital_office_direct_registration') == 1) {
-                $office->status = DigitalOffice::AVAILABLE;
-            }else{
-                $office->status = DigitalOffice::PENDING;
-            }
-
-            $office->save();
-
-            return redirect()->route('office.subscription.success');
-        } else {
-            return redirect()->route('office.subscription.failed');
-        }
-    }
-
-    public function success()
-    {
+        dd($response);
         return view('pages.office.subscription.success');
     }
 

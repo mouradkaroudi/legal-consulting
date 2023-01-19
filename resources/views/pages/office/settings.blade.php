@@ -32,9 +32,8 @@ $currentUrl = request()->fullUrl();
                 </ul>
             </div>
             <div class="mt-5 md:col-span-3 md:mt-0">
-                @if(empty($tab))
+                @if(empty($tab) || !in_array($currentUrl, array_column($menu, 'link')))
                 <livewire:office.edit-settings :digitalOffice="$digitalOffice" />
-
                 <div class="hidden sm:block" aria-hidden="true">
                     <div class="py-5">
                         <div class="border-t border-gray-200"></div>
@@ -44,40 +43,7 @@ $currentUrl = request()->fullUrl();
                 @elseif($tab === 'withdrawal')
                 <livewire:office.withdrawal-methods-form />
                 @elseif($tab === 'subscription')
-                <div class="overflow-hidden shadow sm:rounded-md">
-                    <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
-
-                        <div>
-                            <h3 class="text-lg font-medium leading-6 text-gray-900">إعدادات الإشتراك</h3>
-                            <p class="mt-1 text-sm text-gray-600">إعدادات الإشتراك الخاص بالمكتب في الموقع.</p>
-                        </div>
-
-                        <div class="border rounded-lg p-4">
-                            <div class="flex justify-between">
-                                <div>
-                                    <h4 class="text-xl mb-2 font-bold">إشتراك شهري</h4>
-                                    <p class="text-sm text-gray-700">إشتراك دائم يخول لك فتح مكتب على موقع المحامي</p>
-                                </div>
-                                <div>
-                                    <span class="text-xl font-bold">120 SAR/ شهريا</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border p-4 rounded-lg bg-red-50 border-red-500">
-                            <h4 class="font-bold text-xl text-red-700">تنبيه!</h4>
-                            <p class="text-gray-700 mb-4">
-                                ستنتهي صلاحية هذا الاشتراك يوم الاثنين ، 25. الرجاء تجديد اشتراكك لتجنب فقدان الوصول إلى مكتبك الحجب من الموقع.
-                            </p>
-                            <div>
-                                <x-filament::button>
-                                    تجديد الإشتراك
-                                </x-filament::button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                    <livewire:office.settings.subscription :digitalOffice="$digitalOffice"/>
                 @endif
             </div>
         </div>

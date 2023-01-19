@@ -25,6 +25,9 @@ use App\Http\Controllers\Office\OrdersController;
 use App\Http\Controllers\Office\SchedulesController;
 use App\Http\Controllers\Office\SetupOfficeController;
 use App\Http\Controllers\Office\SubscriptionController;
+use App\Http\Controllers\Payment\BalanceController as PaymentBalanceController;
+use App\Http\Controllers\Payment\PayPalController;
+use App\Http\Controllers\Payment\PayPalWebhookController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
@@ -105,3 +108,22 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'account.settle
 Route::name('search.listing')->prefix('{service:slug?}')->get('/', [OfficeListingController::class, 'index']);
 
 Route::name('search.office')->get('listing/office/{digitalOffice}', [OfficeListingController::class, 'show']);
+
+Route::name('webhook.')->prefix('/webhook')->group(function() {
+    Route::post('/paypal', [PayPalController::class, 'webhook'])->name('paypal');
+});
+
+Route::name('payment.')->prefix('/payment')->middleware(['auth', 'account.settled'])->group(function() {
+
+    Route::name('paypal.')->prefix('/paypal')->group(function() {
+        Route::get('/subscription', [PayPalController::class, 'subscription'])->name('subscription');
+        Route::get('/order', [PayPalController::class, 'order'])->name('order');
+    });
+
+    Route::name('balance.')->prefix('/balance')->group(function() {
+        Route::get('/subscription', [PaymentBalanceController::class, 'subscription'])->name('subscription');
+        Route::get('/order', [PaymentBalanceController::class, 'order'])->name('order');
+    });
+
+
+});

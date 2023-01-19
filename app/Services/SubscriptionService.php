@@ -29,6 +29,7 @@ class SubscriptionService
 		}
 		
 		$subscriber->subscription()->create([
+			'plan_id' => $professionSubscriptionPlan->id,
 			'started_at' => $started_at,
 			'expire_at' => $expire_at
 		]);

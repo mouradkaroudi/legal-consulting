@@ -27,4 +27,12 @@ class ProfessionSubscriptionPlan extends Model
     {
         return $this->belongsTo(Profession::class);
     }
+
+    /**
+     * 
+     */
+    public function getFeeLabelAttribute() {
+        return money($this->fee, 'sar', true)->__toString() .( $this->type != self::ONE_TIME ? '/' . __('subscriptions.types.' . $this->type) : '');
+    }
+
 }

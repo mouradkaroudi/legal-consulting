@@ -16,7 +16,7 @@ class SettingsController extends Controller
      */
     public function __invoke(Request $request)
     {
-        
+
         $settingsRoute = route('office.settings');
 
         $menu = [
@@ -30,12 +30,15 @@ class SettingsController extends Controller
                 'icon' => 'heroicon-o-credit-card',
                 'link' => $settingsRoute . '?tab=withdrawal'
             ],
-            [
+        ];
+
+        if($request->user()->currentOffice->haveSubscriptionPlan()) {
+            $menu[] = [
                 'label' => 'إعدادات الإشتراك',
                 'icon' => 'heroicon-o-user',
                 'link' => $settingsRoute . '?tab=subscription'
-            ]
-        ];
+            ];
+        }
 
         return view('pages.office.settings', [
             'digitalOffice' => auth()->user()->currentOffice,
@@ -43,5 +46,4 @@ class SettingsController extends Controller
             'menu' => $menu
         ]);
     }
-
 }

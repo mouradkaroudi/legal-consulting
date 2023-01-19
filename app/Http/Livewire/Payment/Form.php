@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Payment;
 
-use App\Models\ProfessionSubscriptionPlan;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
@@ -15,7 +14,8 @@ class Form extends Component implements HasForms
     use InteractsWithForms;
 
     public $paymentMethod;
-    public $professionSubscriptionPlan;
+    public $type;
+    public $params = [];
 
     protected function getFormSchema(): array
     {
@@ -25,6 +25,7 @@ class Form extends Component implements HasForms
                 ->options([
                     "balance" => "الرصيد",
                     "paypal" => "بايبال",
+                    "bank_transfer" => "تحويل بنكي",
                 ])
                 ->descriptions([
                     "balance" => "الدفع من الرصيد المتوفر في حسابك",
@@ -37,34 +38,7 @@ class Form extends Component implements HasForms
 
     public function submit()
     {
-
-        $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
-        $paypalToken = $provider->getAccessToken();
-
-        $order = $provider->createOrder([
-            "intent" => "CAPTURE",
-            "application_context" => [
-                "return_url" => route('office.subscription.subscribe', ['plan_id' => $this->professionSubscriptionPlan->id]),
-                "cancel_url" => route('office.subscription.index'),
-            ],
-            "purchase_units" => [
-                0 => [
-                    "custom_id" => 100,
-                    "amount" => [
-                        "currency_code" => "USD",
-                        "value" => $this->professionSubscriptionPlan->fee
-                    ]
-                ]
-            ]
-        ]);
-        
-        // redirect to approve href
-        foreach ($order['links'] as $links) {
-            if ($links['rel'] == 'approve') {
-                return redirect()->away($links['href']);
-            }
-        }
+        return redirect()->route('payment.' . $this->paymentMethod . '.' . $this->type, ['params' => $this->params]);
     }
 
     public function render()

@@ -124,7 +124,7 @@ class DigitalOffice extends Model
 	 * @return bool
 	 */
 	public function isSubscribed(): bool {
-		return !$this->subscription->where('expire_at', null)->orWhere('expire_at', '>', Carbon::now())->get()->isEmpty();
+		return $this->subscription && !$this->subscription->where('expire_at', null)->orWhere('expire_at', '>', Carbon::now())->get()->isEmpty();
 	}
 
 	/**

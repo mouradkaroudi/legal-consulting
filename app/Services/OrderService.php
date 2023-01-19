@@ -32,7 +32,6 @@ class OrderService
 		}
 	}
 
-
 	public static function orderPaid($order) {
 		$order->status = Order::PAID;
 		$order->save();

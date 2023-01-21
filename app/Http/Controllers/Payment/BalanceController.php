@@ -3,19 +3,24 @@
 namespace App\Http\Controllers\Payment;
 
 use App\Http\Controllers\Controller;
+use App\Models\DigitalOffice;
 use App\Models\ProfessionSubscriptionPlan;
+use App\Models\Subscription;
 use App\Models\Transaction;
+use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
 
 class BalanceController extends Controller
 {
-    
-    public function subscription(Request $request) {
 
-        
-        $office = auth()->user()->currentOffice;
+    public function subscription(Request $request)
+    {
 
-        if(empty($office)) {
+        $from = $request['from'] ?? 'account';
+
+        $holder = $from === 'account' ? auth()->user() :  auth()->user()->currentOffice;
+
+        if (empty($holder)) {
             return response('', 400);
         }
 
@@ -25,22 +30,25 @@ class BalanceController extends Controller
 
         $professionSubscriptionPlan = ProfessionSubscriptionPlan::find($plan_id);
 
-        if ($professionSubscriptionPlan->fee > $office->available_balance) {
+        if ($professionSubscriptionPlan->fee > $holder->available_balance) {
             return redirect()->route('office.subscription.failed');
         }
 
-        $txn = Transaction::create([
+        $txn = $holder->transactions()->create([
             'amount' => $professionSubscriptionPlan->fee,
             'type' => 'credit',
             'source' => Transaction::PAY_DUES,
             'status' => Transaction::SUCCESS,
-            'metadata' => ['subscription_plan' => $professionSubscriptionPlan->id]
+            'metadata' => json_encode(['subscription_plan' => $professionSubscriptionPlan->id])
         ]);
 
-        $office->substractFromBalance($professionSubscriptionPlan->fee);
+        $holder->substractFromBalance($professionSubscriptionPlan->fee);
+
+        SubscriptionService::createSubscription(
+            $holder instanceof DigitalOffice ? $holder : $holder->currentOffice,
+            $professionSubscriptionPlan
+        );
 
         return redirect()->route('office.subscription.success');
-
     }
-
 }

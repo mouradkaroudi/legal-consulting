@@ -3,3 +3,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hero-slide-pagination {
+    @apply  rounded-full border border-solid border-white;
+}
+
+.hero-slide-pagination.active {
+    @apply bg-white
+}
+
+.hero-slide-item {
+    @apply hidden;
+}
+
+.hero-slide-item.active {
+    @apply block;
+}

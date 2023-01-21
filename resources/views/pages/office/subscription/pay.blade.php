@@ -13,7 +13,7 @@
             </x-filament::button>
         </div>
 
-        <div class="grid grid-cols-1 gap-6">
+        <div class="grid grid-cols-2 gap-6">
             <x-filament::card>
                 <div class="flex justify-between align-middle">
                     <h2 class="text-xl font-bold mb-2">{{ $professionSubscriptionPlan->name }}</h2>

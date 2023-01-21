@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
-use App\Models\DigitalOffice;
 use App\Models\ProfessionSubscriptionPlan;
-use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
-use Srmklive\PayPal\Services\PayPal;
 
 class SubscriptionController extends Controller
 {
@@ -66,12 +63,6 @@ class SubscriptionController extends Controller
 
     public function success( Request $request )
     {
-        $provider = new PayPal();
-        $provider->setApiCredentials(config('paypal'));
-        $provider->getAccessToken();
-        $response = $provider->capturePaymentOrder($request['token']);
-
-        dd($response);
         return view('pages.office.subscription.success');
     }
 

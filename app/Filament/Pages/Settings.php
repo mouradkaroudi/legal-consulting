@@ -21,6 +21,12 @@ class Settings extends Page
 			->pluck("value", "option")
 			->toArray();
 
+		foreach($settings as $option=>$value) {
+			if (json_decode($value) !== null) {
+				$settings[$option]= json_decode($value, true);
+			}
+		}
+
 		$this->form->fill($settings);
 	}
 
@@ -35,6 +41,11 @@ class Settings extends Page
 	{
 		$settings = $this->form->getState();
 		foreach ($settings as $option => $value) {
+
+			if(!is_string($value)) {
+				$value = json_encode($value);
+			}
+
 			Setting::where("option", $option)->updateOrCreate([
 				"option" => $option,
 				"value" => $value,
@@ -97,6 +108,15 @@ class Settings extends Page
 			Components\Fieldset::make("payment")
 				->label("إعدادت الدفع")
 				->schema($paymentSettingScheme)->columns(1),
+			Components\Fieldset::make("slider")
+				->label("إعدادت سلايدر")
+				->schema([
+					Components\Repeater::make('homepage_slider')->label('سلايدر')->schema([
+						Components\TextInput::make('title'),
+						Components\Textarea::make('content'),
+						Components\ColorPicker::make('color')
+					])
+				])->columns(1),
 		];
 	}
 }

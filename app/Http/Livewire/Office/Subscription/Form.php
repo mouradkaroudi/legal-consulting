@@ -15,6 +15,7 @@ class Form extends Component implements HasForms
     use InteractsWithForms;
 
     public $digitalOffice;
+    public $paymentMethod;
     public $plan_id;
     public $agree;
 
@@ -23,10 +24,18 @@ class Form extends Component implements HasForms
     }
 
     public function submit() {
-        $data = $this->form->getState();
+        $params = ['plan_id' => $this->plan_id];
+        $paymentMethod = $this->paymentMethod;
 
-        return redirect()->route('office.subscription.pay', ['profession_subscription_plan' => $this->plan_id]);
-        
+        if($paymentMethod === 'accountBalance') {
+            $params['from'] = 'account';
+        }
+
+        if(in_array($paymentMethod, ['accountBalance', 'officeBalance'])) {
+            $paymentMethod = 'balance';
+        }
+
+        return redirect()->route('payment.' . $paymentMethod . '.subscription', ['params' => $params]);        
     }
 
     protected function getFormSchema(): array
@@ -40,6 +49,17 @@ class Form extends Component implements HasForms
             })->descriptions(function() use ($plans) {
                 return $plans->pluck('name', 'id');
             })->label(false)->required(),
+            RadioButton::make("paymentMethod")
+            ->label("وصيلة الدفع")
+            ->options([
+                "accountBalance" => "رصيد الحساب",
+                "officeBalance" => "رصيد المكتب",
+                "paypal" => "بايبال",
+                "bank-transfer" => "تحويل بنكي",
+            ])
+            ->columns(1)
+            ->required(),
+
             Checkbox::make('agree')->label('أوافق على شروط إستخدام الموقع.')->required()
         ];
     }

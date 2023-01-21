@@ -12,15 +12,6 @@
             <livewire:account.request-withdrawal-form />
         </div>
     </div>
-    <div class="bg-white border rounded-lg shadow">
-        <div class="p-6 border-b">
-            <h4 class="leading-4 text-xl font-bold">شحن الرصيد</h4>
-        </div>
-        <div class="p-6">
-            <livewire:account.balance.recharge-form />
-        </div>
-    </div>
-
 </div>
 
 <div class="space-y-8 my-8 border-t"></div>

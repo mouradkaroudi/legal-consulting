@@ -26,6 +26,7 @@ use App\Http\Controllers\Office\SchedulesController;
 use App\Http\Controllers\Office\SetupOfficeController;
 use App\Http\Controllers\Office\SubscriptionController;
 use App\Http\Controllers\Payment\BalanceController as PaymentBalanceController;
+use App\Http\Controllers\Payment\BankTransferController;
 use App\Http\Controllers\Payment\PayPalController;
 use App\Http\Controllers\Payment\PayPalWebhookController;
 use App\Http\Middleware\Authenticate;
@@ -44,7 +45,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('pages.home.index');
+
+    $sliders = get_option('homepage_slider');
+
+    return view('pages.home.index', [
+        'sliders' => $sliders
+    ]);
 })->name('home');
 
 Route::name('auth.')->middleware(RedirectIfAuthenticated::class)->group(function() {
@@ -125,5 +131,9 @@ Route::name('payment.')->prefix('/payment')->middleware(['auth', 'account.settle
         Route::get('/order', [PaymentBalanceController::class, 'order'])->name('order');
     });
 
+    Route::name('bank-transfer.')->prefix('/bank-transfer')->group(function() {
+        Route::get('/subscriptions', [BankTransferController::class, 'subscription'])->name('subscription');
+        Route::get('/order', [BankTransferController::class, 'order'])->name('order');
+    });
 
 });

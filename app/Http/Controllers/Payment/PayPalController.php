@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Payment;
 use App\Http\Controllers\Controller;
 use App\Models\ProfessionSubscriptionPlan;
 use Illuminate\Http\Request;
-use Srmklive\PayPal\Traits\PayPalHttpClient;
+use Srmklive\PayPal\Services\PayPal;
+use AmrShawky\LaravelCurrency\Facade\Currency;
 
 class PayPalController extends Controller
 {
-    use PayPalHttpClient;
 
     /**
      * 
@@ -20,10 +20,16 @@ class PayPalController extends Controller
 
         $professionSubscriptionPlan = ProfessionSubscriptionPlan::find($plan_id);
 
-        $provider = new PayPalHttpClient;
+        $provider = new PayPal();
         $provider->setApiCredentials(config('paypal'));
         $paypalToken = $provider->getAccessToken();
 
+        $fee = Currency::convert()
+        ->from('SAR')
+        ->to('USD')
+        ->amount($professionSubscriptionPlan->fee)
+        ->round(2)
+        ->get();
         $order = $provider->createOrder([
             "intent" => "CAPTURE",
             "application_context" => [
@@ -35,7 +41,7 @@ class PayPalController extends Controller
                     "custom_id" => json_encode(['user_id' => auth()->user()->id]),
                     "amount" => [
                         "currency_code" => "USD",
-                        "value" => $professionSubscriptionPlan->fee
+                        "value" => $fee
                     ]
                 ]
             ]

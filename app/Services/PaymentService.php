@@ -42,7 +42,7 @@ class PaymentService
      *
      * @param Request $request
      * @param Subscription $subscription
-     * @return 
+     * @return string
      */
     public function processSubscriptionPayment(Request $request, Subscription $subscription)
     {

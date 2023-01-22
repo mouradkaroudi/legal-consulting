@@ -27,7 +27,7 @@ $slidersArray = json_decode($sliders, true);
                     <h3 class="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
                         سجِل حسابك الآن
                     </h3>
-                    <livewire:auth.registration />
+                    <livewire:auth.login />
                 </div>
             </div>
         </div>

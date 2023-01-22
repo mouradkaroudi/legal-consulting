@@ -1,10 +1,7 @@
 @extends('layouts.dashboard', ['pageTitle' => 'موظفين'])
-
-@section('actions')
-<div class="flex flex-wrap items-center gap-4 justify-start shrink-0">
-</div>
-@endsection
-
 @section('content')
-<livewire:office.employees.list-employees :officeId="$officeId"/>
+<div class="mb-8">
+    <livewire:office.employees.list-employees :officeId="$officeId" />
+</div>
+<livewire:office.employees.invites-table />
 @endsection

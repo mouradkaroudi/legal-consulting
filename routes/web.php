@@ -17,7 +17,6 @@ use App\Http\Controllers\Account\OrdersController as AccountOrdersController;
 use App\Http\Controllers\Office\AppointmentsController;
 use App\Http\Controllers\Office\BalanceController as OfficeBalanceController;
 use App\Http\Controllers\Office\EmployeesController;
-use App\Http\Controllers\Office\InviteController;
 use App\Http\Controllers\Office\MessagesController as OfficeMessagesController;
 use App\Http\Controllers\Office\NotificationsController as OfficeNotificationsController;
 use App\Http\Controllers\Office\SettingsController;
@@ -28,8 +27,6 @@ use App\Http\Controllers\Office\SubscriptionController;
 use App\Http\Controllers\Payment\BalanceController as PaymentBalanceController;
 use App\Http\Controllers\Payment\BankTransferController;
 use App\Http\Controllers\Payment\PayPalController;
-use App\Http\Controllers\Payment\PayPalWebhookController;
-use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
@@ -87,7 +84,6 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
         Route::resource('/appointments', AppointmentsController::class);
         Route::get('/notifications', OfficeNotificationsController::class)->name('notifications');
         Route::resource('/threads', OfficeMessagesController::class);
-        Route::get('/invite', [InviteController::class, 'invite'])->name('invite');    
     });
 
 });

@@ -1,4 +1,4 @@
-<div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
+<div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
   <x-filament::card>
     <div class="flex items-center">
       <div class="p-3 rounded-full text-orange-500 dark:text-orange-100 bg-orange-100 dark:bg-orange-500 ml-4">

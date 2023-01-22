@@ -82,13 +82,5 @@ class Sidebar extends Component
       ];
     }
 
-    if ($user->hasOfficePermission($user->currentOffice, "send-invites")) {
-      $this->sidebarLinks[] = [
-        "label" => "ارسال دعوة",
-        "routeName" => "office.invite",
-        'icon' => 'heroicon-o-user-add'
-      ];
-    }
-
   }
 }

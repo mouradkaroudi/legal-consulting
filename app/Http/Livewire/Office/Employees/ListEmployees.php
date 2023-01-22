@@ -2,11 +2,17 @@
 
 namespace App\Http\Livewire\Office\Employees;
 
+use App\Events\Office\InviteSent;
 use App\Models\DigitalOfficeEmployee;
+use App\Models\Invite;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Livewire\Component;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class ListEmployees extends Component implements Tables\Contracts\HasTable
 {
@@ -26,17 +32,49 @@ class ListEmployees extends Component implements Tables\Contracts\HasTable
 		return view("livewire.office.employees.list-employees");
 	}
 
+	protected function getTableHeaderActions(): array
+	{
+		return [
+			Action::make('sendInvite')->button()->label('ارسل دعوة')
+				->action(function ( $record, array $data) {
+					$token =  Str::random(16);
+
+					$invite = Invite::create([
+						'office_id' => $this->officeId,
+						'email' => $data['email'],
+						'token' => $token
+					]);
+			
+					InviteSent::dispatch($invite);
+			
+					Notification::make() 
+					->title('تم ارسال الدعوة')
+					->success()
+					->send();
+			
+				})
+				->modalWidth('sm')
+				->form(function () {
+					return [
+						TextInput::make('email')->label(__('validation.attributes.email'))->email()
+					];
+				})
+		];
+	}
+
+
+
 	protected function getTableActions(): array
 	{
 		return [
 			Tables\Actions\EditAction::make()
 				->url(
-					fn(DigitalOfficeEmployee $record): string => route(
+					fn (DigitalOfficeEmployee $record): string => route(
 						"office.employees.edit",
 						["employee" => $record->id]
 					)
 				)
-				->hidden(fn($record): bool => $record->ended_at != null || $record->isOwner( auth()->user()->currentOffice )),
+				->hidden(fn ($record): bool => $record->ended_at != null || $record->isOwner(auth()->user()->currentOffice)),
 		];
 	}
 
@@ -46,7 +84,7 @@ class ListEmployees extends Component implements Tables\Contracts\HasTable
 			Filter::make("show_active_employees")
 				->label("إظهار النشطين فقط")
 				->query(
-					fn(Builder $query, array $data): Builder => $query->active()
+					fn (Builder $query, array $data): Builder => $query->active()
 				),
 		];
 	}

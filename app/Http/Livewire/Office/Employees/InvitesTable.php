@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Http\Livewire\Office\Invites;
+namespace App\Http\Livewire\Office\Employees;
 
 use App\Models\Invite;
+use Closure;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\Modal\Actions\Action;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Illuminate\Contracts\Support\Htmlable;
 use Livewire\Component;
 
-class Table extends Component implements HasTable
+class InvitesTable extends Component implements HasTable
 {
 
     use InteractsWithTable;
@@ -21,12 +25,17 @@ class Table extends Component implements HasTable
         ];
     }
 
+    protected function getTableHeading(): string|Htmlable|Closure|null
+    {
+        return 'دعوات في انتظار الموافقة';
+    }
+
     protected function getTableQuery() {
         return Invite::where("office_id", auth()->user()->currentOffice->id);
     }
 
     public function render()
     {
-        return view('livewire.office.invites.table');
+        return view('livewire.office.employees.invites-table');
     }
 }

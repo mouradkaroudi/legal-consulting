@@ -43,7 +43,7 @@ $currentUrl = request()->fullUrl();
                 @elseif($tab === 'withdrawal')
                 <livewire:office.withdrawal-methods-form />
                 @elseif($tab === 'subscription')
-                    <livewire:office.settings.subscription :digitalOffice="$digitalOffice"/>
+                <livewire:office.settings.subscription :digitalOffice="$digitalOffice" />
                 @endif
             </div>
         </div>

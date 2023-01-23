@@ -1,4 +1,4 @@
-<a href="{{ route('search.office', ['digitalOffice' => $office->id]) }}" class="relative block border rounded-xl bg-white">
+<a href="{{ route('search.office', ['digitalOffice' => $office->id, 'name' => $office->url_name]) }}" class="relative block border rounded-xl bg-white">
     <div class="absolute top-0 right-0 p-3">
         @if($office->status === 'AVAILABLE')
             <span class="rounded-full p-2 px-4 font-bold text-sm bg-green-500 text-green-100 block animate-pulse">متوفر</span>

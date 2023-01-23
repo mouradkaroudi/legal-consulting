@@ -20,7 +20,15 @@ class OfficeListingController extends Controller
     }
 
     public function show( DigitalOffice $digitalOffice ) {
-        
+
+        if(!$digitalOffice->isSetuped()) {
+            return abort(404);
+        }
+
+        if( get_option('digital_office_hide_unsubscribed_offices') && $digitalOffice->isSubscribed() === false ) {
+            return abort(404);
+        }
+
         $displayMessagingForm = true;
         $user = auth()->user();
         if($user && $user->belongsToOffice($digitalOffice)) {

@@ -107,9 +107,17 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'account.settle
 
 });
 
-Route::name('search.listing')->prefix('{service:slug?}')->get('/', [OfficeListingController::class, 'index']);
 
-Route::name('search.office')->get('listing/office/{digitalOffice}', [OfficeListingController::class, 'show']);
+Route::name('search.')->group(function() {
+    Route::get('{service:slug?}', [OfficeListingController::class, 'index'])->name('listing');
+    Route::get('listing/office/{digitalOffice}-{name}', [OfficeListingController::class, 'show'])
+    ->where([
+        'digitalOffice' => '[0-9]+', 
+        'title' => '[a-zA-Z0-9-]+'
+    ])
+    ->name('office');
+});
+
 
 Route::name('webhook.')->prefix('/webhook')->group(function() {
     Route::post('/paypal', [PayPalController::class, 'webhook'])->name('paypal');

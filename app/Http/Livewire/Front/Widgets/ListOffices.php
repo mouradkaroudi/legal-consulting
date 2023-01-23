@@ -33,11 +33,6 @@ class ListOffices extends Component implements HasForms
 		];
 	}
 
-	public function submit()
-	{
-
-	}
-
 	protected function getLocationFormSchema(): array
 	{
 		return [
@@ -67,7 +62,6 @@ class ListOffices extends Component implements HasForms
 
 	protected function getMainFormSchema(): array
 	{
-
 
 		return [
 			\Filament\Forms\Components\Grid::make()
@@ -103,11 +97,9 @@ class ListOffices extends Component implements HasForms
 	{
 		
 		$user = auth()->user();
-		$offices = DigitalOffice::completed()->where('service_id', $this->service->id);
+		$offices = DigitalOffice::where('service_id', $this->service->id)->setuped();
 		
-		if(!$user) {
-			$offices = $offices->noHidden();
-		}else if(!$user->can_contact_offices()){
+		if(!$user || !$user->can_contact_offices()) {
 			$offices = $offices->noHidden();
 		}
 
@@ -121,6 +113,10 @@ class ListOffices extends Component implements HasForms
 
 		if(!empty($this->specializationsIds)) {
 
+		}
+
+		if(get_option('digital_office_hide_unsubscribed_offices')) {
+			$offices = $offices->subscribed();
 		}
 
 		$offices = $offices->get();

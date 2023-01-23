@@ -14,6 +14,7 @@ use Filament\Notifications\Notification;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Date;
 use Livewire\Component;
+use Spatie\Permission\Models\Permission;
 
 class Form extends Component implements HasForms
 {
@@ -23,12 +24,17 @@ class Form extends Component implements HasForms
 
 	public function mount($digitalOfficeEmployee)
 	{
+
+		dd($digitalOfficeEmployee->getDirectPermissions());
 		$this->form->fill([
 			"name" => $digitalOfficeEmployee->user->name,
 			"email" => $digitalOfficeEmployee->user->email,
 			"job_title" => $digitalOfficeEmployee->job_title,
 			"created_at" => $digitalOfficeEmployee->created_at,
 			"ended_at" => $digitalOfficeEmployee->ended_at,
+			"permissions" => [
+				'foo','bar'
+			]
 		]);
 	}
 
@@ -61,6 +67,9 @@ class Form extends Component implements HasForms
 
 	protected function getFormSchema(): array
 	{
+
+		$permissions = Permission::where('guard_name', 'web')->pluck('name', 'id'); 
+
 		return [
 			Grid::make([
 				"default" => 2,
@@ -75,7 +84,8 @@ class Form extends Component implements HasForms
 					TextInput::make("job_title")->label("المسمى الوظيفي"),
 					CheckboxList::make("permissions")
 						->label("الصلاحيات")
-						->relationship("permissions", "name")
+						//->relationship("roles", "name", fn($query) => $query->with('permissions'))
+						->options($permissions)
 						->getOptionLabelFromRecordUsing(function ($record) {
 							return __("permissions." . $record->name);
 						})

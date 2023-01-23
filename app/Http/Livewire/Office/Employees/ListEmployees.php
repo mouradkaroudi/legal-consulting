@@ -3,8 +3,10 @@
 namespace App\Http\Livewire\Office\Employees;
 
 use App\Events\Office\InviteSent;
+use App\Models\DigitalOffice;
 use App\Models\DigitalOfficeEmployee;
 use App\Models\Invite;
+use App\Services\InviteService;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Livewire\Component;
@@ -37,21 +39,19 @@ class ListEmployees extends Component implements Tables\Contracts\HasTable
 		return [
 			Action::make('sendInvite')->button()->label('ارسل دعوة')
 				->action(function ( $record, array $data) {
-					$token =  Str::random(16);
-
-					$invite = Invite::create([
-						'office_id' => $this->officeId,
-						'email' => $data['email'],
-						'token' => $token
-					]);
-			
-					InviteSent::dispatch($invite);
-			
-					Notification::make() 
-					->title('تم ارسال الدعوة')
-					->success()
-					->send();
-			
+					try {
+						InviteService::send( DigitalOffice::find($this->officeId), $data['email'] );
+						Notification::make() 
+						->title('تم ارسال الدعوة')
+						->success()
+						->send();	
+					} catch (\Throwable $th) {
+						Notification::make() 
+						->title($th->getMessage())
+						->danger()
+						->send();	
+					}
+					
 				})
 				->modalWidth('sm')
 				->form(function () {
@@ -74,7 +74,7 @@ class ListEmployees extends Component implements Tables\Contracts\HasTable
 						["employee" => $record->id]
 					)
 				)
-				->hidden(fn ($record): bool => $record->ended_at != null || $record->isOwner(auth()->user()->currentOffice)),
+				->hidden(fn ($record): bool => $record->isOwner(auth()->user()->currentOffice)),
 		];
 	}
 

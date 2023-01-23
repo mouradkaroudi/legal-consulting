@@ -3,15 +3,14 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Date;
 
-// TODO: add hide/display offices
-// TODO: add supervisor to admin
-// hide service => hide office
-// TODO: ban users
-// TODO: add payment method
+use Illuminate\Support\Str;
+
 class DigitalOffice extends Model
 {
 	use HasFactory, Notifiable;
@@ -50,7 +49,7 @@ class DigitalOffice extends Model
 	];
 
 	/**
-	 *
+	 * Retrieve office active employees
 	 */
 	public function employees()
 	{
@@ -128,16 +127,12 @@ class DigitalOffice extends Model
 	}
 
 	/**
-	 *
+	 * Determine if the office is setuped
+	 * 
+	 * @return bool
 	 */
-	public function scopeCompleted($query)
-	{
-		return $query->where("status", "!=", self::UNCOMPLETED);
-	}
-
-	public function scopeNoHidden($query)
-	{
-		return $query->where("is_hidden", false);
+	public function isSetuped(): bool {
+		return in_array($this->status,[self::AVAILABLE, self::BUSY]); 
 	}
 
 	/**
@@ -173,6 +168,29 @@ class DigitalOffice extends Model
 	}
 
 	/**
+	 * 
+	 */
+	public function scopeSubscribed( $query ) {
+		return $query->whereHas('subscription', function(Builder $query) {
+			$query->where('expire_at', null)->orWhere('expire_at', '>=', Date::now());
+		});
+	}
+
+	/**
+	 *  
+	 */
+	public function scopeSetuped( Builder $query ) {
+		return $query->whereIn('status', [self::AVAILABLE, self::BUSY]);
+	}
+
+	/**
+	 * 
+	 */
+	public function scopeNoHidden(Builder $query) {
+		return $query->where('is_hidden', false);
+	}
+
+	/**
 	 *
 	 */
 	public function addToBalance(float $amount)
@@ -197,6 +215,13 @@ class DigitalOffice extends Model
 	{
 		$this->available_balance = $this->available_balance - $amount;
 		$this->save();
+	}
+
+	/**
+	 * 
+	 */
+	public function getUrlNameAttribute() {
+		return Str::replace(' ', '-', $this->name);
 	}
 
 	function getLocationAttribute($value)

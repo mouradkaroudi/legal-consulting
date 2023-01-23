@@ -21,7 +21,7 @@ class Table extends Component implements HasTable
 			\Filament\Tables\Columns\TextColumn::make("office.name")->label("المكتب"),
 			\Filament\Tables\Columns\TextColumn::make("created_at")->label(
 				"تاريخ الإرسال"
-			),
+			)->date(),
 		];
 	}
 

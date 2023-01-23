@@ -1,14 +1,43 @@
 <?php
 namespace App\Services;
 
+use App\Events\Office\InviteSent;
+use App\Models\DigitalOffice;
 use App\Models\DigitalOfficeEmployee;
 use App\Models\Invite;
 use App\Models\Profile;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class InviteService
 {
-	public static function accept(Invite $invite)
+
+	/**
+	 * Send invite to user
+	 */
+	public static function send( DigitalOffice $office, $user_email ) {
+		
+		$user = User::where('email', $user_email)->first();
+
+		if($user && $user->belongsToOffice($office)) {
+			throw new \Exception("User already added as employee to this office", 1);
+		}
+		
+		$token =  Str::random(16);
+
+		$invite = Invite::create([
+			'office_id' => $office->id,
+			'email' => $user->email,
+			'token' => $token
+		]);
+
+		InviteSent::dispatch($invite);
+	}
+
+	/**
+	 * Accept employement invitation from office
+	 */
+	public static function accept(Invite $invite): void
 	{
 		$user = User::where("email", $invite->email)->first();
 		$user_id = $user->id;

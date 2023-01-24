@@ -74,7 +74,7 @@ class ListEmployees extends Component implements Tables\Contracts\HasTable
 						["employee" => $record->id]
 					)
 				)
-				->hidden(fn ($record): bool => $record->isOwner(auth()->user()->currentOffice)),
+				->visible(fn (DigitalOfficeEmployee $record): bool => auth()->user()->can('update', $record)),
 		];
 	}
 

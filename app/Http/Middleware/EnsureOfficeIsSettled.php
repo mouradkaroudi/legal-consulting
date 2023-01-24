@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\DigitalOffice;
+use App\Services\SubscriptionService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
@@ -37,6 +38,8 @@ class EnsureOfficeIsSettled extends Middleware
             $currentOffice->status === DigitalOffice::PENDING_PAYMENT
             ||
             (
+                SubscriptionService::isEnabled()
+                &&
                 $currentOffice->haveSubscriptionPlan()
                 &&
                 $currentOffice->isSubscribed() === false

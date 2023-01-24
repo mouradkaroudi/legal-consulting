@@ -52,7 +52,7 @@ class DigitalOfficeEmployee extends Model
     }
 
     /**
-     * Query active offices
+     * Query only active employees
      */
     public function scopeActive( $query ) {
         return $query->where('ended_at', null);

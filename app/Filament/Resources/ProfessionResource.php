@@ -11,8 +11,6 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProfessionResource extends Resource
 {
@@ -20,25 +18,40 @@ class ProfessionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'Entities';
-    protected static ?string $navigationLabel = 'المهن';
+
+    protected static function getNavigationLabel(): string
+    {
+        return static::$navigationLabel ?? static::$navigationLabel ?? __('filament::resources/professions.label.plural');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return static::$pluralModelLabel ?? static::$pluralModelLabel ?? __('filament::resources/professions.label.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return static::$modelLabel ?? static::$modelLabel ?? __('filament::resources/professions.label.singular');
+    }
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('service_id')->options(function() {
-                    return Service::all()->pluck('name', 'id');
-                })->label('اختر الخدمة')
+                Forms\Components\Select::make('service')
+                ->relationship('service', 'name')
+                    ->label(__('filament::resources/professions.form.fields.service_id.label'))
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->reactive()
                     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', str_replace(' ', '-', $state)))
-                    ->label('الإسم')
+                    ->label(__('filament::resources/professions.form.fields.name.label'))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
                     ->required()
-                    ->label('الإسم اللطيف')
+                    ->label(__('filament::resources/professions.form.fields.slug.label'))
                     ->maxLength(255),
             ]);
     }
@@ -48,6 +61,7 @@ class ProfessionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('filament::resources/professions.table.columns.name.label'))
             ])
             ->filters([
                 //
@@ -59,14 +73,14 @@ class ProfessionResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             RelationManagers\SpecializationsRelationManager::class,
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -74,5 +88,5 @@ class ProfessionResource extends Resource
             'create' => Pages\CreateProfession::route('/create'),
             'edit' => Pages\EditProfession::route('/{record}/edit'),
         ];
-    }    
+    }
 }

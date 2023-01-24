@@ -19,7 +19,21 @@ class ServiceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'Entities';
-    protected static ?string $navigationLabel = 'الخدمات';
+
+    protected static function getNavigationLabel(): string
+    {
+        return static::$navigationLabel ?? static::$navigationLabel ?? __('filament::resources/services.label.plural');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return static::$pluralModelLabel ?? static::$pluralModelLabel ?? __('filament::resources/services.label.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return static::$modelLabel ?? static::$modelLabel ?? __('filament::resources/services.label.singular');
+    }
 
     public static function form(Form $form): Form
     {
@@ -28,11 +42,11 @@ class ServiceResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', str_replace(' ', '-', $state)))
-                    ->label('الإسم')
+                    ->label(__('filament::resources/services.form.fields.name.label'))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
                     ->required()
-                    ->label('الإسم اللطيف')
+                    ->label(__('filament::resources/services.form.fields.slug.label'))
                     ->maxLength(255),
             ]);
     }
@@ -41,7 +55,8 @@ class ServiceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('الإسم')
+                Tables\Columns\TextColumn::make('name')
+                    ->label(__('filament::resources/services.table.columns.name.label'))
             ])
             ->filters([
                 //
@@ -53,14 +68,14 @@ class ServiceResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             RelationManagers\ProfessionsRelationManager::class,
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -68,5 +83,5 @@ class ServiceResource extends Resource
             'create' => Pages\CreateService::route('/create'),
             'edit' => Pages\EditService::route('/{record}/edit'),
         ];
-    }    
+    }
 }

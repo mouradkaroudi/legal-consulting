@@ -9,9 +9,11 @@ use Filament\Pages\Page;
 class Settings extends Page
 {
 	protected static ?string $navigationIcon = "heroicon-o-document-text";
-	protected static ?string $navigationLabel = "اعدادات الموقع";
-	protected static ?string $pluralModelLabel = "اعدادات الموقع";
-	protected static ?string $title = "اعدادات الموقع";
+
+	protected static function getNavigationLabel(): string
+	{
+		return static::$navigationLabel ?? static::$title ?? __('filament::pages/settings.title');
+	}
 
 	protected static string $view = "filament.pages.settings";
 
@@ -21,20 +23,13 @@ class Settings extends Page
 			->pluck("value", "option")
 			->toArray();
 
-		foreach($settings as $option=>$value) {
+		foreach ($settings as $option => $value) {
 			if (json_decode($value) !== null) {
-				$settings[$option]= json_decode($value, true);
+				$settings[$option] = json_decode($value, true);
 			}
 		}
 
 		$this->form->fill($settings);
-	}
-
-	protected function getBreadcrumbs(): array
-	{
-		return [
-			url()->current() => "اعدادات",
-		];
 	}
 
 	public function submit()
@@ -42,7 +37,7 @@ class Settings extends Page
 		$settings = $this->form->getState();
 		foreach ($settings as $option => $value) {
 
-			if(!is_string($value)) {
+			if (!is_string($value)) {
 				$value = json_encode($value);
 			}
 
@@ -58,64 +53,66 @@ class Settings extends Page
 		$digitalOfficeSettingsScheme = [
 			Components\Grid::make(2)->schema([
 				Components\Toggle::make("digital_office_direct_registration")->label(
-					"تسجيل مباشر"
-				)->helperText('تسجيل مكتب وظهوره في الموقع دون الحاجة لموافقة ادارة الموقع.'),
+					__('filament::pages/settings.fields.digital_office.fields.direct_registration.label')
+				)->helperText(__('filament::pages/settings.fields.digital_office.fields.direct_registration.helperText')),
 				Components\Toggle::make("digital_office_hide_unsubscribed_offices")->label(
-					"حجب المكاتب غير مشتركة"
-				)->helperText('سيتم حجب كل المكاتب غير مشتركة او انتهت مدة اشتراكها. (هذه الخاصية تعمل اذا اكانت خاصية الإشتراكات مفعلة)'),
+					__('filament::pages/settings.fields.digital_office.fields.hide_unsubscribed_offices.label')
+				)->helperText(__('filament::pages/settings.fields.digital_office.fields.hide_unsubscribed_offices.helperText')),
 			]),
 		];
 
 		$subscriptionsSettingsScheme = [
 			Components\Grid::make(2)->schema([
 				Components\Toggle::make("subscriptions_enable_subscription")->label(
-					"تفعيل الإشتراك للمكاتب"
-				)->helperText('سيتم طلب من مكتب دفع رسوم اشتراك على حسب المهنة التي يمارسها.'),
+					__('filament::pages/settings.fields.subscriptions.fields.enable_subscription.label')
+				)->helperText(__('filament::pages/settings.fields.subscriptions.fields.enable_subscription.helperText')),
 			]),
 		];
 
 
 		$registrationSettingsScheme = [
-			Components\Toggle::make("registration_open")->label("التسجيل مفتوح"),
+			Components\Toggle::make("registration_open")
+				->label(__('filament::pages/settings.fields.registration.fields.registration_open.label')),
 		];
 
 		$paymentSettingScheme = [
-			Components\Toggle::make("transactions_bank_transfer")->label(
-				"استقبال التحويلات البكنية"
-			)
-			->reactive(),
+			Components\Toggle::make("transactions_bank_transfer")
+				->label(__('filament::pages/settings.fields.payment.fields.bank_transfer.label'))
+				->reactive(),
 			Components\TextInput::make("transactions_bank_rib")
-				->label("رقم معرف الحساب البنكي")
-				->helperText("رقم الحساب البنكي الذي تريد استقبال الحولات فيه.")
+				->label(__('filament::pages/settings.fields.payment.fields.bank_rib.label'))
+				->label(__('filament::pages/settings.fields.payment.fields.bank_rib.helperText'))
 				->reactive()
 				->hidden(fn ($state, callable $get) => $get('transactions_bank_transfer') == 0)
-				->helperText("رقم الحساب البنكي الذي تريد استقبال الحولات فيه."),
 		];
 
 		return [
 			Components\Fieldset::make("digital_office")
-				->label("إعدادت المكاتب")
+				->label(__('filament::pages/settings.fields.digital_office.label'))
 				->schema($digitalOfficeSettingsScheme),
 			Components\Fieldset::make("subscriptions")
-				->label("إعدادت الإشتراك")
+				->label(__('filament::pages/settings.fields.subscriptions.label'))
 				->schema($subscriptionsSettingsScheme),
-			//Components\Fieldset::make("order")
-				//->label("إعدادت الطلبات")
-				//->schema($orderSettingsScheme),
-			Components\Fieldset::make("order")
-				->label("إعدادت التسجيل")
+			Components\Fieldset::make("registration")
+				->label(__('filament::pages/settings.fields.registration.label'))
 				->schema($registrationSettingsScheme),
 			Components\Fieldset::make("payment")
-				->label("إعدادت الدفع")
+				->label(__('filament::pages/settings.fields.payment.label'))
 				->schema($paymentSettingScheme)->columns(1),
 			Components\Fieldset::make("slider")
-				->label("إعدادت سلايدر")
+				->label(__('filament::pages/settings.fields.slider.label'))
 				->schema([
-					Components\Repeater::make('homepage_slider')->label('سلايدر')->schema([
-						Components\TextInput::make('title'),
-						Components\Textarea::make('content'),
-						Components\ColorPicker::make('color')
-					])
+					Components\Repeater::make('homepage_slider')
+						->label(__('filament::pages/settings.fields.slider.fields.homepage_slider.label'))
+						->schema([
+							Components\TextInput::make('title')
+								->label(__('filament::pages/settings.fields.slider.fields.homepage_slider.fields.title')),
+							Components\Textarea::make('content')
+								->label(__('filament::pages/settings.fields.slider.fields.homepage_slider.fields.content')),
+							Components\ColorPicker::make('color')
+								->label(__('filament::pages/settings.fields.slider.fields.homepage_slider.fields.color'))
+
+						])
 				])->columns(1),
 		];
 	}

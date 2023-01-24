@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Office\Employees;
 
 use App\Models\DigitalOfficeEmployee;
+use Carbon\Carbon;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Grid;
@@ -25,16 +26,16 @@ class Form extends Component implements HasForms
 	public function mount($digitalOfficeEmployee)
 	{
 
-		dd($digitalOfficeEmployee->getDirectPermissions());
+		$formatedDate = Carbon::parse($digitalOfficeEmployee->updated_at)
+			->translatedFormat(config('tables.date_format'));
+
 		$this->form->fill([
 			"name" => $digitalOfficeEmployee->user->name,
 			"email" => $digitalOfficeEmployee->user->email,
 			"job_title" => $digitalOfficeEmployee->job_title,
-			"created_at" => $digitalOfficeEmployee->created_at,
+			"updated_at" => $formatedDate,
 			"ended_at" => $digitalOfficeEmployee->ended_at,
-			"permissions" => [
-				'foo','bar'
-			]
+			"permissions" => $digitalOfficeEmployee->getDirectPermissions()->pluck('id')->all()
 		]);
 	}
 
@@ -42,33 +43,33 @@ class Form extends Component implements HasForms
 	{
 		$this->authorize("update", [$this->digitalOfficeEmployee]);
 
-        $redirect = false;
-
 		$data = $this->form->getState();
-		if (isset($data["ended_at"]) && !empty($data["ended_at"])) {
-			$this->digitalOfficeEmployee->ended_at = Date::now();
-            $redirect = true;
+
+		$permissions = $data['permissions'];
+
+		if (isset($data["ended_at"])) {
+			if (!empty($data["ended_at"])) {
+				$this->digitalOfficeEmployee->ended_at = Date::now();
+			} else {
+				$this->digitalOfficeEmployee->ended_at = null;
+			}
 		}
 
 		$this->digitalOfficeEmployee->job_title = $data["job_title"];
-
 		$this->digitalOfficeEmployee->save();
-        
-        Notification::make()
-        ->title('تم الحفظ بنجاح')
-        ->success()
-        ->send();
-        
-        if($redirect) {
-            redirect()->route('office.employees.index');
-        }
 
+		$this->digitalOfficeEmployee->syncPermissions($permissions);
+
+		Notification::make()
+			->title('تم الحفظ بنجاح')
+			->success()
+			->send();
 	}
 
 	protected function getFormSchema(): array
 	{
 
-		$permissions = Permission::where('guard_name', 'web')->pluck('name', 'id'); 
+		$permissions = Permission::where('guard_name', 'web')->pluck('name', 'id');
 
 		return [
 			Grid::make([
@@ -84,15 +85,11 @@ class Form extends Component implements HasForms
 					TextInput::make("job_title")->label("المسمى الوظيفي"),
 					CheckboxList::make("permissions")
 						->label("الصلاحيات")
-						//->relationship("roles", "name", fn($query) => $query->with('permissions'))
 						->options($permissions)
-						->getOptionLabelFromRecordUsing(function ($record) {
-							return __("permissions." . $record->name);
-						})
 						->columns(2),
 				])->columnSpan(1),
 				Card::make([
-					TextInput::make("created_at")
+					TextInput::make("updated_at")
 						->label("تاريخ بدء العمل")
 						->disabled(),
 					Toggle::make("ended_at")->label("إنهاء عقد العمل"),

@@ -1,6 +1,8 @@
 @php
 $slidersArray = json_decode($sliders, true);
 @endphp
+
+@if($slidersArray)
 <div id="homepage-hero" class="relative" style="background-color: {{ $slidersArray[0]['color'] }};">
     <div class="relative px-4 py-16 mx-auto overflow-hidden sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
         <div class="flex flex-col items-center justify-between xl:flex-row">
@@ -33,7 +35,6 @@ $slidersArray = json_decode($sliders, true);
         </div>
     </div>
 </div>
-
 <script>
     var slides = JSON.parse('{!! json_encode(array_column($slidersArray,"color")) !!}');
     var currentSlide = 1;
@@ -64,3 +65,4 @@ $slidersArray = json_decode($sliders, true);
         }
     }, 15000);
 </script>
+@endif

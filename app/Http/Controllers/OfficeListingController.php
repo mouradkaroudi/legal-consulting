@@ -37,7 +37,7 @@ class OfficeListingController extends Controller
 
         $orders = $digitalOffice->orders;
 
-        return view('pages.search.single', [
+        return view('pages.search.single.index', [
             'office' => $digitalOffice,
             'displayMessagingForm' => $displayMessagingForm,
             'orders' => $orders

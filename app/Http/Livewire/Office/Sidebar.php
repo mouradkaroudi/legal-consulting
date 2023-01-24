@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Office;
 
+use App\Models\DigitalOfficeEmployee;
 use App\Models\Message;
+use App\Models\Order;
 use App\Models\Thread;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +53,7 @@ class Sidebar extends Component
       "routeName" => "office.notifications",
       'icon' => 'heroicon-o-bell'
     ];
+
     $this->sidebarLinks[] = [
       "label" => "جدول المواعيد",
       "routeName" => "office.schedules.index",
@@ -58,7 +61,7 @@ class Sidebar extends Component
     ];
 
     if (
-      $user->hasOfficePermission($user->currentOffice, "manage-employees")
+      $user->can('viewAny', DigitalOfficeEmployee::class)
     ) {
       $this->sidebarLinks[] = [
         "label" => "الموظفين",
@@ -67,13 +70,15 @@ class Sidebar extends Component
       ];
     }
 
-    $this->sidebarLinks[] = [
-      "label" => "الطلبات",
-      "routeName" => "office.orders.index",
-      'icon' => 'heroicon-o-shopping-cart'
-    ];
+    if($user->can('viewAny', Order::class)) {
+      $this->sidebarLinks[] = [
+        "label" => "الطلبات",
+        "routeName" => "office.orders.index",
+        'icon' => 'heroicon-o-shopping-cart'
+      ];
+    }
 
-    if ($user->hasOfficePermission($user->currentOffice, "manage-messages")) {
+    if ($user->can('viewAny', Thread::class)) {
       $this->sidebarLinks[] = [
         "label" => "المحادثات",
         "routeName" => "office.threads.index",

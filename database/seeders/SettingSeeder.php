@@ -25,6 +25,7 @@ class SettingSeeder extends Seeder
 			["option" => "balance_min_withdrawals", "value" => 0],
 			["option" => "transactions_bank_transfer", "value" => 0],
 			["option" => "transactions_bank_rib", "value" => ""],
+			["option" => "homepage_slider", "value" => ""]
 		];
 
 		\App\Models\Setting::insert($settings);

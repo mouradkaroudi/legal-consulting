@@ -14,31 +14,41 @@ class SpecializationsRelationManager extends RelationManager
 {
     protected static string $relationship = 'specializations';
 
-    protected static ?string $recordTitleAttribute = 'profession_id';
-    protected static ?string $modelLabel = 'تخصص';
-    protected static ?string $title = 'التخصصات';
+    // protected static ?string $recordTitleAttribute = 'profession_id';
+
+    public static function getTitle(): string
+    {
+        return __('filament::resources/specializations.label.plural');
+    }
+
+    protected static function getModelLabel(): string {
+        return  __('filament::resources/specializations.label.singular');
+    }
 
     public static function form(Form $form): Form
     {
-		return $form->schema([
-			Forms\Components\TextInput::make("name")
-				->required()
+        return $form->schema([
+            Forms\Components\TextInput::make("name")
+                ->label(__('filament::resources/specializations.form.fields.name.label'))
+                ->required()
                 ->reactive()
                 ->afterStateUpdated(fn ($state, callable $set) => $set('slug', str_replace(' ', '-', $state)))
-                ->label('الإسم')
-				->maxLength(255),
-			Forms\Components\TextInput::make("slug")
-				->required()
+                ->maxLength(255),
+            Forms\Components\TextInput::make("slug")
+                ->label(__('filament::resources/specializations.form.fields.slug.label'))
+                ->required()
                 ->label('الاسم اللطيف')
-				->maxLength(255),
-		]);
+                ->maxLength(255),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('الإسم'),
+                Tables\Columns\TextColumn::make('name')
+                ->label(__('filament::resources/specializations.table.columns.name.label'))
+                ,
             ])
             ->filters([
                 //
@@ -53,5 +63,5 @@ class SpecializationsRelationManager extends RelationManager
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
-    }    
+    }
 }

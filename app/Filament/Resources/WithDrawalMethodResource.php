@@ -24,10 +24,6 @@ class WithDrawalMethodResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
-    protected static ?string $navigationLabel = 'طرق السحب';
-    protected static ?string $label = 'طريقة السحب';
-    protected static ?string $pluralLabel = 'طرق السحب';
-
     public static function form(Form $form): Form
     {
         return $form

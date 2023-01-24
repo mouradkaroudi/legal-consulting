@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'account.canAccessCurrentOffice' => \App\Http\Middleware\EnsureUserCanAccessOffice::class,
         'office.settled' => \App\Http\Middleware\EnsureOfficeIsSettled::class,
         'account.settled' => \App\Http\Middleware\EnsureAccountIsSettled::class,
+        'office.employee.can' => \App\Http\Middleware\AuthorizeEmployee::class,
     ];
 }

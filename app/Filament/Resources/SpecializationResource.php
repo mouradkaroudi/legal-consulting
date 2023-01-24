@@ -19,19 +19,37 @@ class SpecializationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'Entities';
-    protected static ?string $navigationLabel = 'التخصصات';
+
+    protected static function getNavigationLabel(): string
+    {
+        return static::$navigationLabel ?? static::$navigationLabel ?? __('filament::resources/specializations.label.plural');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return static::$pluralModelLabel ?? static::$pluralModelLabel ?? __('filament::resources/specializations.label.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return static::$modelLabel ?? static::$modelLabel ?? __('filament::resources/specializations.label.singular');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('profession_id')
+                Forms\Components\Select::make('profession_id')
+                    ->label(__('filament::resources/specializations.form.fields.profession_id.label'))
+                    ->relationship('profession', 'name')
                     ->required(),
                 Forms\Components\TextInput::make('name')
+                    ->label(__('filament::resources/specializations.form.fields.name.label'))
                     ->required()
                     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', str_replace(' ', '-', $state)))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
+                    ->label(__('filament::resources/specializations.form.fields.slug.label'))
                     ->required()
                     ->maxLength(255),
             ]);
@@ -41,7 +59,8 @@ class SpecializationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label(__('filament::resources/specializations.table.columns.name.label')),
             ])
             ->filters([
                 //
@@ -53,14 +72,14 @@ class SpecializationResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -68,5 +87,5 @@ class SpecializationResource extends Resource
             'create' => Pages\CreateSpecialization::route('/create'),
             'edit' => Pages\EditSpecialization::route('/{record}/edit'),
         ];
-    }    
+    }
 }

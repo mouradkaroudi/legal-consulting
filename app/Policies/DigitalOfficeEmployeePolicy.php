@@ -33,7 +33,10 @@ class DigitalOfficeEmployeePolicy
 	 */
 	public function view(User $user, DigitalOfficeEmployee $digitalOfficeEmployee)
 	{
-		return true;
+		return $user->hasOfficePermission(
+			$user->currentOffice,
+			"manage-employees"
+		);
 	}
 
 	/**
@@ -44,7 +47,7 @@ class DigitalOfficeEmployeePolicy
 	 */
 	public function create(User $user)
 	{
-		return true;
+		return false;
 	}
 
 	/**
@@ -58,13 +61,23 @@ class DigitalOfficeEmployeePolicy
 		User $user,
 		DigitalOfficeEmployee $digitalOfficeEmployee
 	) {
-		// The employee should belong to the user current office
+		// The employee should belong/belonged to the user current office
 		// The user should either be the owner or have permission to manage employees
 
+		// Office owner cannot be edited
+		if($digitalOfficeEmployee->isOwner($digitalOfficeEmployee->user->currentOffice)) {
+			return false;
+		}
+
+		if( $user->ownsOffice($user->currentOffice) ) {
+			return true;
+		}
+
 		if (
-			$digitalOfficeEmployee->user->belongsToOffice(
-				$user->currentOffice
-			) &&
+			$user->id !== $digitalOfficeEmployee->user_id
+			&&
+			$digitalOfficeEmployee->office_id == $user->currentOffice->id
+			&&
 			$user->hasOfficePermission(
 				$user->currentOffice,
 				"manage-employees"

@@ -20,8 +20,11 @@ class Specialization extends Model
         'profession_id',
     ];
 
+    /**
+     * 
+     */
     public function profession() {
-        $this->belongsTo(Profession::class);
+        return $this->belongsTo(Profession::class, 'profession_id');
     }
 
 }

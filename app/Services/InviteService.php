@@ -36,6 +36,8 @@ class InviteService
 
 	/**
 	 * Accept employement invitation from office
+	 * 
+	 * @param $invite
 	 */
 	public static function accept(Invite $invite): void
 	{
@@ -57,7 +59,7 @@ class InviteService
 				"office_id" => $invite->office_id,
 				"user_id" => $user_id,
 			]);
-
+			
 			$employee->assignRole("OfficeEmployee");
 
 			if (!$user->profile) {

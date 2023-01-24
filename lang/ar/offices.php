@@ -6,5 +6,10 @@ return [
         'busy' => 'مشغول', 
         'uncompleted' => 'غير مكتمل', 
         'blocked' => 'مغلق', 
+    ],
+    'dropdown' => [
+        'settings' => 'إعدادات المكتب',
+        'balance' => 'الرصيد :balance',
+        'logout' => 'تسجيل الخروج'
     ]
 ];

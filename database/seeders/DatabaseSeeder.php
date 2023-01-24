@@ -63,13 +63,17 @@ class DatabaseSeeder extends Seeder
 				"user_id" => $user->id,
 			]);
 
-			\App\Models\DigitalOffice::inRandomOrder()
+			$employee = \App\Models\DigitalOffice::inRandomOrder()
 				->first()
 				->employees()
 				->create([
 					"user_id" => $user->id,
-				])
-				->assignRole(Role::findByName("OfficeEmployee"));
+				]);
+
+			$defaultRolePermissions = Role::findByName("OfficeEmployee")->permissions;
+			
+			$employee->givePermissionTo($defaultRolePermissions->pluck('name')->all());
+				
 		});
 	}
 }

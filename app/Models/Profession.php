@@ -20,10 +20,16 @@ class Profession extends Model
         'service_id',
     ];
 
+    /**
+     * Each profession belong to one service
+     */
     public function service() {
-        $this->belongsTo(Service::class);
+        return $this->belongsTo(Service::class);
     }
 
+    /**
+     * Each profession may have one or more specialization
+     */
     public function specializations() {
         return $this->hasMany(Specialization::class);
     }

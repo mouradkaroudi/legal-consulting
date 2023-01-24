@@ -16,8 +16,15 @@ class ProfessionsRelationManager extends RelationManager
 	protected static string $relationship = "professions";
 
 	protected static ?string $recordTitleAttribute = "name";
-    protected static ?string $modelLabel = 'مهنة';
-    protected static ?string $title = 'المهن';
+
+	public static function getTitle(): string
+    {
+        return __('filament::resources/professions.label.plural');
+    }
+
+    protected static function getModelLabel(): string {
+        return  __('filament::resources/professions.label.singular');
+    }
 
 	public static function form(Form $form): Form
 	{

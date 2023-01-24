@@ -2,26 +2,26 @@
 
 return [
     'label' => [
-        'singular' => 'دولة',
-        'plural' => 'الدول',
+        'singular' => 'Country',
+        'plural' => 'Countries',
     ],
     'table' => [
         'columns' => [
             'name' => [
-                'label' => 'الدولة'
+                'label' => 'Country'
             ]
         ]
     ],
     'form' => [
         'fields' => [
             'name' => [
-                'label' => 'الإسم'
+                'label' => 'Name'
             ],
             'citizenship' => [
-                'label' => 'الجنسية'
+                'label' => 'Citizenship'
             ],
             'country_code' => [
-                'label' => 'معرف الدولة'
+                'label' => 'Country ISO code'
             ],
         ]
     ]

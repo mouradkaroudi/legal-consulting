@@ -2,23 +2,23 @@
 
 return [
     'label' => [
-        'singular' => 'مدينة',
-        'plural' => 'المدن',
+        'singular' => 'City',
+        'plural' => 'Cities',
     ],
     'table' => [
         'columns' => [
             'name' => [
-                'label' => 'المدينة'
+                'label' => 'City'
             ]
         ]
     ],
     'form' => [
         'fields' => [
             'country_code' => [
-                'label' => 'الدولة'
+                'label' => 'Country code'
             ],
             'name' => [
-                'label' => 'الإسم'
+                'label' => 'Name'
             ],
         ]
     ]

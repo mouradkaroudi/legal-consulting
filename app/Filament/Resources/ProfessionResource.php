@@ -18,7 +18,7 @@ class ProfessionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'Entities';
-
+    
     protected static function getNavigationLabel(): string
     {
         return static::$navigationLabel ?? static::$navigationLabel ?? __('filament::resources/professions.label.plural');
@@ -34,7 +34,11 @@ class ProfessionResource extends Resource
         return static::$modelLabel ?? static::$modelLabel ?? __('filament::resources/professions.label.singular');
     }
 
-
+    protected static function getNavigationGroup(): ?string
+    {
+        return __('Content Management');
+    }
+    
     public static function form(Form $form): Form
     {
         return $form

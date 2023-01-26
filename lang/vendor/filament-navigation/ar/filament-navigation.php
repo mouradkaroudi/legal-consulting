@@ -7,7 +7,7 @@ return [
         'target' => 'استهداف',
         'name' => 'اسم',
         'items' => 'العناصر',
-        'handle' => 'يتعامل',
+        'handle' => 'اسم اللطيف',
         'created_at' => 'أنشئت في',
         'updated_at' => 'تم التحديث في',
 
@@ -21,17 +21,17 @@ return [
     'items' => [
         'empty' => 'لا توجد عناصر.',
         'add-item' => 'اضافة عنصر',
-        'add-child' => 'أضف الطفل',
-        'move-up' => 'تحرك',
-        'move-down' => 'تحرك لأسفل',
-        'indent' => 'مسافة بادئة',
-        'dedent' => 'مسافة معلقة',
+        'add-child' => 'أضف فرع',
+        'move-up' => 'للأعلى',
+        'move-down' => 'للإسفل',
+        'indent' => 'ادرج تحت',
+        'dedent' => 'ادرج فوق',
         'remove' => 'حذف'
     ],
 
     'items-modal' => [
         'title' => 'عنصر',
-        'label' => 'مُلصَق',
+        'label' => 'اسم',
         'type' => 'نوع',
         'btn' => 'حفظ',
     ],

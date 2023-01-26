@@ -24,29 +24,27 @@ class ListWithDrawalMethods extends ListRecords
     protected function table(Table $table): Table
     {
         return $table
-        ->columns([
-            Tables\Columns\TextColumn::make('name'),
-            Tables\Columns\TextColumn::make('description'),
-            Tables\Columns\IconColumn::make('is_available')
-                ->boolean(),
-            Tables\Columns\TextColumn::make('minimum_amount'),
-            Tables\Columns\TextColumn::make('maximum_amount'),
-            Tables\Columns\TextColumn::make('fees'),
-            Tables\Columns\TextColumn::make('created_at')
-                ->dateTime(),
-            Tables\Columns\TextColumn::make('updated_at')
-                ->dateTime(),
-        ])
-        ->filters([
-            //
-        ])
-        ->actions([
-            Tables\Actions\EditAction::make(),
-        ])
-        ->bulkActions([
-            Tables\Actions\DeleteBulkAction::make(),
-        ]);
+            ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->label(__('filament::resources/withdrawals-methods.table.columns.name.label')),
+                Tables\Columns\TextColumn::make('minimum_amount')
+                    ->label(__('filament::resources/withdrawals-methods.table.columns.minimum_amount.label')),
+                Tables\Columns\TextColumn::make('maximum_amount')
+                    ->label(__('filament::resources/withdrawals-methods.table.columns.maximum_amount.label')),
+                Tables\Columns\TextColumn::make('fees')
+                    ->label(__('filament::resources/withdrawals-methods.table.columns.fees.label')),
+                Tables\Columns\IconColumn::make('')
+                    ->boolean(),
+
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
     }
-
-
 }

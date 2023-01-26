@@ -27,6 +27,9 @@ class AuthService
         ]);
 
         if (empty($inviteToken)) {
+
+            event(new Registered($user));
+
             return $user;
         }
 
@@ -45,7 +48,7 @@ class AuthService
             $employee->givePermissionTo($defaultRolePermissions->pluck('name')->all());
         }
 
-        dd(event(new Registered($user)));
+        event(new Registered($user));
 
         return $user;
     }

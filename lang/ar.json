@@ -1,0 +1,14 @@
+{
+    "Verify Email Address": "التحقق من عنوان البريد الإلكتروني",
+    "Please click the button below to verify your email address.": "يرجى النقر فوق الزر أدناه للتحقق من عنوان بريدك الإلكتروني.",
+    "If you did not create an account, no further action is required.": "إذا لم تنشئ حسابًا ، فلا يلزم إجراء آخر.",
+    "A new verification link has been sent to the email address you provided during registration.": "تم إرسال رابط التحقق الجديد إلى عنوان البريد الإلكتروني الذي قدمته أثناء التسجيل.",
+    "Thank you for your registration! Before we get started, could you please verify your email address by clicking on the link we just emailed you? If you do not receive the email, we will gladly email you.": "شكرا لتسجيلك! قبل البدء ، هل يمكنك التحقق من عنوان بريدك الإلكتروني من خلال النقر على الرابط الذي أرسلناه إليك عبر البريد الإلكتروني للتو؟ إذا لم تتلق البريد الإلكتروني ، فسنرسل لك بريدًا إلكترونيًا بكل سرور.",
+    "Resend Verification Email": "إعادة ارسال بريد التحقق",
+
+    "Profession": "مهنة",
+    "Service": "خدمة",
+    "Content Management": "إدارة المحتوى",
+    "Users & Offices": "المستخدمون والمكاتب",
+    "Financial Management": "ادارة مالية"
+}

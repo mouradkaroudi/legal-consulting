@@ -19,96 +19,101 @@ class DigitalOfficeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
-    public static function form(Form $form): Form
+    protected static function getNavigationLabel(): string
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('service_id'),
-                Forms\Components\TextInput::make('profession_id'),
-                Forms\Components\TextInput::make('user_id')
-                    ->required(),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description'),
-                Forms\Components\TextInput::make('image')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone_number')
-                    ->tel()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('professional_license_number')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('country_code')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('city')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('license_attachment'),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('banned_at'),
-                Forms\Components\Textarea::make('location'),
-            ]);
+        return static::$navigationLabel ?? static::$navigationLabel ?? __('filament::resources/offices.label.plural');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return static::$pluralModelLabel ?? static::$pluralModelLabel ?? __('filament::resources/offices.label.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return static::$modelLabel ?? static::$modelLabel ?? __('filament::resources/offices.label.singular');
+    }
+
+    protected static function getNavigationGroup(): ?string
+    {
+        return __('Users & Offices');
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('owner.name')->label('المالك'),
-                Tables\Columns\TextColumn::make('name')->label('الإسم'),
-                Tables\Columns\TextColumn::make('commercial_registration_number')->label('رقم سجل التجاري'),
-                Tables\Columns\TextColumn::make('country.name')->label('الدولة'),
-                Tables\Columns\BadgeColumn::make('status')->label('الحالة')->enum([
-                    DigitalOffice::AVAILABLE => __('offices.status.available'),
-                    DigitalOffice::BUSY => __('offices.status.busy'),
-                    DigitalOffice::UNCOMPLETED => __('offices.status.uncompleted'),
-                    DigitalOffice::BLOCKED => __('offices.status.blocked'),
-                ])->color(function($record) {
+                Tables\Columns\TextColumn::make('name')
+                    ->label(__('filament::resources/offices.table.columns.name.label')),
+                Tables\Columns\TextColumn::make('owner.name')
+                    ->label(__('filament::resources/offices.table.columns.ownerName.label')),
+                Tables\Columns\TextColumn::make('subscription.plan_id')
+                    ->label(__('filament::resources/offices.table.columns.subscriptionPlan.label'))
+                    ->enum([
+                        null => 'غير مشترك'
+                    ]),
+                Tables\Columns\TextColumn::make('country.name')
+                    ->label(__('filament::resources/offices.table.columns.countryName.label')),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->label(__('filament::resources/offices.table.columns.status.label'))
+                    ->enum([
+                        DigitalOffice::AVAILABLE => __('offices.status.available'),
+                        DigitalOffice::BUSY => __('offices.status.busy'),
+                        DigitalOffice::UNCOMPLETED => __('offices.status.uncompleted'),
+                        DigitalOffice::BLOCKED => __('offices.status.blocked'),
+                    ])->color(function ($record) {
 
-                    if($record->status === DigitalOffice::BLOCKED) {
-                        return 'danger';
-                    }
+                        if ($record->status === DigitalOffice::BLOCKED) {
+                            return 'danger';
+                        }
 
-                    if($record->status === DigitalOffice::AVAILABLE) {
-                        return 'success';
-                    }
+                        if ($record->status === DigitalOffice::AVAILABLE) {
+                            return 'success';
+                        }
 
-                    if($record->status === DigitalOffice::BUSY) {
-                        return 'warning';
-                    }
-                    
-                    return 'secondary';
+                        if ($record->status === DigitalOffice::BUSY) {
+                            return 'warning';
+                        }
 
-                }),
-                Tables\Columns\CheckboxColumn::make('is_hidden')->label('مخفي')
+                        return 'secondary';
+                    }),
+                Tables\Columns\CheckboxColumn::make('is_hidden')
+                    ->label(__('filament::resources/offices.table.columns.is_hidden.label'))
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('block')->label('توقيف المكتب')
+                    Tables\Actions\Action::make('viewProfile')
+                        ->label(__('filament::resources/offices.table.actions.viewProfile.label'))
+                        ->url(fn( DigitalOffice $record ) => route('search.office', ['digitalOffice' => $record, 'name' => $record->url_name]))
+                        ->openUrlInNewTab()
+                        ->icon('heroicon-o-external-link'),
+                    Tables\Actions\Action::make('ban')
+                        ->label(__('filament::resources/offices.table.actions.ban.label'))
+                        ->icon('heroicon-o-ban')
+                        ->color('danger')
                 ]),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListDigitalOffices::route('/'),
-            'create' => Pages\CreateDigitalOffice::route('/create'),
+            //'create' => Pages\CreateDigitalOffice::route('/create'),
             'edit' => Pages\EditDigitalOffice::route('/{record}/edit'),
         ];
-    }    
+    }
 }

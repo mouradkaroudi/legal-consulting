@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\WithDrawalMethodResource\Pages;
-use App\Filament\Resources\WithDrawalMethodResource\RelationManagers;
 use App\Models\Country;
 use App\Models\WithDrawalMethod;
 use Filament\Forms;
@@ -13,16 +12,32 @@ use Filament\Forms\Components\Group;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
-use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class WithDrawalMethodResource extends Resource
 {
     protected static ?string $model = WithDrawalMethod::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
+
+    protected static function getNavigationLabel(): string
+    {
+        return static::$navigationLabel ?? static::$navigationLabel ?? __('filament::resources/withdrawals-methods.label.plural');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return static::$pluralModelLabel ?? static::$pluralModelLabel ?? __('filament::resources/withdrawals-methods.label.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return static::$modelLabel ?? static::$modelLabel ?? __('filament::resources/withdrawals-methods.label.singular');
+    }
+
+    protected static function getNavigationGroup(): ?string
+    {
+        return __('Financial Management');
+    }
 
     public static function form(Form $form): Form
     {
@@ -33,20 +48,22 @@ class WithDrawalMethodResource extends Resource
                         Group::make([
                             Card::make([
                                 Forms\Components\TextInput::make('name')
-                                    ->label('اسم الطريقة')
+                                    ->label(__('filament::resources/withdrawals-methods.form.fields.name.label'))
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('description')
-                                    ->label('وصف')
+                                    ->label(__('filament::resources/withdrawals-methods.form.fields.description.label'))
                                     ->required()
                                     ->maxLength(255),
                                 Grid::make()->schema([
-                                    Forms\Components\TextInput::make('minimum_amount')->label('الحد الأدنى للتحويل'),
-                                    Forms\Components\TextInput::make('maximum_amount')->label('الحد الأقصى للتحويل'),
+                                    Forms\Components\TextInput::make('minimum_amount')
+                                        ->label(__('filament::resources/withdrawals-methods.form.fields.minimum_amount.label')),
+                                    Forms\Components\TextInput::make('maximum_amount')
+                                        ->label(__('filament::resources/withdrawals-methods.form.fields.maximum_amount.label'))
                                 ]),
                                 Forms\Components\Select::make('countries')
-                                    ->label('البلدان التي تتوفر فيها هذه الطريقة')
-                                    ->helperText('إذا لم يتم تحديد اي البلد ، فستكون متاحًا لجميع البلدان')
+                                    ->label(__('filament::resources/withdrawals-methods.form.fields.countries.label'))
+                                    ->helperText(__('filament::resources/withdrawals-methods.form.fields.countries.helperText'))
                                     ->multiple()
                                     ->preload()
                                     ->relationship('countries', 'id')
@@ -55,17 +72,22 @@ class WithDrawalMethodResource extends Resource
                                     }),
                             ]),
                             Card::make([
-                                Forms\Components\TextInput::make('min_fee')->label('الحد الأدنى للرسوم'),
-                                Forms\Components\TextInput::make('max_fee')->label('الحد الأقصى للرسوم'),
-                                Forms\Components\TextInput::make('percentage_fee')->label('رسوم النسبة المئوية'),
+                                Forms\Components\TextInput::make('min_fee')
+                                    ->label(__('filament::resources/withdrawals-methods.form.fields.min_fee.label')),
+                                Forms\Components\TextInput::make('max_fee')
+                                    ->label(__('filament::resources/withdrawals-methods.form.fields.max_fee.label')),
+                                Forms\Components\TextInput::make('percentage_fee')
+                                    ->label(__('filament::resources/withdrawals-methods.form.fields.percentage_fee.label')),
                             ]),
                         ])->columnSpan(1),
                         Group::make([
                             Card::make([
                                 Forms\Components\Repeater::make('information_required')
-                                    ->label('المعلومات المطلوبة')
+                                    ->label(__('filament::resources/withdrawals-methods.form.fields.information_required.label'))
                                     ->schema([
-                                        TextInput::make('field_label')->label('اسم الحقل')->helperText('مثل البريد الإلكتروني')
+                                        TextInput::make('field_label')
+                                            ->label(__('filament::resources/withdrawals-methods.form.fields.information_required.fields.field_label.label'))
+                                            ->helperText(__('filament::resources/withdrawals-methods.form.fields.information_required.fields.field_label.helperText'))
                                     ]),
                             ])
 

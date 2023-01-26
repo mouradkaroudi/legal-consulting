@@ -19,3 +19,5 @@
 .hero-slide-item.active {
     @apply block;
 }
+
+[x-cloak] { display: none !important; }

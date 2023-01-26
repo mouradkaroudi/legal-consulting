@@ -56,14 +56,16 @@ Route::get('/', function () {
 Route::name('auth.')->middleware(RedirectIfAuthenticated::class)->group(function () {
     Route::get('/registration', [RegistrationController::class, 'create'])->name('registration');
     Route::get('/login', [AuthController::class, 'index'])->name('login');
+
 });
 
-Route::get('verify-email', [AuthController::class, 'verifyEmailPrompt'])->name('verification.notice');
-
-Route::get('verify-email/{id}/{hash}', [AuthController::class, 'verifyEmail'])
-->middleware(['signed', 'throttle:6,1'])
-->name('verification.verify');
-
+Route::middleware('auth')->group(function() {
+    Route::get('verify-email', [AuthController::class, 'verifyEmailPrompt'])->name('verification.notice');
+    Route::post('send', [AuthController::class, 'resendVerification'])->name('verification.send');
+    Route::get('verify-email/{id}/{hash}', [AuthController::class, 'verifyEmail'])
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
+});
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
@@ -134,7 +136,7 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'verified', 'ac
  * Offices listing routes
  */
 Route::name('search.')->group(function () {
-    Route::get('{service:slug?}', [OfficeListingController::class, 'index'])->name('listing');
+    Route::get('{service:slug?}/{profession:slug?}', [OfficeListingController::class, 'index'])->name('listing');
     Route::get('listing/office/{digitalOffice}-{name}', [OfficeListingController::class, 'show'])
         ->where([
             'digitalOffice' => '[0-9]+',

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('started_at');
             $table->timestamp('expire_at')->nullable();
             $table->morphs('subscriber');
+            $table->foreignId('plan_id');
         });
     }
 

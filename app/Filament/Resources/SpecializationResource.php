@@ -35,6 +35,11 @@ class SpecializationResource extends Resource
         return static::$modelLabel ?? static::$modelLabel ?? __('filament::resources/specializations.label.singular');
     }
 
+    protected static function getNavigationGroup(): ?string
+    {
+        return __('Content Management');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

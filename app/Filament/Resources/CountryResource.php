@@ -7,12 +7,9 @@ use App\Filament\Resources\CountryResource\RelationManagers;
 use App\Models\Country;
 use Filament\Forms;
 use Filament\Resources\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CountryResource extends Resource
 {
@@ -20,10 +17,16 @@ class CountryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static ?string $navigationGroup = 'Content Management';
 
     protected static function getNavigationLabel(): string
     {
         return static::$navigationLabel ?? static::$navigationLabel ?? __('filament::resources/countries.label.plural');
+    }
+
+    protected static function getNavigationGroup(): ?string
+    {
+        return __('Content Management');
     }
 
     public static function getPluralModelLabel(): string

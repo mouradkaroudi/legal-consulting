@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions;
 use Filament\Tables\Filters;
 use Filament\Forms;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class ManageTransactions extends ManageRecords
@@ -70,8 +69,8 @@ class ManageTransactions extends ManageRecords
 	{
 		return [
 			Filters\SelectFilter::make("source")
-				->label("مصدر المعاملة")
-				->options([
+			->label(__('filament::resources/transactions.table.filters.source.label'))
+			->options([
 					Transaction::RECEIVE_EARNINGS => __('transactions.' . Str::lower(Transaction::RECEIVE_EARNINGS)),
 					Transaction::PAY_DUES => __('transactions.' . Str::lower(Transaction::PAY_DUES)),
 					Transaction::RECHARGE => __('transactions.' . Str::lower(Transaction::RECHARGE)),
@@ -79,7 +78,7 @@ class ManageTransactions extends ManageRecords
 				])
 				->attribute('source'),
 			Filters\SelectFilter::make("status")
-				->label("الحالة")
+				->label(__('filament::resources/transactions.table.filters.status.label'))
 				->options([
 					Transaction::SUCCESS => __('transactions.' . Str::lower(Transaction::SUCCESS)),
 					Transaction::PENDING => __('transactions.' . Str::lower(Transaction::PENDING)),

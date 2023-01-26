@@ -19,6 +19,26 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static function getNavigationLabel(): string
+    {
+        return static::$navigationLabel ?? static::$navigationLabel ?? __('filament::resources/users.label.plural');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return static::$pluralModelLabel ?? static::$pluralModelLabel ?? __('filament::resources/users.label.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return static::$modelLabel ?? static::$modelLabel ?? __('filament::resources/users.label.singular');
+    }
+
+    protected static function getNavigationGroup(): ?string
+    {
+        return __('Users & Offices');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -39,7 +59,7 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -49,7 +69,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            //RelationManagers\ProfilesRelationManager::class
         ];
     }
     
@@ -57,6 +77,7 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ManageUsers::route('/'),
+            'view' => Pages\ViewUser::route('/{record}'),
         ];
     }    
 }

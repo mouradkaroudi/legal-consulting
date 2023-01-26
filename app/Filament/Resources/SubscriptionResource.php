@@ -20,18 +20,35 @@ class SubscriptionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static function getNavigationLabel(): string
+    {
+        return static::$navigationLabel ?? static::$navigationLabel ?? __('filament::resources/subscriptions.label.plural');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return static::$pluralModelLabel ?? static::$pluralModelLabel ?? __('filament::resources/subscriptions.label.plural');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return static::$modelLabel ?? static::$modelLabel ?? __('filament::resources/subscriptions.label.singular');
+    }
+
+    protected static function getNavigationGroup(): ?string
+    {
+        return __('Financial Management');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\DateTimePicker::make('started_at')
+                    ->label(__('filament::resources/subscriptions.form.fields.started_at.label'))
                     ->required(),
-                Forms\Components\DateTimePicker::make('expire_at'),
-                Forms\Components\TextInput::make('subscriber.name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('model_id')
-                    ->required(),
+                Forms\Components\DateTimePicker::make('expire_at')
+                    ->label(__('filament::resources/subscriptions.form.fields.expire_at.label'))
             ]);
     }
 
@@ -40,13 +57,15 @@ class SubscriptionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('started_at')
-                    ->label('مشترك في')
+                    ->label(__('filament::resources/subscriptions.table.columns.started_at.label'))
                     ->date(),
                 Tables\Columns\TextColumn::make('expire_at')
-                    ->label('تنتهي صلاحية الاشتراك في')
+                    ->label(__('filament::resources/subscriptions.table.columns.expire_at.label'))
                     ->date(),
-                Tables\Columns\TextColumn::make('subscriber.name')->label('اسم المكتب'),
-                Tables\Columns\TextColumn::make('subscriber.profession.name')->label('المهنة')
+                Tables\Columns\TextColumn::make('subscriber.name')
+                    ->label(__('filament::resources/subscriptions.table.columns.subscriberName.label')),
+                Tables\Columns\TextColumn::make('subscriber.profession.name')
+                    ->label(__('filament::resources/subscriptions.table.columns.professionName.label')),
             ])
             ->filters([
                 //
@@ -58,14 +77,14 @@ class SubscriptionResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -73,5 +92,5 @@ class SubscriptionResource extends Resource
             'create' => Pages\CreateSubscription::route('/create'),
             'edit' => Pages\EditSubscription::route('/{record}/edit'),
         ];
-    }    
+    }
 }

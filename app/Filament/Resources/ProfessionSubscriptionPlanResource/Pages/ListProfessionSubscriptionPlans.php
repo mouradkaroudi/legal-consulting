@@ -18,9 +18,12 @@ class ListProfessionSubscriptionPlans extends ListRecords
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('profession.name')->label('المهنة'),
-                Tables\Columns\TextColumn::make('fee')->label('رسوم الإشتراك'),
-                Tables\Columns\TextColumn::make('type')->label('نوع الإشتراك')
+                Tables\Columns\TextColumn::make('profession.name')
+                    ->label(__('filament::resources/professions-subscriptions-plans.table.columns.professionName.label')),
+                Tables\Columns\TextColumn::make('fee')
+                    ->label(__('filament::resources/professions-subscriptions-plans.form.fields.fee.label')),
+                Tables\Columns\TextColumn::make('type')
+                    ->label(__('filament::resources/professions-subscriptions-plans.form.fields.type.label'))
             ])
             ->filters([
                 //

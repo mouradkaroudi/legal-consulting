@@ -47,6 +47,20 @@ class AuthController extends Controller
     }
 
     /**
+     * Send a new email verification notification.
+     */
+    public function resendVerification(Request $request): RedirectResponse {
+        if ($request->user()->hasVerifiedEmail()) {
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
+
+        $request->user()->sendEmailVerificationNotification();
+
+        return back()->with('status', 'verification-link-sent');
+
+    }
+
+    /**
      * Log the user out of the application.
      *
      * @param  \Illuminate\Http\Request  $request

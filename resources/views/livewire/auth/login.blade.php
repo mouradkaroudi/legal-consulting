@@ -16,6 +16,7 @@
         تسجيل الدخول
     </x-filament-support::button>
     <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-        ليس لديك حساب? <a href="{{ route('auth.registration') }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">تسجيل</a>
+        {{  __('You dont have an account ?')}}
+        <a href="{{ route('auth.registration') }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">{{ __('Register') }}</a>
     </p>
 </form>

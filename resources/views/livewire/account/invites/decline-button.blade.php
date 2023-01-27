@@ -1,5 +1,5 @@
 <div>
     <x-filament-support::button wire:click="decline" color="secondary">
-        رفض
+        {{ __('Decline invite') }}
     </x-filament-support::button>
 </div>

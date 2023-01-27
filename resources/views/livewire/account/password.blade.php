@@ -4,7 +4,9 @@
             {{ $this->form }}
         </div>
         <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-        <x-filament-support::button :form="'submit'" :type="'submit'">حفظ</x-filament-support::button>
+        <x-filament-support::button :form="'submit'" :type="'submit'">
+            {{ __('Save') }}
+        </x-filament-support::button>
         </div>
     </div>
 </form>

@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Vite;
+use Illuminate\Support\Facades\App;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,13 +26,19 @@ class AppServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
+		
 		Filament::serving(function () {
 			Filament::registerViteTheme("resources/css/filament.css");
 			Filament::registerNavigationGroups([
 				\Filament\Navigation\NavigationGroup::make(__("Content Management")),
-				\Filament\Navigation\NavigationGroup::make("Users & Offices"),
-				\Filament\Navigation\NavigationGroup::make("Financial Management"),
+				\Filament\Navigation\NavigationGroup::make(__("Users & Offices")),
+				\Filament\Navigation\NavigationGroup::make(__("Financial Management")),
 			]);
+			
+			\RyanChandler\FilamentNavigation\Filament\Resources\NavigationResource::navigationGroup(__('Content Management'));
+			\RyanChandler\FilamentNavigation\Filament\Resources\NavigationResource::pluralLabel(__('filament::resources/navigations.label.plural'));
+			\RyanChandler\FilamentNavigation\Filament\Resources\NavigationResource::label(__('filament::resources/navigations.label.singular'));
+			
 
 			\RyanChandler\FilamentNavigation\Facades\FilamentNavigation::addItemType(__('Service'), [
 				\Filament\Forms\Components\Select::make('service_id')

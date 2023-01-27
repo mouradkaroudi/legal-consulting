@@ -47,6 +47,9 @@
                 <li>
                     <livewire:account.avatar-with-dropdown />
                 </li>
+                <li>
+                    <livewire:guest.select-language />
+                </li>
             </ul>
         </div>
     </div>

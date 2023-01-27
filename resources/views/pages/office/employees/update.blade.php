@@ -1,4 +1,4 @@
-@extends('layouts.dashboard', ['pageTitle' => 'موظفين'])
+@extends('layouts.dashboard', ['pageTitle' => __('Employees')])
 
 @section('content')
 

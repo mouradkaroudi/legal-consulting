@@ -1,4 +1,4 @@
-@extends('layouts.dashboard', ['pageTitle' => 'الرسائل'])
+@extends('layouts.dashboard', ['pageTitle' => __('Messages')])
 
 @section('content')
 <div class="mx-auto max-w-screen-xl flex flex-col">

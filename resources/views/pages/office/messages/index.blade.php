@@ -1,4 +1,4 @@
-@extends('layouts.dashboard', ['pageTitle' => 'الرسائل'])
+@extends('layouts.dashboard', ['pageTitle' => __('Messages')])
 
 @section('content')
 <livewire:office.messages-table :officeId="$officeId"/>

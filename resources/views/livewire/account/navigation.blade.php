@@ -4,16 +4,14 @@
             <div class="flex items-center">
                 <div class="text-white">
                     <a href="{{ url('/') }}">
-                    <livewire:shared.site-logo />
+                        <livewire:shared.site-logo />
                     </a>
                 </div>
                 <div class="hidden md:block">
                     <div class="mr-10 flex items-baseline space-x-4 space-x-reverse">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         @foreach( $navigationLinks as $navigationLink )
-                        <a 
-                            href="{{ route($navigationLink['routeName']) }}" 
-                            class="{{ (strpos(Route::currentRouteName(), $navigationLink['routeName']) === 0) ? 'text-white bg-gray-700' : 'text-gray-300' }} hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        <a href="{{ route($navigationLink['routeName']) }}" class="{{ (strpos(Route::currentRouteName(), $navigationLink['routeName']) === 0) ? 'text-white bg-gray-700' : 'text-gray-300' }} hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                             {{ $navigationLink['label'] }}
                         </a>
                         @endforeach
@@ -55,7 +53,7 @@
         </div>
     </div>
 
-    <!-- Mobile menu, show/hide based on menu state. -->
+    <!-- Mobile menu, show/hide based on menu state. TODO: fix mobiile -->
     <div class="md:hidden" id="mobile-menu">
         <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->

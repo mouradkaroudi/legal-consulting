@@ -5,7 +5,7 @@
             class="mt-4"
             :type="'submit'"
         >
-            أكمل
+            {{ __('Continue') }}
         </x-filament::button>
     </form>
 </div>

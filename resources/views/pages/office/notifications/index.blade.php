@@ -1,4 +1,4 @@
-@extends('layouts.dashboard', ['pageTitle' => 'التنبيهات'])
+@extends('layouts.dashboard', ['pageTitle' => __('Notifications')])
 @section('content')
 <div class="grid grid-cols-1 gap-6">
     @forelse ($notifications as $notification)

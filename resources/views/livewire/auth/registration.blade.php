@@ -6,7 +6,10 @@
         
     </button>
     <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-        لديك حساب? <a href="{{ route('auth.login') }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">سجل الدخول</a>
+        {{ __('Your already have an account ?') }}
+        <a href="{{ route('auth.login') }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">
+            {{ __('Log In') }}
+        </a>
     </p>
     <!--  -->
 </form>

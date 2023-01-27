@@ -2,7 +2,7 @@
     {{ $this->form }}
     <div class="mt-4">
         <x-filament-support::button :form="'submit'" :type="'submit'">
-            حفظ
+            {{ __('Save') }}
         </x-filament-support::button>
     </div>
 </form>

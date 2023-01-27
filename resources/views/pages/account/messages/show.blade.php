@@ -1,4 +1,4 @@
-@extends('layouts.account', ['title' => 'رسالة'])
+@extends('layouts.account', ['title' => __('Message')])
 
 @section('content')
 <div class="mx-auto max-w-screen-xl flex flex-col">
@@ -16,7 +16,7 @@
         <livewire:messages.widgets.reply-form :thread="$thread"/>
     @else
         <x-alert>
-            تم غلق المحادثة من طرف {{ \App\Models\User::find($thread->closed_by)->name }}
+            {{ __('The conversation has been closed by :username', ['username' => \App\Models\User::find($thread->closed_by)->name]) }}
         </x-alert>
     @endif
 </div>

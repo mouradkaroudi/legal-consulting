@@ -2,8 +2,8 @@
     <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
 
         <div>
-            <h3 class="text-lg font-medium leading-6 text-gray-900">إعدادات الإشتراك</h3>
-            <p class="mt-1 text-sm text-gray-600">إعدادات الإشتراك الخاص بالمكتب في الموقع.</p>
+            <h3 class="text-lg font-medium leading-6 text-gray-900">{{ __('Subscription settings') }}</h3>
+            <p class="mt-1 text-sm text-gray-600">{{ __('Office subscription settings on the site.') }}</p>
         </div>
 
         <div class="border rounded-lg p-4">
@@ -20,13 +20,13 @@
 
         @if($expirationDuration)
         <div class="border p-4 rounded-lg bg-red-50 border-red-500">
-            <h4 class="font-bold text-xl text-red-700">تنبيه!</h4>
+            <h4 class="font-bold text-xl text-red-700">{{ __('Attention!') }}</h4>
             <p class="text-gray-700 mb-4">
                 {{ __('subscriptions.alerts.expiration', ['days_num' => $expirationDuration]) }}
             </p>
             <div>
                 <x-filament::button tag="a" href="{{ route('office.subscription.index') }}">
-                    {{ __('subscriptions.actions.renew') }}
+                    {{ __('Renew') }}
                 </x-filament::button>
             </div>
         </div>

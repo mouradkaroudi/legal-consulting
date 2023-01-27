@@ -5,7 +5,7 @@
         </div>
         <div class="flex justify-between items-center py-2 px-3 border-t">
             <x-filament-support::button :type="'submit'">
-            أرسل
+            {{ __('Send') }}
             </x-filament-support::button>
             <div class="flex gap-2 pl-0 space-x-1 sm:pl-2">
                 <livewire:messages.upload-attachments />

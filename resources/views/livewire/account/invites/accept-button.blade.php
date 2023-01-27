@@ -1,5 +1,5 @@
 <div>
     <x-filament-support::button wire:click="accept">
-        قبول الدعوة
+        {{ __('Accept invite') }}
     </x-filament-support::button>
 </div>

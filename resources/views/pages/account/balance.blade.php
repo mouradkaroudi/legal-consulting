@@ -1,4 +1,4 @@
-@extends('layouts.account', ['title' => 'الرصيد'])
+@extends('layouts.account', ['title' => __('Balance')])
 @section('content')
 <livewire:account.balance-overview/>
 

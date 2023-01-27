@@ -1,4 +1,4 @@
-@extends('layouts.dashboard', ['pageTitle' => 'موظفين'])
+@extends('layouts.dashboard', ['pageTitle' => __('Employees')])
 @section('content')
 <div class="mb-8">
     <livewire:office.employees.list-employees :officeId="$officeId" />

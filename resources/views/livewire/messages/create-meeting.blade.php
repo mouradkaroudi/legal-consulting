@@ -5,14 +5,14 @@
         </x-slot>
 
         <x-slot name="header">
-            أنشئ محادثة فيديو
+            {{ __('Create a meeting') }}
         </x-slot>
         <x-alert>
         احرص على استعمال موقع القانوني في معاملاتك المالية. <a href="#" class="underline text-bule-700">أعرف كيف نضمن حقوقك.</a>
 
         </x-alert>
         <p class="text-sm text-gray-700">
-            استعمل احدى خدمات الإجتماعات الافتراضية لتسهيل التواصل.
+            {{ __('Use one of the virtual meetings services to facilitate communication.') }}
         </p>
         <div class="grid gap-4">
             <a href="https://www.microsoft.com/fr/microsoft-teams" class="p-4 border items-center justify-between rounded-lg flex hover:shadow-sm hover:-translate-y-1 duration-300">

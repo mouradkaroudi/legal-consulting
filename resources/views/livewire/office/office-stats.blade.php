@@ -8,7 +8,7 @@
       </div>
       <div>
         <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-          الموظفين
+          {{ __('Employees') }}
         </p>
         <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
           {{ $employees }}
@@ -25,7 +25,7 @@
       </div>
       <div>
         <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-          أرباح المكتب
+          {{ __('Office revenues') }}
         </p>
         <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
           <x-money amount="{{ $revenue }}" currency="SAR" convert="true" />
@@ -43,7 +43,7 @@
       </div>
       <div>
         <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-          الطلبات
+          {{ __('Orders') }}
         </p>
         <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
           {{ $orders }}
@@ -60,7 +60,7 @@
       </div>
       <div>
         <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-          طلبات بإنتظار الدفع
+          {{ __('Pending orders') }}
         </p>
         <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
           {{ $pendingOrders }}

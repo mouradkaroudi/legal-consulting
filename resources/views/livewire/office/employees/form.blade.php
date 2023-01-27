@@ -2,7 +2,7 @@
     {{ $this->form }}
     <div class="mt-4">
         <x-filament-support::button type="submit">
-            تعديل
+            {{ __('Edit') }}
         </x-filament-support::button>
     </div>
 </form>

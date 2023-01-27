@@ -22,19 +22,19 @@ class Navigation extends Component
 
         $this->navigationLinks = [
             [
-                'label' => 'الرئيسية',
+                'label' => __('Home'),
                 'routeName' => 'account.overview'
             ],
             [
-                'label' => 'الطلبات',
+                'label' => __('Orders'),
                 'routeName' => 'account.orders.index'
             ],
             [
-                'label' => 'الحساب',
+                'label' => __('Account'),
                 'routeName' => 'account.settings'
             ],
             [
-                'label' => 'الرصيد',
+                'label' => __('Balance'),
                 'routeName' => 'account.balance'
             ],
 
@@ -42,11 +42,11 @@ class Navigation extends Component
 
         if($user->profile) {
             $this->navigationLinks[] = [
-                'label' => 'المكاتب',
+                'label' => __('Offices'),
                 'routeName' => 'account.offices'
             ];
             $this->navigationLinks[] = [
-                'label' => 'الدعوات',
+                'label' => __('Invites'),
                 'routeName' => 'account.invites'
             ];
         }

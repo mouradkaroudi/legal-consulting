@@ -1,4 +1,4 @@
-@extends('layouts.account', ['title' => 'الرسائل'])
+@extends('layouts.account', ['title' => __('Messages')])
 
 @section('content')
     @include('messenger.partials.flash')

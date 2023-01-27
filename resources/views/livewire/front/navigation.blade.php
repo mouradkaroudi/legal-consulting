@@ -45,11 +45,18 @@
                 @endforeach
                 @endif
                 <li>
-                    <livewire:account.avatar-with-dropdown />
+                    @auth
+                        <livewire:account.avatar-with-dropdown />
+                    @endauth
+                    @guest
+                        <x-filament-support::icon-button tag='a' :href="route('auth.login')" color="primary" icon='heroicon-o-user' />
+                    @endguest
                 </li>
+                @guest
                 <li>
                     <livewire:guest.select-language />
                 </li>
+                @endguest
             </ul>
         </div>
     </div>

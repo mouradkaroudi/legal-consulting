@@ -18,7 +18,8 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
         $this->form->fill([
             'name' => $user->name,
             'email' => $user->email,
-            'avatar_url' => $user->avatar_url
+            'avatar_url' => $user->avatar_url,
+            'preferred_lang' => $user->preferred_lang,
         ]);
     }
 
@@ -27,10 +28,12 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
         $email = $data['email'];
         $name = $data['name'];
         $avatar_url = $data['avatar_url'];
+        $preferred_lang = $data['preferred_lang'];
 
         $this->user->email = $email;
         $this->user->name = $name;
         $this->user->avatar_url = $avatar_url;
+        $this->user->preferred_lang = $preferred_lang;
 
         $this->user->save();
 
@@ -63,6 +66,13 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
             Grid::make(2)->schema([
                 Forms\Components\FileUpload::make('avatar_url')
                     ->label('الصورة الشخصية')
+                ,
+                Forms\Components\Select::make('preferred_lang')
+                    ->options([
+                        'ar' => 'العربية',
+                        'en' => 'English'
+                    ])
+                    ->label('اللغة')
                 ,
             ]),
         ];

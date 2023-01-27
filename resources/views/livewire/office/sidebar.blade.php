@@ -32,7 +32,7 @@
                     @if(isset($sidebarLink['icon']) && !empty($sidebarLink['icon']))
                         <x-dynamic-component :component="$sidebarLink['icon']" class="w-6 h-6" />
                     @endif
-                    <span :class="{ 'lg:hidden': !isSidebarOpen }" class="flex-1 mr-3 whitespace-nowrap">{{ $sidebarLink['label'] }}</span>
+                    <span :class="{ 'lg:hidden': !isSidebarOpen }" class="flex-1 ml-3 rtl:mr-3 whitespace-nowrap">{{ $sidebarLink['label'] }}</span>
                     @if(isset($sidebarLink['badge']) && !empty($sidebarLink['badge']))
                         <span class="inline-flex justify-center items-center p-3 mr-3 w-3 h-3 text-sm font-medium text-blue-600 bg-blue-200 rounded-full">
                             {{ $sidebarLink['badge'] }}

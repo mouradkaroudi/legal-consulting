@@ -24,7 +24,7 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
     }
 
     private function updateProfile( $data ) {
-        
+        // TODO: refresh the page after save
         $email = $data['email'];
         $name = $data['name'];
         $avatar_url = $data['avatar_url'];
@@ -55,8 +55,8 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
         return [
             Grid::make(2)->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('الإسم')
-                    ->label(__('validation.attributes.name'))->required(),
+                    ->label(__('validation.attributes.name'))
+                    ->required(),
                 Forms\Components\TextInput::make('email')
                     ->label(__('validation.attributes.email'))
                     ->email()
@@ -65,14 +65,14 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
             ]),
             Grid::make(2)->schema([
                 Forms\Components\FileUpload::make('avatar_url')
-                    ->label('الصورة الشخصية')
+                    ->label(__('validation.attributes.avatar_url'))
                 ,
                 Forms\Components\Select::make('preferred_lang')
+                    ->label(__('validation.attributes.language'))
                     ->options([
                         'ar' => 'العربية',
                         'en' => 'English'
                     ])
-                    ->label('اللغة')
                 ,
             ]),
         ];

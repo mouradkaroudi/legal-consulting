@@ -61,7 +61,7 @@ class Form extends Component implements HasForms
 		$this->digitalOfficeEmployee->syncPermissions($permissions);
 
 		Notification::make()
-			->title('تم الحفظ بنجاح')
+			->title(__("The information has been updated successfully"))
 			->success()
 			->send();
 	}
@@ -77,22 +77,24 @@ class Form extends Component implements HasForms
 			])->schema([
 				Card::make([
 					TextInput::make("name")
-						->label("الإسم")
+						->label(__('Name'))
 						->disabled(),
 					TextInput::make("email")
-						->label("البريد الإلكتروني")
+						->label(__('Email address'))
 						->disabled(),
-					TextInput::make("job_title")->label("المسمى الوظيفي"),
+					TextInput::make("job_title")
+						->label('Job title'),
 					CheckboxList::make("permissions")
-						->label("الصلاحيات")
+						->label(__('Permissions'))
 						->options($permissions)
 						->columns(2),
 				])->columnSpan(1),
 				Card::make([
 					TextInput::make("updated_at")
-						->label("تاريخ بدء العمل")
+						->label(__('Start work date'))
 						->disabled(),
-					Toggle::make("ended_at")->label("إنهاء عقد العمل"),
+					Toggle::make("ended_at")
+						->label(__('Finish work contract')),
 				])->columnSpan(1),
 			]),
 		];

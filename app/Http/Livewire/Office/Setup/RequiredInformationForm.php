@@ -22,6 +22,11 @@ class RequiredInformationForm extends Component implements HasForms
 
     public $digitalOffice;
 
+    protected function getFormModel(): DigitalOffice
+    {
+        return $this->digitalOffice;
+    }
+
     public function mount(): void
     {
 
@@ -40,7 +45,7 @@ class RequiredInformationForm extends Component implements HasForms
 
         $status =  ($subscriptionEnabled && !empty(ProfessionSubscriptionPlan::find($data['profession_id'])))
             ? DigitalOffice::PENDING_PAYMENT : ($directRegistration ? DigitalOffice::AVAILABLE : DigitalOffice::PENDING);
-        
+
         $this->digitalOffice->update([
             'name' => $data['name'],
             'service_id' => $data['service_id'],
@@ -51,18 +56,17 @@ class RequiredInformationForm extends Component implements HasForms
             'status' => $status
         ]);
 
-        if($status === DigitalOffice::PENDING) {
+        if ($status === DigitalOffice::PENDING) {
             return redirect()->route('office.setup.approval');
         }
 
-        if($status === DigitalOffice::AVAILABLE) {
+        if ($status === DigitalOffice::AVAILABLE) {
             return redirect()->route('office.overview');
         }
 
-        if($status === DigitalOffice::PENDING_PAYMENT) {
+        if ($status === DigitalOffice::PENDING_PAYMENT) {
             return redirect()->route('office.subscription.index');
         }
-       
     }
 
     protected function getFormSchema(): array
@@ -72,19 +76,19 @@ class RequiredInformationForm extends Component implements HasForms
         return [
             Forms\Components\Card::make([
                 Forms\Components\TextInput::make("name")
-                    ->label("اسم المكتب")
+                    ->label(__('Office name'))
                     ->required(),
                 Forms\Components\Grid::make(2)
                     ->schema([
                         Forms\Components\Select::make("service_id")
-                            ->label("اختر الخدمة")
+                            ->label(__('Select a service'))
                             ->relationship("service", "name")
                             ->reactive()
                             ->preload()
                             ->exists(table: Service::class, column: 'id')
                             ->required(),
                         Forms\Components\Select::make("profession_id")
-                            ->label("اختر المهنة")
+                            ->label(__('Select a profession'))
                             ->exists(table: Profession::class, column: 'id')
                             ->relationship("profession", "name")
                             ->reactive()
@@ -100,18 +104,18 @@ class RequiredInformationForm extends Component implements HasForms
                             })
                             ->required(),
                         Forms\Components\TextInput::make("commercial_registration_number")
-                            ->label("رقم سجل التجاري")
+                            ->label(__('Commercial registre number'))
                             ->unique(table: DigitalOffice::class, column: 'commercial_registration_number')
                             ->required(),
                         Forms\Components\Grid::make(2)->schema([
                             Forms\Components\Select::make("country_code")
-                                ->label("الدولة")
+                                ->label(__('Country'))
                                 ->exists(table: Country::class, column: 'id')
                                 ->options($countries)
                                 ->reactive()
                                 ->required(),
                             Forms\Components\Select::make("city")
-                                ->label("المدينة")
+                                ->label(__('City'))
                                 ->exists(table: City::class, column: 'id')
                                 ->reactive()
                                 ->options(function (callable $get) {
@@ -133,10 +137,5 @@ class RequiredInformationForm extends Component implements HasForms
     public function render()
     {
         return view('livewire.office.setup.required-information-form');
-    }
-
-    protected function getFormModel(): DigitalOffice
-    {
-        return $this->digitalOffice;
     }
 }

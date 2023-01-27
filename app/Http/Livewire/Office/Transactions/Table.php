@@ -2,29 +2,29 @@
 
 namespace App\Http\Livewire\Office\Transactions;
 
-use App\Models\Transaction;
-use App\Models\User;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Contracts\Database\Query\Builder;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Table extends Component implements Tables\Contracts\HasTable
 {
-    use Tables\Concerns\InteractsWithTable;
+	use Tables\Concerns\InteractsWithTable;
 
 	protected function getTableColumns(): array
 	{
 		return [
-			TextColumn::make("id")->label("رقم التحويل"),
-			TextColumn::make('amount')->label('المبلغ')->money('sar', true),
+			TextColumn::make("id")
+				->label(__('Transaction ID')),
+			TextColumn::make('amount')
+				->label(__('Amount'))
+				->money('sar', true),
 			TextColumn::make("details")
-				->label("التفاصيل")
+				->label(__('Details'))
 				->getStateUsing(
-					fn($record) => __(
+					fn ($record) => __(
 						"transactions.details." .
 							\Illuminate\Support\Str::lower($record->source),
 						[
@@ -33,13 +33,19 @@ class Table extends Component implements Tables\Contracts\HasTable
 						]
 					)
 				),
-			BadgeColumn::make("status")->label('الحالة')->getStateUsing(
-				fn($record) => __(
-					"transactions." . \Illuminate\Support\Str::lower($record->status)
-				)
-			),
-			TextColumn::make('created_at')->label("تاريخ المعاملة")->date(),
-			TextColumn::make('updated_at')->label("آخر تحديث")->date(),
+			BadgeColumn::make("status")
+				->label(__('Status'))
+				->getStateUsing(
+					fn ($record) => __(
+						"transactions." . \Illuminate\Support\Str::lower($record->status)
+					)
+				),
+			TextColumn::make('created_at')
+				->label(__('Created at'))
+				->date(),
+			TextColumn::make('updated_at')
+				->label(__('Updated at'))
+				->date(),
 		];
 	}
 
@@ -48,11 +54,11 @@ class Table extends Component implements Tables\Contracts\HasTable
 
 		return Auth::user()
 			->currentOffice->transactions()
-            ->getQuery();
+			->getQuery();
 	}
 
-    public function render()
-    {
-        return view('livewire.office.transactions.table');
-    }
+	public function render()
+	{
+		return view('livewire.office.transactions.table');
+	}
 }

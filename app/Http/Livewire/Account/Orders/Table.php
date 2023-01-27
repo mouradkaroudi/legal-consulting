@@ -30,20 +30,23 @@ class Table extends Component implements HasTable
 	{
 		return [
 			\Filament\Tables\Columns\TextColumn::make("id")->label("#"),
-			\Filament\Tables\Columns\TextColumn::make("office.name")->label("المكتب"),
-			\Filament\Tables\Columns\TextColumn::make("subject")->label("الموضوع"),
+			\Filament\Tables\Columns\TextColumn::make("office.name")
+				->label(__('Name')),
+			\Filament\Tables\Columns\TextColumn::make("subject")->label(
+				__('Subject')
+			),
 			\Filament\Tables\Columns\TextColumn::make("fee")
-				->label("التكلفة")
+				->label(__('Amount'))
 				->money("sar", true),
 			\Filament\Tables\Columns\BadgeColumn::make("status")
-				->label("الحالة")
+				->label(__('Status'))
 				->enum([
 					Order::PAID => __("orders.paid"),
 					Order::UNPAID => __("orders.unpaid"),
 				]),
 			\Filament\Tables\Columns\TextColumn::make("created_at")
-				->date()
-				->label("تاريخ الإنشاء"),
+				->label(__('Created at'))
+				->date(),
 		];
 	}
 
@@ -132,7 +135,7 @@ class Table extends Component implements HasTable
 
 					return $form;
 				})
-				->visible(fn($record): bool => $record->status === Order::PAID)
+				->visible(fn ($record): bool => $record->status === Order::PAID)
 		];
 	}
 

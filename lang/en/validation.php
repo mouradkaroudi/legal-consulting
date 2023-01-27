@@ -169,6 +169,51 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name'                  => 'Name',
+        'username'              => 'User name',
+        'email'                 => 'E-mail',
+        'password'              => 'password',
+        'password_confirmation' => 'Confirm password',
+        'city'                  => 'City',
+        'country'               => 'Country',
+        'address'               => 'Address',
+        'phone'                 => 'Phone',
+        'mobile'                => 'Mobile phone',
+        'age'                   => 'Age',
+        'sex'                   => 'Sex',
+        'day'                   => 'Today',
+        'month'                 => 'Month',
+        'year'                  => 'Yyear',
+        'hour'                  => 'Hour',
+        'minute'                => 'Minute',
+        'second'                => 'Second',
+        'content'               => 'Content',
+        'description'           => 'Description',
+        'excerpt'               => 'Excerpt',
+        'date'                  => 'Date',
+        'time'                  => 'Time',
+        'available'             => 'Available',
+        'size'                  => 'Size',
+        'price'                 => 'Price',
+        'desc'                  => 'Brief',
+        'title'                 => 'Title',
+        'q'                     => 'search',
+        'link'                  => 'Link',
+        'slug'                  => 'Slug',
+
+        'current_password'      => 'Current Password',
+        'ID'                    => 'ID Number',
+        'nationality'           => 'Nationality',
+        'ID_image'              => 'ID image',
+        'experience'            => 'Experience',
+        'education'             => 'Study',
+        'status'                => 'Status',
+        'language'              => 'Language',
+        'avatar_url'            => 'Personal picture',
+        'from'                  => 'from',
+        'to'                    => 'to'
+
+    ],
 
 ];

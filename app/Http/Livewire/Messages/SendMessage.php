@@ -7,7 +7,6 @@ use App\Models\DigitalOfficeEmployee;
 use App\Models\Message;
 use App\Models\Participant;
 use App\Models\Thread;
-use Carbon\Carbon;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -26,15 +25,16 @@ class SendMessage extends Component implements HasForms
     public $subject = "";
     public $body = "";
 
-    public function mount(): void 
+    public function mount(): void
     {
         $this->form->fill([
             'officeId' => $this->officeId,
         ]);
     }
 
-    public function send() {
-        
+    public function send()
+    {
+
         $data = $this->form->getState();
         $officeId = $data['officeId'];
         $this->authorize('create', [Thread::class, DigitalOffice::find($officeId)]);
@@ -44,7 +44,7 @@ class SendMessage extends Component implements HasForms
 
         $digitalOffice = DigitalOffice::find($officeId);
         $employees = DigitalOfficeEmployee::where('office_id', $officeId)->permission('manage-messages')->get();
-        
+
         $thread = Thread::create([
             'user_id' => Auth::id(),
             'office_id' => $digitalOffice->id,
@@ -72,7 +72,7 @@ class SendMessage extends Component implements HasForms
         ]);
 
         // Add all eligible employees as participants to the thread
-        foreach($employees as $employee) {
+        foreach ($employees as $employee) {
             Participant::create([
                 'thread_id' => $thread->id,
                 'user_id' => $employee->user_id
@@ -80,16 +80,19 @@ class SendMessage extends Component implements HasForms
         }
 
         return redirect()->route('account.messages.show', ['id' => $thread->id]);
-        
     }
-    
+
 
     protected function getFormSchema(): array
     {
         return [
             Hidden::make('officeId'),
-            TextInput::make('subject')->label('الموضوع')->required(),
-            Textarea::make('body')->label('الرسالة')->required()
+            TextInput::make('subject')
+                ->label(__('Subject'))
+                ->required(),
+            Textarea::make('body')
+                ->label(__('Message'))
+                ->required()
         ];
     }
 

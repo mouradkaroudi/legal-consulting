@@ -49,7 +49,6 @@ class Password extends Component implements Forms\Contracts\HasForms
             },        
           ])
           ->password()
-          ->label("كلمة المرور الحالية")
           ->required(),
       ]),
       Grid::make(2)->schema([

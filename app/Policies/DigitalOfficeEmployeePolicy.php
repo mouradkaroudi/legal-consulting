@@ -65,7 +65,7 @@ class DigitalOfficeEmployeePolicy
 		// The user should either be the owner or have permission to manage employees
 
 		// Office owner cannot be edited
-		if($digitalOfficeEmployee->isOwner($digitalOfficeEmployee->user->currentOffice)) {
+		if($digitalOfficeEmployee->user->currentOffice && $digitalOfficeEmployee->isOwner($digitalOfficeEmployee->user->currentOffice)) {
 			return false;
 		}
 

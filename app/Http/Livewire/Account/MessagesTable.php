@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Account;
 
 use App\Models\Thread;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -21,30 +20,32 @@ class MessagesTable extends Component implements HasTable
   protected function getTableColumns(): array
   {
     return [
-      TextColumn::make("office.name")->label("المكتب"),
-      TextColumn::make("subject")->label("الموضوع"),
+      TextColumn::make("office.name")
+        ->label(__('Office name')),
+      TextColumn::make("subject")
+        ->label(__('Subject')),
     ];
   }
 
   protected function getTableActions(): array
   {
     return [
-        // Action::make('edit'),
-      ];
+      // Action::make('edit'),
+    ];
   }
 
   protected function getTableRecordUrlUsing(): Closure
   {
-    return fn(Model $record): string => route("account.messages.show", [
+    return fn (Model $record): string => route("account.messages.show", [
       "id" => $record->id,
     ]);
   }
 
   protected function getTableRecordClassesUsing(): ?Closure
   {
-    return function($record) {
-        $user_id = Auth::id();
-        return $record->isUnread($user_id) ? "bg-gray-200" : "";
+    return function ($record) {
+      $user_id = Auth::id();
+      return $record->isUnread($user_id) ? "bg-gray-200" : "";
     };
   }
 

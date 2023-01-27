@@ -25,58 +25,65 @@ class Profile extends Component implements HasForms
 	protected function getFormSchema(): array
 	{
 		$citizenships = Country::all()->pluck("citizenship", "id");
-		// TODO: add driving license / رخصة السير/ 
+
 		$formScheme = [
 			Components\TextInput::make("national_ID")
-				->label("الهوية الوطنية")
+				->label(__('validation.attributes.ID'))
 				->required(),
 			Components\Select::make("gender")
+				->label(__('validation.attributes.sex'))
 				->options([
-					"male" => "ذكر",
-					"female" => "انثى",
+					"male" => __('Male'),
+					"female" => __('Female'),
 				])
-				->label("الجنس")
 				->required(),
 			Components\Select::make("original_country")
-				->options($citizenships)
-				->label("الجنسية"),
-			Components\FileUpload::make("national_id_attachment")->label(
-				"صورة الهوية"
-			),
+				->label(__('validation.attributes.nationality'))
+				->options($citizenships),
+
+			Components\FileUpload::make("national_id_attachment")
+				->label(__('validation.attributes.ID_image')),
 			Components\Repeater::make("experiences")
 				->schema([
-					Components\TextInput::make("title")->label("العنوان"),
+					Components\TextInput::make("title")
+						->label(__('validation.attributes.title')),
 					Components\Grid::make()
 						->schema([
-							Components\DatePicker::make("start_date")->label("من"),
-							Components\DatePicker::make("end_date")->label("الى"),
+							Components\DatePicker::make("start_date")
+								->label(__('validation.attributes.from')),
+							Components\DatePicker::make("end_date")
+								->label(__('validation.attributes.to')),
 						])
 						->columns(2),
 				])
-				->label("الخبرات")
+				->label(__('validation.attributes.experience'))
 				->defaultItems(3)
-				->itemLabel(fn(array $state): ?string => $state["title"] ?? null),
+				->itemLabel(fn (array $state): ?string => $state["title"] ?? null),
 			Components\Repeater::make("education")
 				->schema([
-					Components\TextInput::make("title")->label("العنوان"),
+					Components\TextInput::make("title")
+						->label(__('validation.attributes.title')),
 					Components\Grid::make()
 						->schema([
-							Components\DatePicker::make("start_date")->label("من"),
-							Components\DatePicker::make("end_date")->label("الى"),
+							Components\DatePicker::make("start_date")
+								->label(__('validation.attributes.from')),
+							Components\DatePicker::make("end_date")
+								->label(__('validation.attributes.to')),
 						])
 						->columns(2),
 				])
-				->label("الدارسة")
+
+				->label(__('validation.attributes.education'))
 				->defaultItems(3),
 		];
 
 		if ($this->profile->isCompleted) {
 			$formScheme[] = Components\Select::make("status")
+				->label(__('validation.attributes.status'))
 				->options([
-					"available" => "متوفر",
-					"busy" => "مشغول",
-				])
-				->label("الحالة");
+					"available" => __("Available"),
+					"busy" => __('Busy'),
+				]);
 		}
 
 		return $formScheme;
@@ -107,7 +114,7 @@ class Profile extends Component implements HasForms
 			->profile->update($data);
 
 		Notification::make()
-			->title("تم تحديث المعلومات بنجاح")
+			->title(__('The information has been updated successfully'))
 			->success()
 			->send();
 

@@ -19,15 +19,19 @@ class InvitesTable extends Component implements HasTable
     protected function getTableColumns(): array
     {
         return [
-            \Filament\Tables\Columns\TextColumn::make('user.name')->label('الاسم'),
-            \Filament\Tables\Columns\TextColumn::make('email')->label('البريد الإلكتروني'),
-            \Filament\Tables\Columns\TextColumn::make('created_at')->label('تاريخ الإرسال')->date(),
+            \Filament\Tables\Columns\TextColumn::make('user.name')
+                ->label(__("Name")),
+            \Filament\Tables\Columns\TextColumn::make('email')
+                ->label(__("Email address")),
+            \Filament\Tables\Columns\TextColumn::make('created_at')
+                ->label(__("Created at"))
+                ->date(),
         ];
     }
 
     protected function getTableHeading(): string|Htmlable|Closure|null
     {
-        return 'دعوات في انتظار الموافقة';
+        return __("Pending invites");
     }
 
     protected function getTableQuery() {

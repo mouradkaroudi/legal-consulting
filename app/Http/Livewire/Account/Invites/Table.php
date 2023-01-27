@@ -18,10 +18,11 @@ class Table extends Component implements HasTable
 	protected function getTableColumns(): array
 	{
 		return [
-			\Filament\Tables\Columns\TextColumn::make("office.name")->label("المكتب"),
-			\Filament\Tables\Columns\TextColumn::make("created_at")->label(
-				"تاريخ الإرسال"
-			)->date(),
+			\Filament\Tables\Columns\TextColumn::make("office.name")
+				->label(__('Office name')),
+			\Filament\Tables\Columns\TextColumn::make("created_at")
+				->label(__('Created at'))
+				->date(),
 		];
 	}
 
@@ -29,13 +30,13 @@ class Table extends Component implements HasTable
 	{
 		return [
 			Action::make("accpet")
-				->label("قبول الدعوة")
+				->label(__('Accept invite'))
                 ->action(function (Invite $record, array $data): void {
 					InviteService::accept($record);
 				})
 				->button(),
 			Action::make("decline")
-				->label("رفض الدعوة")
+			->label(__('Decline invite'))
 				->action(function (Invite $record, array $data): void {
 					$record->delete();
 				})

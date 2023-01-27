@@ -15,13 +15,7 @@ class Sidebar extends Component
   /**
    *
    */
-  public $sidebarLinks = [
-    [
-      "label" => "لوحة التحكم",
-      "routeName" => "office.overview",
-      'icon' => 'heroicon-o-home'
-    ],
-  ];
+  public $sidebarLinks = [];
 
   /**
    *
@@ -48,14 +42,20 @@ class Sidebar extends Component
   {
     $user = auth()->user();
 
+    $this->sidebarLinks[] =     [
+      "label" => __("Dashboard"),
+      "routeName" => "office.overview",
+      'icon' => 'heroicon-o-home'
+    ];
+
     $this->sidebarLinks[] = [
-      "label" => "التنبيهات",
+      "label" => __("Notifications"),
       "routeName" => "office.notifications",
       'icon' => 'heroicon-o-bell'
     ];
 
     $this->sidebarLinks[] = [
-      "label" => "جدول المواعيد",
+      "label" => __("Schedules"),
       "routeName" => "office.schedules.index",
       'icon' => 'heroicon-o-calendar'
     ];
@@ -64,15 +64,15 @@ class Sidebar extends Component
       $user->can('viewAny', DigitalOfficeEmployee::class)
     ) {
       $this->sidebarLinks[] = [
-        "label" => "الموظفين",
+        "label" => __("Employees"),
         "routeName" => "office.employees.index",
         'icon' => 'heroicon-o-users'
       ];
     }
 
-    if($user->can('viewAny', Order::class)) {
+    if ($user->can('viewAny', Order::class)) {
       $this->sidebarLinks[] = [
-        "label" => "الطلبات",
+        "label" => __("Orders"),
         "routeName" => "office.orders.index",
         'icon' => 'heroicon-o-shopping-cart'
       ];
@@ -80,12 +80,11 @@ class Sidebar extends Component
 
     if ($user->can('viewAny', Thread::class)) {
       $this->sidebarLinks[] = [
-        "label" => "المحادثات",
+        "label" => __("Messages"),
         "routeName" => "office.threads.index",
         'icon' => 'heroicon-o-chat-alt-2',
         'badge' => Message::unreadForUserOffice(Auth::id(), $user->currentOffice->id)->count()
       ];
     }
-
   }
 }

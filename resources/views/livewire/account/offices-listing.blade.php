@@ -9,7 +9,7 @@
                 font-bold flex items-center w-full
                 px-4 py-2
                 transition justify-center'">
-                دخول للمكتب
+                {{ __('Log to office') }}
             </x-switch-able-office>
     </div>
     @endforeach

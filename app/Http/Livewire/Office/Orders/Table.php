@@ -17,35 +17,36 @@ class Table extends Component implements HasTable
 
 	public DigitalOffice $office;
 
-    public function getTableModelLabel(): string
-    {
-        return 'الطلب';
-    }
+	public function getTableModelLabel(): string
+	{
+		return __('Order');
+	}
 
-    public function getTablePluralModelLabel(): string
-    {
-        return 'الطلبات';
-    }
+	public function getTablePluralModelLabel(): string
+	{
+		return __('Orders');
+	}
 
 	protected function getTableColumns(): array
 	{
 		return [
 			\Filament\Tables\Columns\TextColumn::make("id")->label("#"),
 			\Filament\Tables\Columns\TextColumn::make("beneficiary.name")->label(
-				"المستفيد"
+				__('beneficiary')
 			),
-			\Filament\Tables\Columns\TextColumn::make("subject")->label("الموضوع"),
+			\Filament\Tables\Columns\TextColumn::make("subject")
+				->label(__('Subject')),
 			\Filament\Tables\Columns\TextColumn::make("fee")
-				->label("التكلفة")
+				->label(__('Amount'))
 				->money("sar", true),
 			\Filament\Tables\Columns\BadgeColumn::make("status")
-				->label("الحالة")
+				->label(__('Status'))
 				->enum([
 					Order::PAID => __("orders.paid"),
 					Order::UNPAID => __("orders.unpaid"),
 				]),
 			\Filament\Tables\Columns\TextColumn::make("created_at")
-				->label("تاريخ الإصدار")
+				->label(__('Created at'))
 				->date(),
 		];
 	}
@@ -59,7 +60,7 @@ class Table extends Component implements HasTable
 	{
 		return [
 			\Filament\Tables\Actions\DeleteAction::make()
-			->visible(fn (Order $record): bool => auth()->user()->can('delete', $record))
+				->visible(fn (Order $record): bool => auth()->user()->can('delete', $record))
 		];
 	}
 

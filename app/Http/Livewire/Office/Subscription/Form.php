@@ -50,12 +50,12 @@ class Form extends Component implements HasForms
                 return $plans->pluck('name', 'id');
             })->label(false)->required(),
             RadioButton::make("paymentMethod")
-            ->label("وصيلة الدفع")
+            ->label(__('Payment method'))
             ->options([
-                "accountBalance" => "رصيد الحساب",
-                "officeBalance" => "رصيد المكتب",
-                "paypal" => "بايبال",
-                "bank-transfer" => "تحويل بنكي",
+                "accountBalance" => __('Account balance'),
+                "officeBalance" => __('Office balance'),
+                "paypal" => __('PayPal'),
+                "bank-transfer" => __('Bank transfer'),
             ])
             ->columns(1)
             ->required(),

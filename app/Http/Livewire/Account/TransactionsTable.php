@@ -19,12 +19,15 @@ class TransactionsTable extends Component implements Tables\Contracts\HasTable
 	protected function getTableColumns(): array
 	{
 		return [
-			TextColumn::make("id")->label("رقم التحويل"),
-			TextColumn::make('amount')->label('المبلغ')->money('sar', true),
+			TextColumn::make("id")
+				->label(__('Transaction ID')),
+			TextColumn::make('amount')
+				->label(__('Amount'))
+				->money('sar', true),
 			TextColumn::make("details")
-				->label("التفاصيل")
+				->label(__('Details'))
 				->getStateUsing(
-					fn($record) => __(
+					fn ($record) => __(
 						"transactions.details." .
 							\Illuminate\Support\Str::lower($record->source),
 						[
@@ -33,13 +36,19 @@ class TransactionsTable extends Component implements Tables\Contracts\HasTable
 						]
 					)
 				),
-			BadgeColumn::make("status")->label('الحالة')->getStateUsing(
-				fn($record) => __(
-					"transactions." . \Illuminate\Support\Str::lower($record->status)
-				)
-			),
-			TextColumn::make('created_at')->label("تاريخ المعاملة")->date(),
-			TextColumn::make('updated_at')->label("آخر تحديث")->date(),
+			BadgeColumn::make("status")
+				->label(__('Status'))
+				->getStateUsing(
+					fn ($record) => __(
+						"transactions." . \Illuminate\Support\Str::lower($record->status)
+					)
+				),
+			TextColumn::make('created_at')
+				->label(__('Created at'))
+				->date(),
+			TextColumn::make('updated_at')
+				->label(__('Updated at'))
+				->date(),
 		];
 	}
 

@@ -16,8 +16,8 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next)
     {
-
-        $language = 'ar'; // default
+        
+        $language = $request->user() ? $request->user()->preferred_lang : 'ar'; // default
 
         if (request('language')) {
             $language = request('language');
@@ -25,7 +25,7 @@ class SetLocale
         } elseif (session('language')) {
             $language = session('language');
         }
-        app()->setLocale($language);
+        app()->setLocale($language ? $language : 'ar');
 
         return $next($request);
     }

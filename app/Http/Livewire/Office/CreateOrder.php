@@ -31,10 +31,13 @@ class CreateOrder extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            TextInput::make('subject')->label('الموضوع')->helperText('الخدمة المقدمة (مثال : استشارة قانونية)')
-            ->required(),
-            TextInput::make('fee')->label('التكلفة')->helperText('أدخل المتسحقات التي يجب على المستفيد دفعها (مثال :  1000 ريال سعدوي)')
-            ->required(),
+            TextInput::make('subject')
+                ->label(__('Subject'))
+                ->helperText(__('The service you will provide, e.g., legal consultation.'))
+                ->required(),
+            TextInput::make('fee')->label('التكلفة')
+                ->helperText(__('The amount that the beneficiary must pay, e.g., 1000 SAR.'))
+                ->required(),
         ];
     }
 
@@ -43,18 +46,17 @@ class CreateOrder extends Component implements HasForms
         return view('livewire.office.create-order');
     }
 
-    public function submit() {
-        
+    public function submit()
+    {
+
         $this->authorize('create', Order::class);
 
         OrderService::createOrder($this->subject, $this->beneficiaryId, $this->officeId, $this->fee);
 
         $this->dispatchBrowserEvent('close-modal', ['id' => 'create-order-modal']);
         NotificationsNotification::make()
-        ->title('تم انشاء الطلب بنجاح')
-        ->success()
-        ->send();
-
+            ->title('تم انشاء الطلب بنجاح')
+            ->success()
+            ->send();
     }
-
 }

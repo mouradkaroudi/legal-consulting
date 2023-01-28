@@ -4,10 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
+use Astrotomic\Translatable\Translatable;
 
-class Profession extends Model
+class Profession extends Model implements TranslatableContract
 {
-    use HasFactory;
+    use HasFactory, Translatable;
+
+    /**
+     * The attributes that are translatable.
+     *
+     * @var array<string>
+     */
+    public $translatedAttributes = ['name', 'slug'];
 
     /**
      * The attributes that are mass assignable.
@@ -23,14 +32,16 @@ class Profession extends Model
     /**
      * Each profession belong to one service
      */
-    public function service() {
+    public function service()
+    {
         return $this->belongsTo(Service::class);
     }
 
     /**
      * Each profession may have one or more specialization
      */
-    public function specializations() {
+    public function specializations()
+    {
         return $this->hasMany(Specialization::class);
     }
 
@@ -39,8 +50,8 @@ class Profession extends Model
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function subscriptions() {
+    public function subscriptions()
+    {
         return $this->hasMany(ProfessionSubscriptionPlan::class, 'profession_id', 'id');
     }
-
 }

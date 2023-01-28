@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Front; // FIXME: change front to guest
 
-use App\Models\Category;
 use App\Models\User;
 use Filament\AvatarProviders\UiAvatarsProvider;
 use Illuminate\Support\Facades\Auth;

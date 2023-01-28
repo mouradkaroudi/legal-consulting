@@ -22,6 +22,8 @@ class WithdrawalMethodsForm extends Component implements HasForms
     protected function getFormSchema(): array
     {
         $withDrawalMethods = WithdrawalMethod::all();
+        
+        $withDrawalMethodsForm = [];
 
         foreach( $withDrawalMethods as $withDrawalMethod ) {
 
@@ -43,9 +45,8 @@ class WithdrawalMethodsForm extends Component implements HasForms
         */
 
         return [
-            Tabs::make('طرق السحب')->tabs(
-                $withDrawalMethodsForm
-            )
+            Tabs::make(__('Withdrawals methods'))
+                ->tabs($withDrawalMethodsForm)
         ];
     }
 

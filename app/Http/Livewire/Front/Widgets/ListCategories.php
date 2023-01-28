@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Front\Widgets;
 
-use App\Models\Category;
 use App\Models\Service;
 use Livewire\Component;
 

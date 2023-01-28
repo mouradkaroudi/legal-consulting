@@ -18,7 +18,6 @@ class SpecializationResource extends Resource
     protected static ?string $model = Specialization::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $navigationGroup = 'Entities';
 
     protected static function getNavigationLabel(): string
     {

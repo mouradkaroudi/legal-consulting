@@ -83,7 +83,7 @@ class Form extends Component implements HasForms
 						->label(__('Email address'))
 						->disabled(),
 					TextInput::make("job_title")
-						->label('Job title'),
+						->label(__('Job title')),
 					CheckboxList::make("permissions")
 						->label(__('Permissions'))
 						->options($permissions)

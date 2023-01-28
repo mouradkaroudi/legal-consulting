@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Office;
 
-use App\Models\Category;
 use App\Models\DigitalOffice;
 use App\Models\Profession;
 use App\Models\Service;
@@ -27,6 +26,12 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 	{
 		$this->form->fill($this->digitalOffice->toArray());
 	}
+
+	protected function getFormModel(): DigitalOffice
+	{
+		return $this->digitalOffice;
+	}
+
 	// TODO: add TVA
 	protected function getFormSchema(): array
 	{
@@ -36,25 +41,27 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 				->imagePreviewHeight("250")
 				->panelAspectRatio("16:9")
 				->panelLayout("integrated")
-				->label("صورة"),
+				->label(__('Image')),
 			Fieldset::make("info")
+				->label(__('General information'))
 				->schema([
 					Grid::make(2)->schema([
 						Forms\Components\TextInput::make("name")
-							->label("اسم المكتب")
+							->label(__('Office name'))
 							->required(),
 						Forms\Components\TextInput::make("phone_number")->label(
 							__("validation.attributes.phone")
 						),
 					]),
-					Forms\Components\MarkdownEditor::make("description")->label("وصف"),
+					Forms\Components\MarkdownEditor::make("description")
+						->label(__('Description')),
 				])
-				->columns(1)
-				->label("معلومات عامة"),
+				->columns(1),
 			Fieldset::make("categorization")
+				->label(__('Category'))
 				->schema([
 					Select::make("specializations")
-						->label("اختر التخصصات")
+						->label(__('Select specializations'))
 						->relationship("specializations", "name")
 						->multiple()
 						->options(function (callable $get) {
@@ -70,41 +77,36 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 						->preload()
 						->reactive(),
 				])
-				->columns(1)
-				->label("التصنيف"),
+				->columns(1),
 			Fieldset::make("licenses")
+				->label(__('Licenses'))
 				->schema([
 					Forms\Components\TextInput::make("commercial_registration_number")
-						->label("رقم سجل التجاري")
+						->label(__('Commercial registre number'))
 						->required(),
-					Forms\Components\TextInput::make(
-						"professional_license_number"
-					)->label("رقم الرخصة المهنية"),
-					Forms\Components\TextInput::make("municipal_license_number")->label(
-						"رقم رخصة البلدية"
-					),
-					Forms\Components\TextInput::make("tax_establishment_number")->label(
-						"رقم المنشأة الضريبي"
-					),
-				])
-				->label("التراخيص"),
+					Forms\Components\TextInput::make("professional_license_number")
+						->label(__('Professional license number')),
+					Forms\Components\TextInput::make("municipal_license_number")
+						->label(__('Municipal license number')),
+					Forms\Components\TextInput::make("tax_establishment_number")
+						->label(__('Tax establishment number')),
+				]),
 		];
 
 		$fields[] = Fieldset::make("attachments")
+			->label(__('Attachments'))
 			->schema([
-				Forms\Components\FileUpload::make("license_attachment")->label(
-					"مرفق للسجل التجاري"
-				),
+				Forms\Components\FileUpload::make("license_attachment")
+					->label(__('Commercial register')),
 			])
-			->columns(1)
-			->label("المرفقات");
+			->columns(1);
 
 		if ($this->digitalOffice->status != "UNCOMPLETED") {
 			$fields[] = Forms\Components\Select::make("status")
-				->label("الحالة")
+				->label(__('Status'))
 				->options([
-					"busy" => "مشغول",
-					"available" => "متوفر",
+					DigitalOffice::BUSY => __('Busy'),
+					DigitalOffice::AVAILABLE => __('Available'),
 				])
 				->columns(1);
 		}
@@ -150,19 +152,13 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 		$this->digitalOffice->update($data);
 
 		Notification::make()
-			->title("تم تحديث المعلومات بنجاح")
+			->title(__('The information has been updated successfully'))
 			->success()
 			->send();
-		
-		if($redirect) {
+
+		if ($redirect) {
 			redirect()->route('office.settings', $this->digitalOffice);
 		}
-
-	}
-
-	protected function getFormModel(): DigitalOffice
-	{
-		return $this->digitalOffice;
 	}
 
 	public function render()

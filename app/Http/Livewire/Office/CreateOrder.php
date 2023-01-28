@@ -3,19 +3,13 @@
 namespace App\Http\Livewire\Office;
 
 use App\Models\Order;
-use App\Models\User;
-use App\Notifications\OrderCreatedNotification;
 use App\Services\OrderService;
 use Filament\Forms\Components\Concerns\CanBeValidated;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification as NotificationsNotification;
-use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification as FacadesNotification;
 use Livewire\Component;
 
 class CreateOrder extends Component implements HasForms
@@ -35,7 +29,8 @@ class CreateOrder extends Component implements HasForms
                 ->label(__('Subject'))
                 ->helperText(__('The service you will provide, e.g., legal consultation.'))
                 ->required(),
-            TextInput::make('fee')->label('التكلفة')
+            TextInput::make('fee')
+                ->label(__('Amount'))
                 ->helperText(__('The amount that the beneficiary must pay, e.g., 1000 SAR.'))
                 ->required(),
         ];
@@ -55,7 +50,7 @@ class CreateOrder extends Component implements HasForms
 
         $this->dispatchBrowserEvent('close-modal', ['id' => 'create-order-modal']);
         NotificationsNotification::make()
-            ->title('تم انشاء الطلب بنجاح')
+            ->title(__('The order was created successfully'))
             ->success()
             ->send();
     }

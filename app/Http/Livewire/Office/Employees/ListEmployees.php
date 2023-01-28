@@ -95,7 +95,7 @@ class ListEmployees extends Component implements Tables\Contracts\HasTable
 				->date(),
 
 			Tables\Columns\TextColumn::make("ended_at")
-				->label(__("Departure Date"))
+				->label(__("Departure date"))
 				->date(),
 		];
 	}

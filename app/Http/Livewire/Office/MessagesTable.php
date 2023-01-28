@@ -2,10 +2,7 @@
 
 namespace App\Http\Livewire\Office;
 
-use App\Models\DigitalOffice;
 use App\Models\Thread;
-use App\Models\User;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -26,8 +23,10 @@ class MessagesTable extends Component implements HasTable
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('owner.name')->label('المستفيد'),
-            TextColumn::make('subject')->label('الموضوع'),
+            TextColumn::make('owner.name')
+                ->label(__('Beneficiary')),
+            TextColumn::make('subject')
+                ->label(__('Subject')),
         ];
     }
 

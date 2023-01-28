@@ -4,10 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
+use Astrotomic\Translatable\Translatable;
 
-class Service extends Model
+class Service extends Model implements TranslatableContract
 {
-    use HasFactory;
+    use HasFactory, Translatable;
+
+    /**
+     * The attributes that are translatable.
+     *
+     * @var array<string>
+     */
+    public $translatedAttributes = ['name', 'slug'];
 
     /**
      * The attributes that are mass assignable.
@@ -19,8 +28,8 @@ class Service extends Model
         'slug'
     ];
 
-    public function professions() {
+    public function professions()
+    {
         return $this->hasMany(Profession::class);
     }
-
 }

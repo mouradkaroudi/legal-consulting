@@ -45,11 +45,9 @@ class CountryResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->label(__('filament::resources/countries.form.fields.name.label'))
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
                 Forms\Components\TextInput::make('citizenship')
-                    ->label(__('filament::resources/countries.form.fields.citizenship.label'))
-                    ->maxLength(255),
+                    ->label(__('filament::resources/countries.form.fields.citizenship.label')),
                 Forms\Components\TextInput::make('country_code')
                     ->label(__('filament::resources/countries.form.fields.country_code.label'))
                     ->required()

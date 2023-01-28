@@ -1,6 +1,7 @@
-@extends('layouts.dashboard', ['pageTitle' => 'لوحة التحكم'])
+@extends('layouts.dashboard', ['pageTitle' => __('Dashboard')])
 
 @section('content')
-  <livewire:office.office-stats />
-  <livewire:office.messages-table/>
+<livewire:office.office-stats />
+<div class="my-6"></div>
+<livewire:office.messages-table />
 @endsection

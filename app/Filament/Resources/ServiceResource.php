@@ -18,7 +18,6 @@ class ServiceResource extends Resource
     protected static ?string $model = Service::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $navigationGroup = 'Entities';
 
     protected static function getNavigationLabel(): string
     {
@@ -34,7 +33,7 @@ class ServiceResource extends Resource
     {
         return static::$modelLabel ?? static::$modelLabel ?? __('filament::resources/services.label.singular');
     }
-    
+
     protected static function getNavigationGroup(): ?string
     {
         return __('Content Management');
@@ -45,14 +44,14 @@ class ServiceResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', str_replace(' ', '-', $state)))
                     ->label(__('filament::resources/services.form.fields.name.label'))
+                    ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
-                    ->required()
                     ->label(__('filament::resources/services.form.fields.slug.label'))
-                    ->maxLength(255),
+                    //->afterStateUpdated(fn ($state, callable $set) => $set('slug', str_replace(' ', '-', $state)))
+                    ->maxLength(255)
+                    ->required(),
             ]);
     }
 

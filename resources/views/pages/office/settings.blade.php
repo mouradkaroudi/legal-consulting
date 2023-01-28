@@ -1,4 +1,4 @@
-@extends('layouts.dashboard', ['pageTitle' => 'إعدادات المكتب'])
+@extends('layouts.dashboard', ['pageTitle' => __('Office settings')])
 
 @php
 $currentUrl = request()->fullUrl();
@@ -20,7 +20,7 @@ $currentUrl = request()->fullUrl();
                                 rounded-lg 
                                 {{ $menuItem['link'] == $currentUrl ? 'bg-gray-200 text-green-700 font-semibold' : 'text-gray-900' }}">
                             <x-dynamic-component :component="$menuItem['icon']" class="w-6 h-6 text-gray-500 transition duration-75" />
-                            <span class="flex-1 mr-3 whitespace-nowrap">{{ $menuItem['label'] }}</span>
+                            <span class="flex-1 ml-3 rtl:mr-3 whitespace-nowrap">{{ $menuItem['label'] }}</span>
                             @if(isset($menuItem['badgeCount']))
                             <span class="inline-flex items-center justify-center w-3 h-3 p-3 mr-3 text-sm font-medium text-blue-600 bg-blue-200 rounded-full dark:bg-blue-900 dark:text-blue-200">
                                 {{ $menuItem['badgeCount'] }}

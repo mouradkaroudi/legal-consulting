@@ -33,11 +33,11 @@ class LocationForm extends Component implements Forms\Contracts\HasForms
 		return [
 			Grid::make(2)->schema([
 				Forms\Components\Select::make("country_code")
-					->label("الدولة")
+					->label(__('Country'))
 					->options($countries)
                     ->reactive(),
 				Forms\Components\Select::make("city")
-					->label("المدينة")
+					->label(__('City'))
 					->reactive()
 					->options(function (callable $get) {
 						$countryId = $get("country_code");
@@ -48,7 +48,8 @@ class LocationForm extends Component implements Forms\Contracts\HasForms
 						return $country->cities->pluck("name", "id");
 					}),
 			]),
-			LocationPicker::make("location")->label("الموقع الجغرافي"),
+			LocationPicker::make("location")
+				->label(__('Geographical location')),
 		];
 	}
 
@@ -63,7 +64,7 @@ class LocationForm extends Component implements Forms\Contracts\HasForms
 
 		$this->digitalOffice->update($data);
 		Notification::make()
-			->title("تم تحديث بنجاح")
+			->title(__('The information has been updated successfully'))
 			->success()
 			->send();
 	}

@@ -21,12 +21,12 @@ class SettingsController extends Controller
 
         $menu = [
             [
-                'label' => 'إعدادت عامة',
+                'label' => __('General settings'),
                 'icon' => 'heroicon-o-cog',
                 'link' => $settingsRoute
             ],
             [
-                'label' => 'إعدادات السحب',
+                'label' => __('Withdrawal settings'),
                 'icon' => 'heroicon-o-credit-card',
                 'link' => $settingsRoute . '?tab=withdrawal'
             ],
@@ -34,7 +34,7 @@ class SettingsController extends Controller
 
         if($request->user()->currentOffice->haveSubscriptionPlan()) {
             $menu[] = [
-                'label' => 'إعدادات الإشتراك',
+                'label' => __('Subscription settings'),
                 'icon' => 'heroicon-o-user',
                 'link' => $settingsRoute . '?tab=subscription'
             ];

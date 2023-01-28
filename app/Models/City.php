@@ -25,5 +25,5 @@ class City extends Model implements TranslatableContract
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'country_code'];
+    protected $fillable = ['country_code'];
 }

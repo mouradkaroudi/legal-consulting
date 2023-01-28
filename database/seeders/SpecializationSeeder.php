@@ -32,7 +32,9 @@ class SpecializationSeeder extends Seeder
             ]
         ];
 
-        \App\Models\Specialization::insert($specializations);
+        foreach($specializations as $specialization) {
+            \App\Models\Specialization::create($specialization);
+        }
 
     }
 }

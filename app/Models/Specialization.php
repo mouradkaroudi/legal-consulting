@@ -23,11 +23,7 @@ class Specialization extends Model implements TranslatableContract
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'slug',
-        'profession_id',
-    ];
+    protected $fillable = ['profession_id'];
 
     /**
      * 

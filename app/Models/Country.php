@@ -26,8 +26,6 @@ class Country extends Model implements TranslatableContract
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'citizenship',
         'country_code',
         'currency_code'
     ];

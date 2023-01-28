@@ -24,8 +24,6 @@ class Profession extends Model implements TranslatableContract
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'slug',
         'service_id',
     ];
 

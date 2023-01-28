@@ -32,7 +32,9 @@ class ProfessionSeeder extends Seeder
             ],
         ];
 
-        \App\Models\Profession::insert($professions);
+        foreach($professions as $profession) {
+            \App\Models\Profession::create($profession);
+        }
 
     }
 }

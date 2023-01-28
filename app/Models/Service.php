@@ -18,16 +18,6 @@ class Service extends Model implements TranslatableContract
      */
     public $translatedAttributes = ['name', 'slug'];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'slug'
-    ];
-
     public function professions()
     {
         return $this->hasMany(Profession::class);

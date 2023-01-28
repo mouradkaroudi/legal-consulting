@@ -34,6 +34,9 @@ class ServiceSeeder extends Seeder
             ],
         ];
 
-        \App\Models\Service::insert($services);
+        foreach($services as $service) {
+            \App\Models\Service::create($service);
+        }
+        
     }
 }

@@ -260,7 +260,10 @@ class CitySeeder extends Seeder
 			["name" => "الجوف", "country_code" => "YE"],
 		];
 
-        City::insert($cities);
+		foreach($cities as $city) {
+			City::create($city);
+		}
+        
 
 	}
 }

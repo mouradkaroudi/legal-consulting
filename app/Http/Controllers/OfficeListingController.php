@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\DigitalOffice;
+use App\Models\Profession;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OfficeListingController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, Service $service, Profession $profession)
     {
         $offices = DigitalOffice::all();
         return view('pages.search.index', [
             'offices' => $offices,
-            'service' => Service::where('slug', request('service'))->first() 
+            'service' => $service,
+            'profession' => $profession
         ]);
     }
 
@@ -24,7 +26,7 @@ class OfficeListingController extends Controller
             return abort(404);
         }
 
-        if( get_option('digital_office_hide_unsubscribed_offices') && $digitalOffice->isSubscribed() === false ) {
+        if( setting('digital_office_hide_unsubscribed_offices') && $digitalOffice->isSubscribed() === false ) {
             return abort(404);
         }
 

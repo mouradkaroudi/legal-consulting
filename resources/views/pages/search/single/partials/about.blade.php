@@ -15,21 +15,19 @@
 
         <div class="grid md:grid-cols-2 text-sm">
             <div class="grid grid-cols-2">
-                <div class="px-4 py-2 font-semibold">الإسم الكامل</div>
+                <div class="px-4 py-2 font-semibold">{{ __('Full name') }}</div>
                 <div class="px-4 py-2">{{ $office->owner->name }}</div>
             </div>
             <div class="grid grid-cols-2">
-                <div class="px-4 py-2 font-semibold">الجنس</div>
-                <div class="px-4 py-2">{{ $gender }}</div>
-            </div>
-            <div class="grid grid-cols-2">
-                <div class="px-4 py-2 font-semibold">رقم الهاتف</div>
-                <div class="px-4 py-2">{{ $office->owner->phone_number }}</div>
-            </div>
-            <div class="grid grid-cols-2">
-                <div class="px-4 py-2 font-semibold">البريد الإلكتروني</div>
+                <div class="px-4 py-2 font-semibold">{{ __('Phone number') }}</div>
                 <div class="px-4 py-2">
-                    <a class="text-blue-800" href="mailto:jane@example.com">{{ $office->owner->email }}</a>
+                    <a href="tel:{{ $office->owner->phone_number }}">{{ $office->owner->phone_number }}</a>
+                </div>
+            </div>
+            <div class="grid grid-cols-2">
+                <div class="px-4 py-2 font-semibold">{{ __('Email address') }}</div>
+                <div class="px-4 py-2">
+                    <a class="text-blue-800" href="mailto:{{ $office->owner->email }}">{{ $office->owner->email }}</a>
                 </div>
             </div>
         </div>

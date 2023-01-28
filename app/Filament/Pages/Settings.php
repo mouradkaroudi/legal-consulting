@@ -55,10 +55,7 @@ class Settings extends Page
 			Components\Grid::make(2)->schema([
 				Components\FileUpload::make("general_settings_site_logo")->label(
 					__('filament::pages/settings.fields.general_settings.fields.site_logo.label')
-				),
-				Components\FileUpload::make("general_settings_site_logo")->label(
-					__('filament::pages/settings.fields.general_settings.fields.site_logo.label')
-				),
+				)
 			]),
 		];
 

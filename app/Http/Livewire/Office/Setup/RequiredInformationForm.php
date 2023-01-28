@@ -40,7 +40,7 @@ class RequiredInformationForm extends Component implements HasForms
 
         $data = $this->form->getState();
 
-        $directRegistration = get_option('digital_office_direct_registration');
+        $directRegistration = setting('digital_office_direct_registration');
         $subscriptionEnabled = Subscription::isEnabled();
 
         $status =  ($subscriptionEnabled && !empty(ProfessionSubscriptionPlan::find($data['profession_id'])))

@@ -20,7 +20,7 @@ class RegistrationController extends Controller
      */
     public function create( Request $request ) {
 
-        $isRegistrationOpen = filter_var(get_option('registration_open'), FILTER_VALIDATE_BOOLEAN);
+        $isRegistrationOpen = filter_var(setting('registration_open'), FILTER_VALIDATE_BOOLEAN);
         
         if(!$isRegistrationOpen) {
             return abort(404);

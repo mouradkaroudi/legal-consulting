@@ -43,7 +43,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
-    $sliders = get_option('homepage_slider');
+    $sliders = setting('homepage_slider');
 
     return view('pages.home.index', [
         'sliders' => $sliders

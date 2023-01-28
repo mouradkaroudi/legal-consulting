@@ -24,38 +24,38 @@ class PostResource extends Resource
 
         $isCustom = request()->input('custom');
 
-        $seoSchema = [
-            Forms\Components\KeyValue::make('metadata')
-                ->disableAddingRows()
-                ->disableDeletingRows()
-                ->disableEditingKeys(),
-        ];
-
         if (!$isCustom) {
             //return [];
         }
 
         return $form
             ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->required(),
-                        Forms\Components\RichEditor::make('content'),
+                Forms\Components\Group::make(
+                    [
+                        Forms\Components\Card::make([
+                            Forms\Components\TextInput::make('title')
+                                ->required(),
+                            Forms\Components\RichEditor::make('content'),
 
-                    ])->columnSpan(2),
+                        ]),
+                        Forms\Components\Card::make([
+                            Forms\Components\KeyValue::make('metadata')
+                                ->disableAddingRows()
+                                ->disableDeletingRows()
+                                ->disableEditingKeys(),
+                        ]),
+                    ]
+                )->columnSpan(2),
                 Forms\Components\Card::make()
                     ->schema([
+                        Forms\Components\TextInput::make('slug')
+                            ->required(),
                         Forms\Components\Select::make('post_type')
                             ->options([
                                 Post::TYPE_PAGE => 'Page',
                                 Post::TYPE_FAQ => 'Faq'
                             ])
                             ->required(),
-                        Forms\Components\KeyValue::make('metadata')
-                            ->disableAddingRows()
-                            ->disableDeletingRows()
-                            ->disableEditingKeys(),
                     ])->columnSpan(1)
             ])->columns(3);
     }

@@ -12,7 +12,7 @@ $gender = $office->owner->profile->gender;
 }
 @endphp
 
-@extends('layouts.front.index')
+@extends('layouts.front.index', ['title' => $office->name])
 @section('content')
 <div class="mx-auto max-w-screen-xl px-4 lg:px-6 my-12 min-h-[580px]">
     <div class="lg:flex no-wrap lg:gap-6">

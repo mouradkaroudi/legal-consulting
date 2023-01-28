@@ -15,7 +15,7 @@ class SubscriptionService
 
 	public static function isEnabled()
 	{
-		return get_option('subscriptions_enable_subscription') == 1;
+		return setting('subscriptions_enable_subscription') == 1;
 	}
 
 	/**

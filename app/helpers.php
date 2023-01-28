@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
  * 
  * @return string
  */
-function get_option( $name ) {
+function setting( $name ) {
     $opt = Setting::option($name)->first();
     return  $opt ? $opt->value : null;
 }

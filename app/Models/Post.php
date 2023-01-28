@@ -20,13 +20,13 @@ class Post extends Model implements TranslatableContract
      *
      * @var array<string>
      */
-    public $translatedAttributes = ['title', 'content'];
+    public $translatedAttributes = ['title', 'content', 'metadata'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = ['post_type'];
+    protected $fillable = ['post_type', 'slug'];
 
 }

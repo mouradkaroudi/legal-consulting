@@ -22,15 +22,15 @@
     </div>
     @endif
     <ul class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
-        <li class="flex items-center py-3">
+        <li class="flex gap-2 items-center py-3">
             <span>{{ __('Status') }}</span>
-            <span class="mr-auto"><span class="bg-success-500 py-1 px-2 rounded text-white text-sm">
-                    {{ __('offices.status.' . \Illuminate\Support\Str::lower($office->status)) }}
+            <span><span class="bg-success-500 py-1 px-2 rounded text-white text-sm">
+                    {{ __(\Illuminate\Support\Str::lower($office->status)) }}
                 </span></span>
         </li>
-        <li class="flex items-center py-3">
+        <li class="flex gap-2 items-center py-3">
             <span>{{ __('Member since') }}</span>
-            <span class="mr-auto">{{ $office->created_at->format(config('tables.date_format')) }}</span>
+            <span>{{ $office->created_at->format(config('tables.date_format')) }}</span>
         </li>
     </ul>
 </div>

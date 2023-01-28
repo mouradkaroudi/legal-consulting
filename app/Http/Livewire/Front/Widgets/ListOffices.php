@@ -16,6 +16,7 @@ class ListOffices extends Component implements HasForms
 
     public $officeName = '';
 	public Service $service;
+	public Profession $profession;
 	public $countryId;
 	public $cityId;
 	public $professionId;
@@ -38,12 +39,12 @@ class ListOffices extends Component implements HasForms
 		return [
 			\Filament\Forms\Components\Grid::make()->schema([
 				\Filament\Forms\Components\Select::make("countryId")
-					->label("الدولة")
+					->label(__('Country'))
 					->name("countryId")
 					->reactive()
 					->options(Country::all()->pluck("name", "id")),
 				\Filament\Forms\Components\Select::make("cityId")
-					->label("المدينة")
+					->label(__('City'))
 					->name("cityId")
 					->reactive()
 					->options(function (callable $get) {
@@ -66,17 +67,16 @@ class ListOffices extends Component implements HasForms
 		return [
 			\Filament\Forms\Components\Grid::make()
 				->schema([
-					\Filament\Forms\Components\TextInput::make("officeName")->label(
-						"اسم المكتب"
-					),
+					\Filament\Forms\Components\TextInput::make("officeName")
+					->label(__('Office name')),
 					\Filament\Forms\Components\Select::make("professionId")
-						->label("المهنة")
+						->label(__('Profession'))
 						->options(function() {
 							return Service::where('slug', $this->service->slug)->first()->professions->pluck('name', 'id');
 					
 						}),
 					\Filament\Forms\Components\Select::make("specializationsIds")
-						->label("التخصص")
+						->label(__('Specialization'))
 						->reactive()
 						->multiple()
 						->preload()
@@ -115,7 +115,7 @@ class ListOffices extends Component implements HasForms
 
 		}
 
-		if(get_option('digital_office_hide_unsubscribed_offices')) {
+		if(setting('digital_office_hide_unsubscribed_offices')) {
 			$offices = $offices->subscribed();
 		}
 

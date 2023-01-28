@@ -43,8 +43,8 @@ class ProfessionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('service')
-                ->relationship('service', 'name')
+                Forms\Components\Select::make('service_id')
+                ->relationship('serviceTranslation', 'name')
                     ->label(__('filament::resources/professions.form.fields.service_id.label'))
                     ->required(),
                 Forms\Components\TextInput::make('name')

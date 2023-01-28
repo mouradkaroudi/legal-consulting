@@ -16,7 +16,7 @@ class Profession extends Model implements TranslatableContract
      *
      * @var array<string>
      */
-    public $translatedAttributes = ['name', 'slug'];
+    public $translatedAttributes = ['name'];
 
     /**
      * The attributes that are mass assignable.
@@ -25,6 +25,7 @@ class Profession extends Model implements TranslatableContract
      */
     protected $fillable = [
         'service_id',
+        'slug'
     ];
 
     /**
@@ -34,6 +35,15 @@ class Profession extends Model implements TranslatableContract
     {
         return $this->belongsTo(Service::class);
     }
+
+    /**
+     * Each profession belong to a service. Services have translatable columns
+     */
+    public function serviceTranslation()
+    {
+        return $this->belongsTo(ServiceTranslation::class, 'service_id', 'id');
+    }
+
 
     /**
      * Each profession may have one or more specialization

@@ -7,27 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
 
-class Service extends Model implements TranslatableContract
+class Post extends Model implements TranslatableContract
 {
     use HasFactory, Translatable;
+
+    public const TYPE_PAGE = 'page';
+    public const TYPE_FAQ = 'faq';
+    public const TYPE_CUSTOM = 'custom';
 
     /**
      * The attributes that are translatable.
      *
      * @var array<string>
      */
-    public $translatedAttributes = ['name'];
+    public $translatedAttributes = ['title', 'content'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = ['slug'];
+    protected $fillable = ['post_type'];
 
-
-    public function professions()
-    {
-        return $this->hasMany(Profession::class);
-    }
 }

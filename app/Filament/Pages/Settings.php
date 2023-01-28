@@ -50,6 +50,18 @@ class Settings extends Page
 
 	protected function getFormSchema(): array
 	{
+
+		$generalSettings = [
+			Components\Grid::make(2)->schema([
+				Components\FileUpload::make("general_settings_site_logo")->label(
+					__('filament::pages/settings.fields.general_settings.fields.site_logo.label')
+				),
+				Components\FileUpload::make("general_settings_site_logo")->label(
+					__('filament::pages/settings.fields.general_settings.fields.site_logo.label')
+				),
+			]),
+		];
+
 		$digitalOfficeSettingsScheme = [
 			Components\Grid::make(2)->schema([
 				Components\Toggle::make("digital_office_direct_registration")->label(
@@ -87,6 +99,9 @@ class Settings extends Page
 		];
 
 		return [
+			Components\Fieldset::make("general_settings")
+				->label(__('filament::pages/settings.fields.general_settings.label'))
+				->schema($generalSettings),
 			Components\Fieldset::make("digital_office")
 				->label(__('filament::pages/settings.fields.digital_office.label'))
 				->schema($digitalOfficeSettingsScheme),

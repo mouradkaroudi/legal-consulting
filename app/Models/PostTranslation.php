@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProfessionTranslation extends Model
+class PostTranslation extends Model
 {
     use HasFactory;
 
@@ -16,5 +16,15 @@ class ProfessionTranslation extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['title', 'content', 'metadata'];
+
+	/**
+	 * The attributes that should be cast.
+	 *
+	 * @var array<string, string>
+	 */
+    protected $casts = [
+        'metadata' => 'json'
+    ];
+
 }

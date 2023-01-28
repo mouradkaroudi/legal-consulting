@@ -1,4 +1,4 @@
-<footer class="border-t bg-white border-gray-300">
+<footer class="border-t bg-gray-900 border-gray-300">
     <div class="px-4 mx-auto overflow-hidden sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 sm:p-6">
         <div class="md:flex md:justify-between">
             <div class="mb-6 md:mb-0">

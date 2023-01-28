@@ -13,14 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('service_translations', function (Blueprint $table) {
+        Schema::create('post_translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('service_id');
+            $table->unsignedBigInteger('post_id');
             $table->string('locale')->index();
-            $table->string('name');
-
-            $table->unique(['service_id', 'locale']);
-            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
+            $table->string('title');
+            $table->text('content');
+            $table->json('metadata');
+            
+            $table->unique(['post_id', 'locale']);
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
 
         });
     }
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('service_translations');
+        Schema::dropIfExists('post_translations');
     }
 };

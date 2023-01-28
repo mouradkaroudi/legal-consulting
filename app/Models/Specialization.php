@@ -16,20 +16,29 @@ class Specialization extends Model implements TranslatableContract
      *
      * @var array<string>
      */
-    public $translatedAttributes = ['name', 'slug'];
+    public $translatedAttributes = ['name'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = ['profession_id'];
+    protected $fillable = ['profession_id', 'slug'];
 
     /**
-     * 
+     * Each specialization belong to a profession
      */
     public function profession()
     {
         return $this->belongsTo(Profession::class, 'profession_id');
     }
+
+    /**
+     * Each specialization belong to a profession. Professions have translatable columns
+     */
+    public function professionTranslation()
+    {
+        return $this->belongsTo(ProfessionTranslation::class, 'profession_id', 'id');
+    }
+
 }

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('specialization_id');
             $table->string('locale')->index();
             $table->string('name');
-            $table->string('slug');
 
             $table->unique(['specialization_id', 'locale']);
             $table->foreign('specialization_id')->references('id')->on('specializations')->onDelete('cascade');

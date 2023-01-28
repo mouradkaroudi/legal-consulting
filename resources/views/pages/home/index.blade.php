@@ -18,5 +18,5 @@
         </div>
     </div>
 </div>
-@include('pages.home.partials.faq')
+<livewire:shared.widgets.faq/>
 @endsection

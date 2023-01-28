@@ -27,7 +27,7 @@
 <body class="bg-gray-100">
     <livewire:front.navigation />
     @yield('content')
-    @include('footer')
+    <livewire:shared.widgets.footer />
 </body>
 
 </html>

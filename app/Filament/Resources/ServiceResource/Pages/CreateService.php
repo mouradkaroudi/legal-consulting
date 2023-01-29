@@ -9,4 +9,14 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateService extends CreateRecord
 {
     protected static string $resource = ServiceResource::class;
+
+    public function mount(): void
+    {
+        $this->form->fill([
+            'metadata' => [
+                'description' => '',
+                'keywords' => ''
+            ]
+        ]);
+    }
 }

@@ -9,4 +9,15 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateProfession extends CreateRecord
 {
     protected static string $resource = ProfessionResource::class;
+
+    public function mount(): void
+    {
+        $this->form->fill([
+            'metadata' => [
+                'description' => '',
+                'keywords' => ''
+            ]
+        ]);
+    }
+
 }

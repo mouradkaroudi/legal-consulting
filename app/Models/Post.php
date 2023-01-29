@@ -22,11 +22,13 @@ class Post extends Model implements TranslatableContract
      */
     public $translatedAttributes = ['title', 'content', 'metadata'];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = ['post_type', 'slug'];
+
+    /**
+     * Each post may have many meta
+     */
+    public function meta() {
+        return $this->hasMany(Postmeta::class, 'post_id', 'id');
+    }
 
 }

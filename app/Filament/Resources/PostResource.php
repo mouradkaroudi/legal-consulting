@@ -39,7 +39,7 @@ class PostResource extends Resource
 
                         ]),
                         Forms\Components\Card::make([
-                            Forms\Components\KeyValue::make('metadata')
+                            Forms\Components\KeyValue::make('seo')
                                 ->disableAddingRows()
                                 ->disableDeletingRows()
                                 ->disableEditingKeys(),
@@ -53,7 +53,8 @@ class PostResource extends Resource
                         Forms\Components\Select::make('post_type')
                             ->options([
                                 Post::TYPE_PAGE => 'Page',
-                                Post::TYPE_FAQ => 'Faq'
+                                Post::TYPE_FAQ => 'Faq',
+                                'slide' => 'Slide',
                             ])
                             ->required(),
                     ])->columnSpan(1)
@@ -93,6 +94,7 @@ class PostResource extends Resource
             'index' => Pages\ListPosts::route('/'),
             'create' => Pages\CreatePost::route('/create'),
             'edit' => Pages\EditPost::route('/{record}/edit'),
+            'create-slide' => Pages\CreatePostSlide::route('/create/slide'),
         ];
     }
 }

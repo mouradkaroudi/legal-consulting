@@ -8,6 +8,7 @@ use Filament\Pages\Page;
 
 class Settings extends Page
 {
+
 	protected static ?string $navigationIcon = "heroicon-o-document-text";
 
 	protected static function getNavigationLabel(): string
@@ -16,6 +17,7 @@ class Settings extends Page
 	}
 
 	protected static string $view = "filament.pages.settings";
+	public static array $translatableAttributes = ['general_settings_site_name'];
 
 	public function mount()
 	{
@@ -23,7 +25,18 @@ class Settings extends Page
 			->pluck("value", "option")
 			->toArray();
 
+		$currentLocal = app()->getLocale();
+
 		foreach ($settings as $option => $value) {
+
+			$mayTranslatable = str_replace('_' . $currentLocal, '', $option);
+
+
+			if (in_array($mayTranslatable, self::$translatableAttributes)) {
+				$option = $mayTranslatable;
+				$settings[$option] = $value;
+			}
+
 			if (json_decode($value) !== null) {
 				$settings[$option] = json_decode($value, true);
 			}
@@ -35,10 +48,17 @@ class Settings extends Page
 	public function submit()
 	{
 		$settings = $this->form->getState();
+
+		$currentLocal = app()->getLocale();
+
 		foreach ($settings as $option => $value) {
 
 			if (!is_string($value)) {
 				$value = json_encode($value);
+			}
+
+			if (in_array($option, self::$translatableAttributes)) {
+				$option = $option . '_' . $currentLocal;
 			}
 
 			Setting::where("option", $option)->updateOrCreate([
@@ -55,8 +75,19 @@ class Settings extends Page
 			Components\Grid::make(2)->schema([
 				Components\FileUpload::make("general_settings_site_logo")->label(
 					__('filament::pages/settings.fields.general_settings.fields.site_logo.label')
+				),
+				Components\TextInput::make("general_settings_site_name")->label(
+					__('filament::pages/settings.fields.general_settings.fields.site_name.label')
 				)
 			]),
+		];
+
+		$socialLinksSchema = [
+			Components\Repeater::make('social_links')->schema([
+				Components\TextInput::make('link'),
+				Components\TextInput::make('icon'),
+				Components\TextInput::make('label')
+			])
 		];
 
 		$digitalOfficeSettingsScheme = [
@@ -111,21 +142,9 @@ class Settings extends Page
 			Components\Fieldset::make("payment")
 				->label(__('filament::pages/settings.fields.payment.label'))
 				->schema($paymentSettingScheme)->columns(1),
-			Components\Fieldset::make("slider")
-				->label(__('filament::pages/settings.fields.slider.label'))
-				->schema([
-					Components\Repeater::make('homepage_slider')
-						->label(__('filament::pages/settings.fields.slider.fields.homepage_slider.label'))
-						->schema([
-							Components\TextInput::make('title')
-								->label(__('filament::pages/settings.fields.slider.fields.homepage_slider.fields.title')),
-							Components\Textarea::make('content')
-								->label(__('filament::pages/settings.fields.slider.fields.homepage_slider.fields.content')),
-							Components\ColorPicker::make('color')
-								->label(__('filament::pages/settings.fields.slider.fields.homepage_slider.fields.color'))
-
-						])
-				])->columns(1),
+			Components\Fieldset::make("social")
+				->label(__('filament::pages/settings.fields.payment.label'))
+				->schema($socialLinksSchema)->columns(1),
 		];
 	}
 }

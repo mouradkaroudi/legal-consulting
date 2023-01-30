@@ -19,12 +19,13 @@ use Filament\Tables\Contracts\HasTable;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Contracts\Database\Query\Builder;
-use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 use Yepsua\Filament\Forms\Components\Rating;
 
 class Table extends Component implements HasTable
 {
 	use InteractsWithTable;
+
+	public $paymentMethod;
 
 	protected function getTableColumns(): array
 	{
@@ -50,24 +51,12 @@ class Table extends Component implements HasTable
 		];
 	}
 
-	protected function getTableRecordActionUsing()
-	{
-		return fn (Order $record): string => $record->status === Order::UNPAID
-			? "pay"
-			: "";
-	}
-
 	protected function getTableActions(): array
 	{
 
 		return [
 			Action::make("pay")
 				->label("دفع")
-				->mountUsing(
-					fn (Forms\ComponentContainer $form, Order $record) => $form->fill([
-						"orderId" => $record->id,
-					])
-				)
 				->modalContent(function ($record) {
 					return view('pages.account.orders.order-summary', [
 						'amount' => $record->fee,
@@ -76,21 +65,10 @@ class Table extends Component implements HasTable
 						'officeName' => $record->office->name
 					]);
 				})
-				->modalSubmitAction(Action::makeModalAction('pay')->label('دفع')->action('pay'))
-				->form([
-					RadioButton::make("paymentMethod")
-						->label("وصيلة الدفع")
-						->options([
-							"balance" => "الرصيد",
-							"paypal" => "بايبال",
-						])
-						->descriptions([
-							"balance" => "الدفع من الرصيد المتوفر في حسابك",
-							"paypal" => "الدفع من خلال حسابك على باببال",
-						])
-						->columns(2)
-						->required(),
-				])->hidden(fn ($record) => $record->status === Order::PAID),
+				->modalActions([])
+				->modalSubmitAction(fn() => null)
+				//->modalSubmitAction(Action::makeModalAction('pay')->label('دفع')->action('pay'))
+				->hidden(fn ($record) => $record->status === Order::PAID),
 			Action::make('add_review')
 				->mountUsing(function (Forms\ComponentContainer $form, Order $record) {
 					if ($record->hasReview()) {
@@ -149,58 +127,4 @@ class Table extends Component implements HasTable
 		return view("livewire.office.orders.table");
 	}
 
-	public function pay()
-	{
-
-		$data = $this->mountedTableActionData;
-		$orderId = $data["orderId"];
-		$user = Auth::user();
-		$order = Order::find($orderId);
-		$office = DigitalOffice::find($order->office_id);
-
-		$paymentMethod = $data["paymentMethod"];
-
-		if ($paymentMethod === "balance") {
-			if ($user->available_balance > $order->fee) {
-
-				$userTxn = $user->transactions()->create([
-					"amount" => $order->fee,
-					"type" => "credit",
-					"source" => Transaction::PAY_DUES,
-					"status" => Transaction::SUCCESS,
-					"metadata" => json_encode([
-						"order_id" => $order->id
-					])
-				]);
-
-				$user->substractFromBalance($order->fee);
-
-				$officeTxn = $office->transactions()->create([
-					"amount" => $order->fee,
-					"type" => "debit",
-					"source" => Transaction::RECEIVE_EARNINGS,
-					"status" => Transaction::SUCCESS,
-					"metadata" => json_encode([
-						"order_id" => $order->id
-					])
-				]);
-
-				$office->addToBalance($order->fee);
-
-				OrderService::orderPaid($order);
-
-				Notification::make()
-					->title('مبروك ! تم دفع مستحقات الطلب بنجاح.')
-					->success()
-					->send();
-
-				return redirect()->route('account.orders.index');
-			} else {
-				$this->addError(
-					"mountedTableActionData.paymentMethod",
-					"المعذرة رصيدك غير كافي. المرجو شحن حسابك."
-				);
-			}
-		}
-	}
 }

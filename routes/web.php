@@ -28,6 +28,7 @@ use App\Http\Controllers\Payment\BalanceController as PaymentBalanceController;
 use App\Http\Controllers\Payment\BankTransferController;
 use App\Http\Controllers\Payment\PayPalController;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,10 +44,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
-    $sliders = setting('homepage_slider');
+    $slides = Post::where('post_type', 'slide')->get();
+
+    $n = [];
+
+    foreach($slides as $slide) {
+        
+        $n[] = [
+            'title' => $slide->title,
+            'content' => $slide->content,
+            'color' => $slide->meta->where('option', 'bg_color')->first()?->value
+        ];
+    }
 
     return view('pages.home.index', [
-        'sliders' => $sliders
+        'slides' => $n
     ]);
 })->name('home');
 

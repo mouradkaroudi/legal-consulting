@@ -26,7 +26,7 @@ class OfficeListingController extends Controller
             return abort(404);
         }
 
-        if( setting('digital_office_hide_unsubscribed_offices') && $digitalOffice->isSubscribed() === false ) {
+        if( setting('digital_office_hide_unsubscribed_offices') == 1 && $digitalOffice->isSubscribed() === false ) {
             return abort(404);
         }
 

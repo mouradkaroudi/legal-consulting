@@ -115,7 +115,7 @@ class ListOffices extends Component implements HasForms
 
 		}
 
-		if(setting('digital_office_hide_unsubscribed_offices')) {
+		if(setting('digital_office_hide_unsubscribed_offices') == 1) {
 			$offices = $offices->subscribed();
 		}
 

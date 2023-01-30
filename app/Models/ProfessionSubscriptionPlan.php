@@ -29,6 +29,14 @@ class ProfessionSubscriptionPlan extends Model
     }
 
     /**
+     * Each subscription plan belong to a profession. Professions have translatable columns
+     */
+    public function professionTranslation()
+    {
+        return $this->belongsTo(ProfessionTranslation::class, 'profession_id', 'id');
+    }
+
+    /**
      * 
      */
     public function getFeeLabelAttribute() {

@@ -130,5 +130,15 @@
     "Member since": "عضو منذ",
     "Reviews": "التقييمات",
     "Member since :date": "عضو منذ :date",
-    "There are no reviews currently.": "لا توجد مراجعات حاليا."
+    "There are no reviews currently.": "لا توجد مراجعات حاليا.",
+
+    "Sign to your account": "سجل الدخول لحسابك",
+    "Remember me": "تذكرني",
+    "Forgot your password ?": "نسيت كلمة السر ؟",
+    "Browse services": "تصفح الخدمات",
+    "Advanced search": "بحث متقدم",
+    "Specialization": "التخصص",
+    "Search": "بحث",
+    "You must pay": "يجب ان تدفع",
+    "Order": "الطلب"
 }

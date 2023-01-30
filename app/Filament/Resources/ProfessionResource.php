@@ -17,7 +17,6 @@ class ProfessionResource extends Resource
     protected static ?string $model = Profession::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $navigationGroup = 'Entities';
     
     protected static function getNavigationLabel(): string
     {

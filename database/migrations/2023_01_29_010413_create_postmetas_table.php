@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('post_id');
             $table->string('option');
-            $table->text('value');
+            $table->text('value')->nullable();
 
             $table->unique(['post_id', 'option']);
 

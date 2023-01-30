@@ -13,5 +13,9 @@ class Postmeta extends Model
 
     protected $table = 'postmetas';
 
-    protected $fillable = ['option', 'value'];
+    protected $fillable = ['post_id', 'option', 'value'];
+
+    public function post() {
+        return $this->belongsTo(Post::class, 'post_id', 'id');
+    }
 }

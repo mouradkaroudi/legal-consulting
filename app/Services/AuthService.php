@@ -71,7 +71,7 @@ class AuthService
 
        DigitalOffice::create([
             "user_id" => $user->id,
-            "name" => "مكتب " . $user->name,
+            "name" => __("Office") .' '. $user->name,
         ])->employees()->create([
             'user_id' => $user->id,
             'job_title' => __('auth.providers.default_job_title')

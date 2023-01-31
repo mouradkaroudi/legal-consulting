@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\ProfessionSubscriptionPlan;
 use App\Models\Subscription;
 use App\Models\Transaction;
+use App\Services\OrderService;
 use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
 
@@ -53,7 +54,7 @@ class BalanceController extends Controller
         return redirect()->route('office.subscription.success');
     }
 
-    public function order() {
+    public function order(Request $request) {
 
         $user = auth()->user();
 
@@ -64,31 +65,12 @@ class BalanceController extends Controller
         $order = Order::find($order_id);
 
         if ($order->fee > $user->available_balance) {
-            return redirect()->route('account.order.failed'); // TODO: consider make route for all failing payment
+            return redirect()->route('payment.failed'); // TODO: consider make route for all failing payment
         }
 
-        $office = $order->office;
+        OrderService::orderPaid($order);
 
-        $user->transactions()->create([
-            'amount' => $order->fee,
-            'type' => 'credit',
-            'source' => Transaction::PAY_DUES,
-            'status' => Transaction::SUCCESS,
-            'metadata' => json_encode(['order_id' => $order->id])
-        ]);
-
-        $office->transactions()->create([
-            'amount' => $order->fee,
-            'type' => 'debit',
-            'source' => Transaction::RECEIVE_EARNINGS,
-            'status' => Transaction::SUCCESS,
-            'metadata' => json_encode(['order_id' => $order->id])
-        ]);
-
-        $user->substractFromBalance($order->fee);
-        $office->addToBalance($order->fee);
-
-        return redirect()->route('account.order.paid');
+        return redirect()->route('payment.success');
 
     }
 

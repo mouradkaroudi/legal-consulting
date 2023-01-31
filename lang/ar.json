@@ -3,7 +3,7 @@
     "The information has been updated successfully": "تم تحديث المعلومات بنجاح",
     "The invitation has been sent": "تم ارسال الدعوة",
     "The order was created successfully": "تم إنشاء الطلب بنجاح",
-
+    "The review was successfully added": "تم اضافة التقييم بنجاح",
     "Show only active ones": "إظهار النشطين فقط",
 
     "Schedules": "جدول المواعيد",
@@ -140,5 +140,7 @@
     "Specialization": "التخصص",
     "Search": "بحث",
     "You must pay": "يجب ان تدفع",
-    "Order": "الطلب"
+    "Order": "الطلب",
+    "Add review": "أضف تقييم",
+    "Edit review": "تعديل تقييم"
 }

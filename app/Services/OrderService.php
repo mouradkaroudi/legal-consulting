@@ -1,9 +1,9 @@
 <?php
 namespace App\Services;
 
-use App\Models\DigitalOffice;
 use App\Models\DigitalOfficeEmployee;
 use App\Models\Order;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\OrderCreatedNotification;
@@ -16,6 +16,7 @@ class OrderService
 	 */
 	public static function createOrder($subject, $user_id, $office_id, $subtotal)
 	{
+		
 		$order = Order::create([
 			"office_id" => $office_id,
 			"beneficiary_id" => $user_id,
@@ -33,6 +34,29 @@ class OrderService
 	}
 
 	public static function orderPaid($order) {
+
+		$beneficiary = $order->beneficiary;
+		$office = $order->office;
+
+		$beneficiary->transactions()->create([
+            'amount' => $order->fee,
+            'type' => 'credit',
+            'source' => Transaction::PAY_DUES,
+            'status' => Transaction::SUCCESS,
+            'metadata' => json_encode(['order_id' => $order->id])
+        ]);
+
+		$office->transactions()->create([
+            'amount' => $order->fee,
+            'type' => 'debit',
+            'source' => Transaction::RECEIVE_EARNINGS,
+            'status' => Transaction::SUCCESS,
+            'metadata' => json_encode(['order_id' => $order->id])
+        ]);
+
+		$beneficiary->substractFromBalance($order->fee);
+        $office->addToBalance($order->fee);
+		
 		$order->status = Order::PAID;
 		$order->save();
 

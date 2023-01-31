@@ -48,8 +48,8 @@ Route::get('/', function () {
 
     $n = [];
 
-    foreach($slides as $slide) {
-        
+    foreach ($slides as $slide) {
+
         $n[] = [
             'title' => $slide->title,
             'content' => $slide->content,
@@ -68,15 +68,14 @@ Route::get('/', function () {
 Route::name('auth.')->middleware(RedirectIfAuthenticated::class)->group(function () {
     Route::get('/registration', [RegistrationController::class, 'create'])->name('registration');
     Route::get('/login', [AuthController::class, 'index'])->name('login');
-
 });
 
-Route::middleware('auth')->group(function() {
+Route::middleware('auth')->group(function () {
     Route::get('verify-email', [AuthController::class, 'verifyEmailPrompt'])->name('verification.notice');
     Route::post('send', [AuthController::class, 'resendVerification'])->name('verification.send');
     Route::get('verify-email/{id}/{hash}', [AuthController::class, 'verifyEmail'])
-    ->middleware(['signed', 'throttle:6,1'])
-    ->name('verification.verify');
+        ->middleware(['signed', 'throttle:6,1'])
+        ->name('verification.verify');
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
@@ -144,18 +143,7 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'verified', 'ac
     Route::put('/current-office', [CurrentOfficeController::class, 'update'])->name('current-office.update');
 });
 
-/**
- * Offices listing routes
- */
-Route::name('search.')->group(function () {
-    Route::get('{service:slug?}/{profession:slug?}', [OfficeListingController::class, 'index'])->name('listing');
-    Route::get('listing/office/{digitalOffice}-{name}', [OfficeListingController::class, 'show'])
-        ->where([
-            'digitalOffice' => '[0-9]+',
-            'title' => '[a-zA-Z0-9-]+'
-        ])
-        ->name('office');
-});
+
 
 /**
  * Webhooks routes
@@ -164,10 +152,20 @@ Route::name('webhook.')->prefix('/webhook')->group(function () {
     Route::post('/paypal', [PayPalController::class, 'webhook'])->name('paypal');
 });
 
+
+
 /**
  * Payments methods routes
  */
 Route::name('payment.')->prefix('/payment')->middleware(['auth', 'account.settled'])->group(function () {
+
+    Route::get('/success', function () {
+        return view('pages.payment.success');
+    })->name('success');
+    
+    Route::get('/failed', function () {
+        return view('pages.payment.failed');
+    })->name('failed');
 
     Route::name('paypal.')->prefix('/paypal')->group(function () {
         Route::get('/subscription', [PayPalController::class, 'subscription'])->name('subscription');
@@ -183,4 +181,19 @@ Route::name('payment.')->prefix('/payment')->middleware(['auth', 'account.settle
         Route::get('/subscriptions', [BankTransferController::class, 'subscription'])->name('subscription');
         Route::get('/order', [BankTransferController::class, 'order'])->name('order');
     });
+
+
+});
+
+/**
+ * Offices listing routes
+ */
+Route::name('search.')->group(function () {
+    Route::get('{service:slug?}/{profession:slug?}', [OfficeListingController::class, 'index'])->name('listing');
+    Route::get('listing/office/{digitalOffice}-{name}', [OfficeListingController::class, 'show'])
+        ->where([
+            'digitalOffice' => '[0-9]+',
+            'title' => '[a-zA-Z0-9-]+'
+        ])
+        ->name('office');
 });

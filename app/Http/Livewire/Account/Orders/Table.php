@@ -2,11 +2,8 @@
 
 namespace App\Http\Livewire\Account\Orders;
 
-use App\Models\DigitalOffice;
 use App\Models\Order;
-use App\Models\Transaction;
 use App\Models\User;
-use App\Services\OrderService;
 use Digikraaft\ReviewRating\Models\Review;
 use Filament\Tables\Actions\Action;
 use Filament\Forms;
@@ -19,11 +16,13 @@ use Filament\Tables\Contracts\HasTable;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Contracts\Database\Query\Builder;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 use Yepsua\Filament\Forms\Components\Rating;
 
 class Table extends Component implements HasTable
 {
-	use InteractsWithTable;
+	use InteractsWithTable, AuthorizesRequests;
 
 	public $paymentMethod;
 
@@ -53,21 +52,42 @@ class Table extends Component implements HasTable
 
 	protected function getTableActions(): array
 	{
-
 		return [
 			Action::make("pay")
-				->label("دفع")
-				->modalContent(function ($record) {
-					return view('pages.account.orders.order-summary', [
-						'amount' => $record->fee,
-						'orderID' => $record->id,
-						'subject' => $record->subject,
-						'officeName' => $record->office->name
-					]);
+				->label(__('Pay'))
+				->action(function ($record) {
+					$data = $this->mountedTableActionData;
+					$paymentMethod = $data["paymentMethod"];
+					$params = ['order_id' => $record->id];
+					return redirect()->route('payment.' . $paymentMethod . '.order', ['params' => $params]);
 				})
-				->modalActions([])
-				->modalSubmitAction(fn() => null)
-				//->modalSubmitAction(Action::makeModalAction('pay')->label('دفع')->action('pay'))
+				->form(function ($record) {
+					return [
+						Forms\Components\Grid::make(2)->schema([
+							Forms\Components\Placeholder::make('paymentForm')
+								->label('')
+								->content(view('pages.account.orders.order-summary', [
+									'amount' => $record->fee,
+									'orderID' => $record->id,
+									'subject' => $record->subject,
+									'officeName' => $record->office->name
+								])),
+							RadioButton::make("paymentMethod")
+								->label(__('Payment method'))
+								->options([
+									"balance" => __('Balance'),
+									"paypal" => __('PayPal'),
+									"bank-transfer" => __('Bank transfer'),
+								])
+								->descriptions([])
+								->columns(1)
+								->required(),
+						]),
+						Forms\Components\Checkbox::make('agree')
+							->label('أوافق على شروط إستخدام الموقع.')
+							->required()
+					];
+				})
 				->hidden(fn ($record) => $record->status === Order::PAID),
 			Action::make('add_review')
 				->mountUsing(function (Forms\ComponentContainer $form, Order $record) {
@@ -80,7 +100,7 @@ class Table extends Component implements HasTable
 						]);
 					}
 				})
-				->label(fn ($record): string => $record->hasReviewed(auth()->user()) ? 'تعديل التقييم' : 'أضف تقييم')
+				->label(fn ($record): string => $record->hasReviewed(auth()->user()) ? __('Edit review') : __('Add review'))
 				->action(function (Order $record, array $data): void {
 
 					if (isset($data['review_id']) && !empty($data['review_id'])) {
@@ -95,7 +115,7 @@ class Table extends Component implements HasTable
 					}
 
 					Notification::make()
-						->title('تم اضافة التقييم بنجاح.')
+						->title(__('The review was successfully added'))
 						->success()
 						->send();
 				})
@@ -119,12 +139,12 @@ class Table extends Component implements HasTable
 
 	protected function getTableQuery(): Builder
 	{
-		return Order::where("beneficiary_id", Auth::id())->latest();
+		return Order::latest()
+			->where('beneficiary_id', auth()->user()->id);
 	}
 
 	public function render()
 	{
 		return view("livewire.office.orders.table");
 	}
-
 }

@@ -14,13 +14,13 @@ use Spatie\Permission\Models\Role;
 class User extends Authenticatable implements MustVerifyEmail
 {
 	use HasApiTokens, HasFactory, Notifiable;
-	//FIXME: remove available balance from fillables
+
 	/**
 	 * The attributes that are mass assignable.
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = ["name", "email", "password", "available_balance", "withdrawal_methods", "preferred_lang"];
+	protected $fillable = ["name", "email", "password", "withdrawal_methods", "preferred_lang"];
 
 	/**
 	 * The attributes that should be hidden for serialization.

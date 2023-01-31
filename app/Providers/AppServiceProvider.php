@@ -45,7 +45,7 @@ class AppServiceProvider extends ServiceProvider
 					->label(__('filament::resources/navigations.form.fields.service_id.singular'))
 					->searchable()
 					->options(function () {
-						return \App\Models\Service::pluck('name', 'id');
+						return \App\Models\ServiceTranslation::pluck('name', 'id');
 					})
 			]);
 
@@ -54,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
 					->label(__('filament::resources/navigations.form.fields.profession_id.singular'))
 					->searchable()
 					->options(function () {
-						return \App\Models\Profession::pluck('name', 'id');
+						return \App\Models\ProfessionTranslation::pluck('name', 'id');
 					})
 			]);
 		});

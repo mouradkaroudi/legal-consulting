@@ -85,8 +85,15 @@ class Settings extends Page
 		$socialLinksSchema = [
 			Components\Repeater::make('social_links')->schema([
 				Components\TextInput::make('link'),
-				Components\TextInput::make('icon'),
-				Components\TextInput::make('label')
+				Components\Select::make('platform')->options([
+					'facebook' => __('Facebook'),
+					'whatsapp' => __('Whatsapp'),
+					'instagram' => __('Instagram'),
+					'telegram' => __('Telegram'),
+					'twitter' => __('Twitter'),
+					'tiktok' => __('Tiktok'),
+					'snapchat' => __('Snapchat'),
+				]),
 			])
 		];
 

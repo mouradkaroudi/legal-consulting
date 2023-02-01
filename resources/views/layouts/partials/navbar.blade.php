@@ -1,9 +1,9 @@
 <header class="flex-shrink-0 border-b bg-white">
-    <div class="flex items-center justify-between w-full mx-auto md:px-6 lg:px-8 max-w-7xl h-14">
+    <div class="flex items-center justify-between w-full mx-auto px-4 md:px-6 max-w-7xl h-14">
         <!-- Navbar left -->
         <div class="flex items-center space-x-3">
             <span class="p-2 text-xl font-semibold tracking-wider uppercase lg:hidden">
-                <livewire:shared.site-logo/>
+                <livewire:shared.site-logo />
             </span>
             <!-- Toggle sidebar button -->
             <button @click="toggleSidbarMenu()" class="p-2 rounded-md focus:outline-none focus:ring">
@@ -12,11 +12,9 @@
                 </svg>
             </button>
         </div>
-        <div class="relative flex items-center space-x-3">
-            <div class="items-center space-x-3 rtl:space-x-reverse md:flex">
-                <livewire:office.switch-office />
-                <livewire:account.avatar-with-dropdown />
-            </div>
+        <div class="flex items-center space-x-3 rtl:space-x-reverse">
+            <livewire:office.switch-office />
+            <livewire:account.avatar-with-dropdown />
         </div>
     </div>
 </header>

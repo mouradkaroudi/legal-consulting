@@ -1,6 +1,6 @@
 <x-filament::dropdown placement="bottom-end">
     <x-slot name="trigger">
-        <x-filament::icon-button icon="heroicon-o-translate" labelSrOnly="true" />
+        <x-filament::button color="secondary" icon="heroicon-o-translate" labelSrOnly="true" />
     </x-slot>
     <x-filament::dropdown.list>
         <x-filament::dropdown.list.item tag="a" :href="request()->url() . '?language=ar'">

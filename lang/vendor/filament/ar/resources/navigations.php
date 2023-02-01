@@ -12,7 +12,10 @@ return [
             ],
             'profession_id' => [
                 'label' => 'اختر مهنة'
-            ]
+            ],
+            'page_id' => [
+                'label' => 'اختر صفحة'
+            ],
         ]
     ]
 ];

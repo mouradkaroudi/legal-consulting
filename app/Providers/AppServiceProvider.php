@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\App;
 
 class AppServiceProvider extends ServiceProvider
 {
+	public $bindings = [
+		\RyanChandler\FilamentNavigation\FilamentNavigationManager::class => \App\Overrides\FilamentNavigationManager::class,
+	];
+
 	/**
 	 * Register any application services.
 	 *
@@ -42,25 +46,25 @@ class AppServiceProvider extends ServiceProvider
 
 			\RyanChandler\FilamentNavigation\Facades\FilamentNavigation::addItemType(__('Service'), [
 				\Filament\Forms\Components\Select::make('service_id')
-					->label(__('filament::resources/navigations.form.fields.service_id.singular'))
+					->label(__('filament::resources/navigations.form.fields.service_id.label'))
 					->searchable()
 					->options(function () {
 						return \App\Models\ServiceTranslation::pluck('name', 'id');
 					})
-			]);
+			], 'service');
 
 			\RyanChandler\FilamentNavigation\Facades\FilamentNavigation::addItemType(__('Profession'), [
 				\Filament\Forms\Components\Select::make('profession_id')
-					->label(__('filament::resources/navigations.form.fields.profession_id.singular'))
+					->label(__('filament::resources/navigations.form.fields.profession_id.label'))
 					->searchable()
 					->options(function () {
 						return \App\Models\ProfessionTranslation::pluck('name', 'id');
 					})
-			]);
+			], 'profession');
 
 			\RyanChandler\FilamentNavigation\Facades\FilamentNavigation::addItemType(__('Page'), [
 				\Filament\Forms\Components\Select::make('page_id')
-					->label(__('filament::resources/navigations.form.fields.page_id.singular'))
+					->label(__('filament::resources/navigations.form.fields.page_id.label'))
 					->searchable()
 					->options(function () {
 
@@ -70,7 +74,7 @@ class AppServiceProvider extends ServiceProvider
 						});
 						return $options->pluck('title','id');
 					})
-			]);
+			], 'page');
 		});
 	}
 }

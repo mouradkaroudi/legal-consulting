@@ -4,52 +4,80 @@
         <a href="{{ route('home') }}" class="flex items-center">
             <livewire:shared.site-logo />
         </a>
-
-        <button data-collapse-toggle="mega-menu-full" type="button" class="inline-flex items-center p-2 mr-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="mega-menu-full" aria-expanded="false">
-            <span class="sr-only">Open main menu</span>
-            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-            </svg>
-        </button>
-
-        <div id="mega-menu-full" class="hidden justify-between items-center w-full md:flex md:w-auto md:order-1">
-            <ul class="flex flex-col items-center p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row space-x-8 space-x-reverse md:mt-0 md:border-0 md:bg-white">
-                @if($menu)
-                @foreach($menu as $menuItem)
-                <li class="relative" x-data="{ isOpen: false }">
-                    @if(!empty($menuItem['children']))
-                    <div>
-                        <button @click="isOpen = !isOpen" id="mega-menu-full-dropdown-button" data-collapse-toggle="mega-menu-full-dropdown" class="flex justify-between items-center py-2 pr-4 pl-3 w-full text-gray-700 rounded md:w-auto hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
-                            {{ $menuItem['label'] }}
-                            <svg class="mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div x-show="isOpen" @click.away="isOpen = false" x-show.transition.opacity="isOpen" class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                        <div class="py-1" role="none">
-                            @foreach($menuItem['children'] as $meniChildItem)
-                            <a href="{{ $meniChildItem['data'] ? $meniChildItem['data']['url'] : ''}}" class="block py-2 px-4 hover:bg-gray-100" aria-current="page">
-                                {{ $meniChildItem['label'] }}
-                            </a>
-                            @endforeach
-                        </div>
-                    </div>
-                    @else
-                    <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0" aria-current="page">
+        <div class="hidden md:flex md:gap-6 justify-between items-center">
+            @if($menu)
+            @foreach($menu as $menuItem)
+            @if(!empty($menuItem['children']))
+            <x-filament::dropdown placement="bottom-end">
+                <x-slot name="trigger">
+                    <a href="#" class="flex items-center gap-2 py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">
                         {{ $menuItem['label'] }}
+                        <x-heroicon-o-chevron-down class="block h-4 w-4" />
                     </a>
-                    @endif
+                </x-slot>
+                <x-filament::dropdown.list>
+                    @foreach($menuItem['children'] as $meniChildItem)
+                    <x-filament::dropdown.list.item tag="a" :href="$meniChildItem['data'] ? $meniChildItem['data']['url'] : ''">
+                        {{ $meniChildItem['label'] }}
+                    </x-filament::dropdown.list.item>
+                    @endforeach
+                </x-filament::dropdown.list>
+            </x-filament::dropdown>
+            @else
+            <a href="{{ $menuItem['data'] ? $menuItem['data']['url'] : ''}}" class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">
+                {{ $menuItem['label'] }}
+            </a>
+            @endif
+            @endforeach
+            @endif
+        </div>
 
+        <div id="mega-menu-full" class="flex justify-between items-center w-auto">
+            <ul class="flex items-center p-4 space-x-4 rtl:space-x-reverse">
+                <li>
+                    <x-filament::dropdown placement="bottom-end">
+                        <x-slot name="trigger">
+                            <button type="button" class="block md:hidden p-2 text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+                                <span class="sr-only">Open main menu</span>
+                                <x-heroicon-o-menu class="block h-6 w-6" />
+                            </button>
+                        </x-slot>
+                        <x-filament::dropdown.list>
+                            @if($menu)
+                            @foreach($menu as $menuItem)
+                            @if(!empty($menuItem['children']))
+                            <x-filament::dropdown placement="bottom-end">
+                                <x-slot name="trigger">
+                                    <x-filament::dropdown.list.item :href="$menuItem['data'] ? $menuItem['data']['url'] : ''">
+                                        {{ $menuItem['label'] }}
+                                    </x-filament::dropdown.list.item>
+                                </x-slot>
+                                <x-filament::dropdown.list>
+                                    @foreach($menuItem['children'] as $meniChildItem)
+                                    <x-filament::dropdown.list.item tag="a" :href="$meniChildItem['data'] ? $meniChildItem['data']['url'] : ''">
+                                        {{ $meniChildItem['label'] }}
+                                    </x-filament::dropdown.list.item>
+                                    @endforeach
+                                </x-filament::dropdown.list>
+                            </x-filament::dropdown>
+                            @else
+                            <x-filament::dropdown.list.item tag="a" :href="$menuItem['data'] ? $menuItem['data']['url'] : ''">
+                                {{ $menuItem['label'] }}
+                            </x-filament::dropdown.list.item>
+                            @endif
+                            @endforeach
+                            @endif
+                        </x-filament::dropdown.list>
+                    </x-filament::dropdown>
                 </li>
-                @endforeach
-                @endif
                 <li>
                     @auth
-                        <livewire:account.avatar-with-dropdown />
+                    <livewire:account.avatar-with-dropdown />
                     @endauth
                     @guest
-                        <x-filament-support::icon-button tag='a' :href="route('auth.login')" color="primary" icon='heroicon-o-user' />
+                    <x-filament-support::button tag='a' :href="route('auth.login')" color="primary" icon='heroicon-o-user'>
+                        {{ __('Account') }}
+                    </x-filament-support::button>
                     @endguest
                 </li>
                 @guest

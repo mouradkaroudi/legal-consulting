@@ -41,12 +41,12 @@ function buildMenuUrl(&$menuItems)
 function generateResourceUrl($resourceType, $data)
 {
 
-    if ($resourceType == 'khdm') {
+    if ($resourceType == 'service') {
         $service = \App\Models\Service::find($data['service_id']);
         return route('search.listing', ['service' => $service->slug]);
     }
 
-    if ($resourceType == 'mhn') {
+    if ($resourceType == 'profession') {
         $profession = \App\Models\Profession::find($data['profession_id']);
         return route('search.listing', ['service' => $profession->service->slug, 'profession' => $profession->slug,]);
     }

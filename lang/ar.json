@@ -56,8 +56,8 @@
     "Balance": "الرصيد",
     "Offices": "المكاتب",
     "Invites": "الدعوات",
-    "Service": "الخدمة",
-    "Profession": "المهنة",
+    "Service": "خدمة",
+    "Profession": "مهنة",
     "Save": "حفظ",
     "Account settings": "إعدادات الحساب",
     "Balance :balance": "الرصيد :balance",
@@ -142,5 +142,6 @@
     "You must pay": "يجب ان تدفع",
     "Order": "الطلب",
     "Add review": "أضف تقييم",
-    "Edit review": "تعديل تقييم"
+    "Edit review": "تعديل تقييم",
+    "Page": "صفحة"
 }

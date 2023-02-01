@@ -3,6 +3,9 @@
 return [
     'attributes' => [
         'external-link' => 'رابط خارجي',
+        'service' => 'خدمة',
+        'profession' => 'مهنة',
+        'page' => 'صفحة',
         'url' => 'عنوان URL',
         'target' => 'استهداف',
         'name' => 'اسم',

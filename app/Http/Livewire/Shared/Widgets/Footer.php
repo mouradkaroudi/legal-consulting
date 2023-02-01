@@ -19,13 +19,11 @@ class Footer extends Component
     {
 
         $menu = FilamentNavigation::get('footer-menu');
-
         if(empty($menu)) {
             return view('livewire.shared.widgets.footer', ['menu' => []]);
         }
 
         $menuItems = $menu->items;
-
         $menuItems = buildMenuUrl($menuItems);
 
         return view('livewire.shared.widgets.footer', ['menu' => $menuItems]);

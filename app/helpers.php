@@ -24,7 +24,7 @@ function buildMenuUrl(&$menuItems)
     foreach ($menuItems as &$menuItem) {
 
         if (!isset($menuItem['data']['url']) && !empty($menuItem['type'])) {
-            $menuItem['data']['url'] = $menuItem['type'] != null ? generateResourceUrl($menuItem['type'], $menuItem['data']) : '#';
+            $menuItem['data']['url'] = generateResourceUrl($menuItem['type'], $menuItem['data']);
         }
 
         if (!empty($menuItem['children'])) {
@@ -49,6 +49,11 @@ function generateResourceUrl($resourceType, $data)
     if ($resourceType == 'mhn') {
         $profession = \App\Models\Profession::find($data['profession_id']);
         return route('search.listing', ['service' => $profession->service->slug, 'profession' => $profession->slug,]);
+    }
+
+    if ($resourceType == 'page') {
+        $post = \App\Models\Post::find($data['page_id']);
+        return route('posts', ['post' => $post, 'slug' => $post->slug]);
     }
 
     return '';

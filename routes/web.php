@@ -188,12 +188,21 @@ Route::name('payment.')->prefix('/payment')->middleware(['auth', 'account.settle
 /**
  * Offices listing routes
  */
-Route::name('search.')->group(function () {
-    Route::get('{service:slug?}/{profession:slug?}', [OfficeListingController::class, 'index'])->name('listing');
-    Route::get('listing/office/{digitalOffice}-{name}', [OfficeListingController::class, 'show'])
+Route::name('search.')->prefix('/services')->group(function () {
+    Route::get('/{service:slug?}/{profession:slug?}', [OfficeListingController::class, 'index'])->name('listing');
+    Route::get('/{service:slug?}/{profession:slug?}/{digitalOffice}-{name}', [OfficeListingController::class, 'show'])
         ->where([
             'digitalOffice' => '[0-9]+',
             'title' => '[a-zA-Z0-9-]+'
         ])
         ->name('office');
+});
+
+Route::name('posts')->get('{post:id}-{slug?}', function(Post $post) {
+
+    if($post->post_type !== Post::TYPE_PAGE) {
+        abort(404);
+    }
+
+    return view('pages.posts.index', compact('post'));
 });

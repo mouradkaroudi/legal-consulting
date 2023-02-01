@@ -63,7 +63,8 @@ class Settings extends Page
 
 			Setting::where("option", $option)->updateOrCreate([
 				"option" => $option,
-				"value" => $value,
+			],[
+				"value" => $value
 			]);
 		}
 	}

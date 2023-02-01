@@ -15,7 +15,7 @@
                     <ul class="text-white ">
                         @foreach($menuItem['children'] as $itemChildren)
                         <li class="mb-4">
-                            <a href="#" class="hover:underline">
+                            <a href="{{ $itemChildren['data']['url'] }}" class="hover:underline">
                                 {{ $itemChildren['label'] }}
                             </a>
                         </li>
@@ -35,7 +35,7 @@
             <div class="flex mt-4 space-x-6 rtl:space-x-reverse sm:justify-center sm:mt-0">
                 @if($socialLinks)
                 @foreach($socialLinks as $socialLink)
-                <a href="#" class="text-gray-500 hover:text-gray-400 ">
+                <a href="{{ $socialLink->link }}" target="_blank" class="text-gray-500 hover:text-gray-400 ">
                     <x-dynamic-component component="social-icons.{{ $socialLink->platform }}" class="w-5 h-5" />
                 </a>
                 @endforeach

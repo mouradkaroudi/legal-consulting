@@ -57,6 +57,20 @@ class AppServiceProvider extends ServiceProvider
 						return \App\Models\ProfessionTranslation::pluck('name', 'id');
 					})
 			]);
+
+			\RyanChandler\FilamentNavigation\Facades\FilamentNavigation::addItemType(__('Page'), [
+				\Filament\Forms\Components\Select::make('page_id')
+					->label(__('filament::resources/navigations.form.fields.page_id.singular'))
+					->searchable()
+					->options(function () {
+
+						$posts = \App\Models\Post::where('post_type', \App\Models\Post::TYPE_PAGE)->get();
+						$options = $posts->each(function($post){
+							return ['id' => $post->id, 'name' => $post->translation->title];
+						});
+						return $options->pluck('title','id');
+					})
+			]);
 		});
 	}
 }

@@ -30,7 +30,7 @@ class DigitalOffice extends Model
 	 * @var array<int, string>
 	 */
 	protected $fillable = [
-		"user_id",
+		"user_id", // TODO: remove this
 		"name",
 		"description",
 		"image",
@@ -180,7 +180,7 @@ class DigitalOffice extends Model
 	 *  
 	 */
 	public function scopeSetuped( Builder $query ) {
-		return $query->whereIn('status', [self::AVAILABLE, self::BUSY]);
+		return $query->whereIn('status', [self::AVAILABLE, self::BUSY])->where('is_banned', null);
 	}
 
 	/**
@@ -215,6 +215,10 @@ class DigitalOffice extends Model
 	{
 		$this->available_balance = $this->available_balance - $amount;
 		$this->save();
+	}
+
+	public function isBanned() {
+		return $this->banned_at != null;
 	}
 
 	/**

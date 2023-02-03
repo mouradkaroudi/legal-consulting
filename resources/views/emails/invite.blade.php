@@ -1,3 +1,3 @@
-<p>Hi,</p>
-<p>Someone has invited you to access their account.</p>
-<a href="{{ $invite->token }}">Click here</a> to activate!
+<p>{{ __('Hi') }},</p>
+<p>{{ __(':officeName has invited you to join them', ['officeName' => $invite->office->name]) }}.</p>
+<a href="{{ route('auth.registration', ['invite_token' => $invite->token]) }}">{{ __('Click here') }}</a>!

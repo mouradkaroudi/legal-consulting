@@ -52,6 +52,8 @@ class ServiceResource extends Resource
                     //->afterStateUpdated(fn ($state, callable $set) => $set('slug', str_replace(' ', '-', $state)))
                     ->maxLength(255)
                     ->required(),
+                Forms\Components\Toggle::make('is_available')
+                    ->label(__('filament::resources/services.form.fields.is_available.label')),
             ]);
     }
 

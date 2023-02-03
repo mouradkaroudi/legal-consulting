@@ -7,9 +7,12 @@ use App\Models\DigitalOfficeEmployee;
 use App\Models\Invite;
 use App\Models\Profile;
 use App\Models\User;
+use Exception;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Throwable;
 
 class AuthService
 {
@@ -40,14 +43,15 @@ class AuthService
                 "user_id" => $user->id,
             ]);
 
-            Profile::create([
-                "user_id" => $user->id,
-            ]);
+            $profile = new Profile();
+            $profile->user_id = $user->id;
+            $profile->save();
 
             $defaultRolePermissions = Role::findByName("OfficeEmployee")->permissions;
             $employee->givePermissionTo($defaultRolePermissions->pluck('name')->all());
         }
-
+        
+        $user->markEmailAsVerified();
         event(new Registered($user));
 
         return $user;
@@ -59,28 +63,38 @@ class AuthService
     public static function registerServiceProvider($name, $email, $password)
     {
 
-        $user = User::create([
-            "name" => $name,
-            "email" => $email,
-            "password" => Hash::make($password),
-        ]);
+        try {
+            DB::beginTransaction();
+            $user = User::create([
+                "name" => $name,
+                "email" => $email,
+                "password" => Hash::make($password),
+            ]);
 
-        Profile::create([
-            "user_id" => $user->id,
-        ]);
+            $profile = new Profile();
 
-       DigitalOffice::create([
-            "user_id" => $user->id,
-            "name" => __("Office") .' '. $user->name,
-        ])->employees()->create([
-            'user_id' => $user->id,
-            'job_title' => __('auth.providers.default_job_title')
-        ]);
+            $profile->user_id = $user->id;
+
+            $profile->save();
+
+            DigitalOffice::create([
+                "user_id" => $user->id,
+                "name" => __("Office") . ' ' . $user->name,
+            ])->employees()->create([
+                'user_id' => $user->id,
+                'job_title' => __('auth.providers.default_job_title')
+            ]);
+
+            DB::commit();
+
+            return $user;
+
+        } catch (Throwable $e) {
+            DB::rollback();
+            throw new Exception($e->getMessage());
+        }
 
         event(new Registered($user));
 
-        return $user;
     }
-
-    
 }

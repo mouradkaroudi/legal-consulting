@@ -16,7 +16,7 @@ class ListOffices extends Component implements HasForms
 
     public $officeName = '';
 	public Service $service;
-	public Profession $profession;
+	public Profession|null $profession;
 	public $countryId;
 	public $cityId;
 	public $professionId;
@@ -72,8 +72,11 @@ class ListOffices extends Component implements HasForms
 					\Filament\Forms\Components\Select::make("professionId")
 						->label(__('Profession'))
 						->options(function() {
-							return Service::where('slug', $this->service->slug)->first()->professions->pluck('name', 'id');
-					
+							return Profession::where('service_id', $this->service->id)
+								->available()
+								->with('translation')
+								->get()
+								->pluck('translation.name', 'id');
 						}),
 					\Filament\Forms\Components\Select::make("specializationsIds")
 						->label(__('Specialization'))
@@ -97,7 +100,10 @@ class ListOffices extends Component implements HasForms
 	{
 		
 		$user = auth()->user();
-		$offices = DigitalOffice::where('service_id', $this->service->id)->setuped();
+		
+		$professionsIds = Profession::where('service_id', $this->service->id)->available()->get()->pluck('id');
+
+		$offices = DigitalOffice::whereIn('profession_id', $professionsIds)->setuped();
 		
 		if(!$user || !$user->can_contact_offices()) {
 			$offices = $offices->noHidden();

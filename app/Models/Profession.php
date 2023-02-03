@@ -25,7 +25,8 @@ class Profession extends Model implements TranslatableContract
      */
     protected $fillable = [
         'service_id',
-        'slug'
+        'slug',
+        'is_available'
     ];
 
     /**
@@ -34,6 +35,10 @@ class Profession extends Model implements TranslatableContract
     public function service()
     {
         return $this->belongsTo(Service::class);
+    }
+    
+    public function offices() {
+        return $this->hasMany(DigitalOffice::class);
     }
 
     /**
@@ -61,5 +66,13 @@ class Profession extends Model implements TranslatableContract
     public function subscriptions()
     {
         return $this->hasMany(ProfessionSubscriptionPlan::class, 'profession_id', 'id');
+    }
+
+    /**
+     * 
+     */
+    public function scopeAvailable($query)
+    {
+        return $query->where('is_available', true);
     }
 }

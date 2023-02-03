@@ -12,6 +12,8 @@ class InviteCreated extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $invite;
+
     /**
      * Create a new message instance.
      *
@@ -29,6 +31,6 @@ class InviteCreated extends Mailable
      */
     public function build()
     {
-        return $this->from('your@example.com')->view('emails.invite', ['invite' => $this->invite]);
+        return $this->subject(__('You have an invitation!'))->view('emails.invite', ['invite' => $this->invite]);
     }
 }

@@ -10,6 +10,14 @@ return [
             'name' => [
                 'label' => ''
             ]
+        ],
+        'actions' => [
+            'ban' => [
+                'label' => 'حظر هذا المستخدم'
+            ],
+            'unban' => [
+                'label' => 'رفع الحظر'
+            ]
         ]
     ],
     'form' => [

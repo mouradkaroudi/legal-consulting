@@ -23,6 +23,9 @@ return [
             'slug' => [
                 'label' => 'الإسم اللطيف'
             ],
+            'is_available' => [
+                'label' => 'متوفر ؟'
+            ],
         ]
     ]
 ];

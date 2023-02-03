@@ -23,6 +23,9 @@ return [
             'slug' => [
                 'label' => 'Slug'
             ],
+            'is_available' => [
+                'label' => 'Is available'
+            ],
         ]
     ]
 ];

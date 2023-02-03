@@ -2,21 +2,14 @@
 
 namespace App\Listeners;
 
+use App\Mail\InviteCreated;
 use App\Models\User;
 use App\Notifications\InvitationRequestNotification;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 
 class SendInvitationNotification
 {
-  /**
-   * Create the event listener.
-   *
-   * @return void
-   */
-  public function __construct()
-  {
-    //
-  }
 
   /**
    * Handle the event.
@@ -28,7 +21,11 @@ class SendInvitationNotification
   {
 
     $user = User::where('email', $event->invite->email)->get();
+    if(empty($user->email)) {
+      Mail::to($event->invite->email)->send(new InviteCreated($event->invite));
+    }else{
+      Notification::send($user, new InvitationRequestNotification($event->invite));
+    }
 
-    Notification::send($user, new InvitationRequestNotification($event->invite));
   }
 }

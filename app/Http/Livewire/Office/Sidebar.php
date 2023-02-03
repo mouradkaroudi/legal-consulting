@@ -53,12 +53,12 @@ class Sidebar extends Component
       "routeName" => "office.notifications",
       'icon' => 'heroicon-o-bell'
     ];
-
+    /*
     $this->sidebarLinks[] = [
       "label" => __("Schedules"),
       "routeName" => "office.schedules.index",
       'icon' => 'heroicon-o-calendar'
-    ];
+    ];*/
 
     if (
       $user->can('viewAny', DigitalOfficeEmployee::class)

@@ -10,7 +10,7 @@ class ListCategories extends Component
     public function render()
     {
 
-        $services = Service::limit(6)->get();
+        $services = Service::available()->limit(6)->get();
 
         return view('livewire.front.widgets.list-categories', ['services' => $services]);
     }

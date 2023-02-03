@@ -299,4 +299,8 @@ class User extends Authenticatable implements MustVerifyEmail
 		$this->available_balance = $this->available_balance - $amount;
 		$this->save();
 	}
+
+	public function isBanned() {
+		return $this->banned_at != null;
+	}
 }

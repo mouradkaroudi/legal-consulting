@@ -71,7 +71,8 @@ class RequiredInformationForm extends Component implements HasForms
 
     protected function getFormSchema(): array
     {
-        $countries = Country::all()->pluck("name", "id");
+        $countries = Country::with('translation')->get()->pluck("translation.name", "id");
+        $services = Service::available()->with('translation')->get()->pluck("translation.name", "id");
 
         return [
             Forms\Components\Card::make([
@@ -82,15 +83,16 @@ class RequiredInformationForm extends Component implements HasForms
                     ->schema([
                         Forms\Components\Select::make("service_id")
                             ->label(__('Select a service'))
-                            ->relationship("service", "name")
+                            ->relationship("service", "id")
                             ->reactive()
                             ->preload()
+                            ->options($services)
                             ->exists(table: Service::class, column: 'id')
                             ->required(),
                         Forms\Components\Select::make("profession_id")
                             ->label(__('Select a profession'))
                             ->exists(table: Profession::class, column: 'id')
-                            ->relationship("profession", "name")
+                            ->relationship("profession", "id")
                             ->reactive()
                             ->options(function (callable $get) {
                                 $serviceId = $get("service_id");
@@ -100,7 +102,7 @@ class RequiredInformationForm extends Component implements HasForms
                                 }
 
                                 $service = Service::find($serviceId);
-                                return $service->professions->pluck("name", "id");
+                                return $service->professions()->available()->with('translation')->get()->pluck("translation.name", "id");
                             })
                             ->required(),
                         Forms\Components\TextInput::make("commercial_registration_number")

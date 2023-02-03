@@ -56,6 +56,8 @@ class ProfessionResource extends Resource
                     ->required()
                     ->label(__('filament::resources/professions.form.fields.slug.label'))
                     ->maxLength(255),
+                Forms\Components\Toggle::make('is_available')
+                    ->label(__('filament::resources/professions.form.fields.is_available.label')),
             ]);
     }
 

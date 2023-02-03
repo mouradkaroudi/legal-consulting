@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DigitalOfficeResource\Pages;
 use App\Filament\Resources\DigitalOfficeResource\RelationManagers;
 use App\Models\DigitalOffice;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -41,6 +42,7 @@ class DigitalOfficeResource extends Resource
 
     public static function table(Table $table): Table
     {
+
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
@@ -87,20 +89,39 @@ class DigitalOfficeResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('viewProfile')
                         ->label(__('filament::resources/offices.table.actions.viewProfile.label'))
-                        ->url(fn( DigitalOffice $record ) => route('search.office', ['digitalOffice' => $record, 'name' => $record->url_name]))
+                        ->url(fn (DigitalOffice $record) => route('search.office', [
+                            'digitalOffice' => $record,
+                            'name' => $record->url_name,
+                            'service' => $record->service,
+                            'profession' => $record->profession,
+                        ]))
                         ->openUrlInNewTab()
                         ->icon('heroicon-o-external-link'),
                     Tables\Actions\Action::make('ban')
                         ->label(__('filament::resources/offices.table.actions.ban.label'))
+                        ->action(function($record) {
+                            $record->banned_at = Carbon::now();
+                            $record->save();
+                        })
                         ->icon('heroicon-o-ban')
                         ->color('danger')
+                        ->visible(fn($record) => !$record->isBanned()),
+                    Tables\Actions\Action::make('unban')
+                        ->label(__('filament::resources/offices.table.actions.unban.label'))
+                        ->action(function($record) {
+                            $record->banned_at = null;
+                            $record->save();
+                        })
+                        ->icon('heroicon-o-check')
+                        ->color('success')
+                        ->visible(fn($record) => $record->isBanned())
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-
+    
     public static function getRelations(): array
     {
         return [

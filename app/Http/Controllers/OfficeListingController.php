@@ -10,17 +10,29 @@ use Illuminate\Support\Facades\Auth;
 
 class OfficeListingController extends Controller
 {
-    public function index(Request $request, Service $service, Profession $profession)
-    {
-        $offices = DigitalOffice::all();
+    public function index(Request $request, Service $service, ?Profession $profession = null)
+    {   
+
+        if(!$service->is_available) {
+            abort(404);
+        }
+
+
+        if($profession && !$profession->is_available) {
+            abort(404);
+        }
+        
         return view('pages.search.index', [
-            'offices' => $offices,
             'service' => $service,
             'profession' => $profession
         ]);
     }
 
-    public function show( DigitalOffice $digitalOffice ) {
+    public function show( Service $service, ?Profession $profession, DigitalOffice $digitalOffice ) {
+
+        if(!$service->is_available || !$profession->is_available) {
+            abort(404);
+        }
 
         if(!$digitalOffice->isSetuped()) {
             return abort(404);

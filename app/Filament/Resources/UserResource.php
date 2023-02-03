@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -42,8 +43,7 @@ class UserResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-            ]);
+            ->schema([]);
     }
 
     public static function table(Table $table): Table
@@ -60,24 +60,44 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('ban')
+                        ->label(__('filament::resources/users.table.actions.ban.label')) 
+                        ->action(function ($record) {
+                            $record->banned_at = Carbon::now();
+                            $record->save();
+                        })
+                        ->icon('heroicon-o-ban')
+                        ->color('danger')
+                        ->visible(fn ($record) => !$record->isBanned()),
+                    Tables\Actions\Action::make('unban')
+                        ->label(__('filament::resources/users.table.actions.unban.label'))
+                        ->action(function ($record) {
+                            $record->banned_at = null;
+                            $record->save();
+                        })
+                        ->icon('heroicon-o-check')
+                        ->color('success')
+                        ->visible(fn ($record) => $record->isBanned())
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //RelationManagers\ProfilesRelationManager::class
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ManageUsers::route('/'),
             'view' => Pages\ViewUser::route('/{record}'),
         ];
-    }    
+    }
 }

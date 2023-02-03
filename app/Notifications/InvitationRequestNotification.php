@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Invite;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -10,6 +11,8 @@ use Illuminate\Notifications\Notification;
 class InvitationRequestNotification extends Notification
 {
     use Queueable;
+
+    public Invite $invite;
 
     /**
      * Create a new notification instance.
@@ -40,9 +43,11 @@ class InvitationRequestNotification extends Notification
      */
     public function toMail($notifiable)
     {
+        
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
+                    ->greeting(__('Hello'))
+                    ->line(__(':officeName has invited you to join them.', ['officeName' => $this->invite->office->name]))
+                    ->action(__('Click here'), route('auth.registration', ['invite_token' => $invite->token]) )
                     ->line('Thank you for using our application!');
     }
 

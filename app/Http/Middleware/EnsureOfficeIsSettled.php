@@ -28,6 +28,10 @@ class EnsureOfficeIsSettled extends Middleware
     {
         $user = $request->user();
         $currentOffice = $user->currentOffice;
+        
+        if($currentOffice->isBanned()) {
+            abort(403, 'This office is banned. please contact our support');
+        }
 
         if ($currentOffice->status === DigitalOffice::UNCOMPLETED) {
             return redirect()->route('office.setup.index');

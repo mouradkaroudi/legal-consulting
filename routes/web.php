@@ -192,7 +192,7 @@ Route::name('payment.')->prefix('/payment')->middleware(['auth', 'account.settle
  */
 Route::name('search.')->prefix('/services')->group(function () {
     Route::get('/{service:slug?}/{profession:slug?}', [OfficeListingController::class, 'index'])->name('listing');
-    Route::get('/{service:slug?}/{profession:slug?}/{digitalOffice}-{name}', [OfficeListingController::class, 'show'])
+    Route::get('/{service:slug}/{profession:slug}/{digitalOffice}-{name}', [OfficeListingController::class, 'show'])
         ->where([
             'digitalOffice' => '[0-9]+',
             'title' => '[a-zA-Z0-9-]+'

@@ -90,6 +90,8 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
         Route::get('/approval', [SetupOfficeController::class, 'approval'])->name('approval');
     });
 
+    Route::name('logout')->get('/logout', [CurrentOfficeController::class, 'logout']);
+
     Route::name('subscription.')->prefix('/subscription')->group(function () {
         Route::get('/', [SubscriptionController::class, 'index'])->name('index');
         Route::get('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
@@ -109,7 +111,7 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
             'can:viewAny, App\Models\Order'
         ]);
         Route::get('/balance', OfficeBalanceController::class)
-            ->middleware(['office.employee.can:manage-balance'])
+            ->middleware(['office.employee.can:manage-office'])
             ->name('balance');
 
         Route::resource('/schedules', SchedulesController::class);

@@ -27,10 +27,18 @@ class WithdrawalMethod extends Model
     ];
 
     /**
-     * 
+     * Each withdrawal method may only belong to some countries 
      */
     public function countries()
     {
         return $this->belongsToMany(Country::class, 'withdrawal_method_countries', 'withdrawal_method_id', 'country_id');
     }
+
+    /**
+     * Scope only available methods
+     */
+    public function scopeAvailable($query) {
+        return $query->where('is_available', true);
+    }
+
 }

@@ -5,13 +5,17 @@
         </x-filament::button>
     </x-slot>
     <x-filament::dropdown.list>
+
+        @if(auth()->user()->hasOfficePermission($currentOffice, 'manage-office'))
         <x-filament::dropdown.list.item tag="a" :href="route('office.settings')">
             {{ __('Office settings') }}
         </x-filament::dropdown.list.item>
         <x-filament::dropdown.list.item tag="a" :href="route('office.balance')">
             {{ __('Balance :balance', ['balance' => money($currentOffice->available_balance, 'sar', true)]) }}
         </x-filament::dropdown.list.item>
-        <x-filament::dropdown.list.item tag="a" :href="route('office.settings')">
+        @endif
+
+        <x-filament::dropdown.list.item tag="a" :href="route('office.logout')">
             {{ __('Logout') }}
         </x-filament::dropdown.list.item>
 

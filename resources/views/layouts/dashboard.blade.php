@@ -1,3 +1,4 @@
+@props(['title' => ''])
 <!DOCTYPE html>
 <html dir="{{ app()->getLocale() == 'ar' ? 'rtl': 'ltr' }}" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 

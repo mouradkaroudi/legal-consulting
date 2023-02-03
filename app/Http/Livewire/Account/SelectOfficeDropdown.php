@@ -13,7 +13,7 @@ class SelectOfficeDropdown extends Component
     public function mount()
     {
         $this->ownedOffices = Auth::user()->ownedOffices;
-        $this->offices = Auth::user()->offices;
+        $this->offices = Auth::user()->allOffices();
     }
 
     public function render()

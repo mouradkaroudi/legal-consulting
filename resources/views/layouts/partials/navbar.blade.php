@@ -13,7 +13,7 @@
             </button>
         </div>
         <div class="flex items-center space-x-3 rtl:space-x-reverse">
-            <livewire:office.switch-office />
+            <livewire:office.office-dropdown />
             <livewire:account.avatar-with-dropdown />
         </div>
     </div>

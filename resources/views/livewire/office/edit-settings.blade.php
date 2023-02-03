@@ -1,4 +1,3 @@
-{{-- https://tailwindui.com/components/application-ui/forms/form-layouts#component-d45285168387e95ed939cc1a91e8e19c --}}
 <form wire:submit.prevent="submit">
     <div class="shadow sm:overflow-hidden sm:rounded-md">
         <div class="space-y-6 bg-white px-4 py-5 sm:p-6">

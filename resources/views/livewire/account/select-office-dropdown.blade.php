@@ -6,9 +6,9 @@
     </x-slot>
 
     <x-filament::dropdown.list>
-        @foreach($ownedOffices as $ownedOffice)
-        <x-switch-able-office :office="$ownedOffice">
-            {{ $ownedOffice->name }}
+        @foreach($offices as $office)
+        <x-switch-able-office :office="$office">
+            {{ $office->name }}
         </x-switch-able-office>
         @endforeach
     </x-filament::dropdown.list>

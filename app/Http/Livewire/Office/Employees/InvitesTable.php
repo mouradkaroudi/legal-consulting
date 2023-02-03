@@ -9,12 +9,13 @@ use Filament\Tables\Actions\Modal\Actions\Action;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
 class InvitesTable extends Component implements HasTable
 {
 
-    use InteractsWithTable;
+    use InteractsWithTable, AuthorizesRequests;
 
     protected function getTableColumns(): array
     {

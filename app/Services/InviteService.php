@@ -20,14 +20,14 @@ class InviteService
 		$user = User::where('email', $user_email)->first();
 
 		if($user && $user->belongsToOffice($office)) {
-			throw new \Exception("User already added as employee to this office", 1);
+			throw new \Exception(__("User already added as employee to this office"), 1);
 		}
 		
 		$token =  Str::random(16);
 
 		$invite = Invite::create([
 			'office_id' => $office->id,
-			'email' => $user->email,
+			'email' => $user_email,
 			'token' => $token
 		]);
 

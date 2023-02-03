@@ -69,7 +69,10 @@ class Form extends Component implements HasForms
 	protected function getFormSchema(): array
 	{
 
-		$permissions = Permission::where('guard_name', 'web')->pluck('name', 'id');
+		$permissions = Permission::where('guard_name', 'web')->pluck('name', 'id')->toArray();
+		foreach($permissions as $id=>$permission) {
+			$permissions[$id] = __('permissions.' . $permission);
+		}
 
 		return [
 			Grid::make([

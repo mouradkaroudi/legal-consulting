@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Office\Employees;
 
 use App\Models\DigitalOffice;
 use App\Models\DigitalOfficeEmployee;
+use App\Models\Invite;
 use App\Services\InviteService;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -12,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ListEmployees extends Component implements Tables\Contracts\HasTable
 {
@@ -28,30 +30,35 @@ class ListEmployees extends Component implements Tables\Contracts\HasTable
 
 	protected function getTableHeaderActions(): array
 	{
-		return [
-			Action::make('sendInvite')->button()
-				->label(__('Send invite'))
-				->action(function ($record, array $data) {
-					try {
-						InviteService::send(DigitalOffice::find($this->officeId), $data['email']);
-						Notification::make()
-							->title(__('The invitation has been sent'))
-							->success()
-							->send();
-					} catch (\Throwable $th) {
-						Notification::make()
-							->title($th->getMessage())
-							->danger()
-							->send();
-					}
-				})
-				->modalWidth('sm')
-				->form(function () {
-					return [
-						TextInput::make('email')->label(__('validation.attributes.email'))->email()
-					];
-				})
-		];
+
+		$actions = [];
+
+		if( auth()->user()->can('create', Invite::class) ) {
+			$actions[] = Action::make('sendInvite')->button()
+			->label(__('Send invite'))
+			->action(function ($record, array $data) {
+				try {
+					InviteService::send(DigitalOffice::find($this->officeId), $data['email']);
+					Notification::make()
+						->title(__('The invitation has been sent'))
+						->success()
+						->send();
+				} catch (\Throwable $th) {
+					Notification::make()
+						->title($th->getMessage())
+						->danger()
+						->send();
+				}
+			})
+			->modalWidth('sm')
+			->form(function () {
+				return [
+					TextInput::make('email')->label(__('validation.attributes.email'))->email()
+				];
+			});
+		}
+
+		return $actions;
 	}
 
 

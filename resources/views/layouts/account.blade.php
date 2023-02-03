@@ -1,3 +1,4 @@
+@props(['title' => ''])
 <!DOCTYPE html>
 <html dir="{{ app()->getLocale() == 'ar' ? 'rtl': 'ltr' }}" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -11,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <title>{{ config('app.name') }}</title>
+    <title>{{ setting('general_settings_site_name_' . app()->getLocale()) }} - {{ $title }}</title>
 
     <style>
         [x-cloak] {

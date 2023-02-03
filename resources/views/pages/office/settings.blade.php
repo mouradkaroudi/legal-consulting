@@ -41,7 +41,7 @@ $currentUrl = request()->fullUrl();
                 </div>
                 <livewire:office.location-form :digitalOffice="$digitalOffice" />
                 @elseif($tab === 'withdrawal')
-                <livewire:office.withdrawal-methods-form />
+                <livewire:office.settings.withdrawal.table />
                 @elseif($tab === 'subscription')
                 <livewire:office.settings.subscription :digitalOffice="$digitalOffice" />
                 @endif

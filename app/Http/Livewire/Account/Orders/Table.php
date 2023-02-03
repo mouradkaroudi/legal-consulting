@@ -58,8 +58,7 @@ class Table extends Component implements HasTable
 				->action(function ($record) {
 					$data = $this->mountedTableActionData;
 					$paymentMethod = $data["paymentMethod"];
-					$params = ['order_id' => $record->id];
-					return redirect()->route('payment.' . $paymentMethod . '.order', ['params' => $params]);
+					return redirect()->route('payment.' . $paymentMethod . '.order', ['order_id' => $record->id]);
 				})
 				->form(function ($record) {
 					return [

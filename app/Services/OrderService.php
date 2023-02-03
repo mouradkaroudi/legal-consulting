@@ -54,7 +54,6 @@ class OrderService
             'metadata' => json_encode(['order_id' => $order->id])
         ]);
 
-		$beneficiary->substractFromBalance($order->fee);
         $office->addToBalance($order->fee);
 		
 		$order->status = Order::PAID;

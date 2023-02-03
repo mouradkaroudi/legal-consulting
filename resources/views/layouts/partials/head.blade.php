@@ -1,3 +1,4 @@
+@props(['title' => ''])
 <meta charset="utf-8">
 
 <meta name="application-name" content="{{ config('app.name') }}">

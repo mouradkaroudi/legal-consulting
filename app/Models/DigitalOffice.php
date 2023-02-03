@@ -180,7 +180,7 @@ class DigitalOffice extends Model
 	 *  
 	 */
 	public function scopeSetuped( Builder $query ) {
-		return $query->whereIn('status', [self::AVAILABLE, self::BUSY])->where('is_banned', null);
+		return $query->whereIn('status', [self::AVAILABLE, self::BUSY])->where('banned_at', null);
 	}
 
 	/**

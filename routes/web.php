@@ -135,9 +135,10 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'verified', 'ac
     Route::get('/offices', OfficesController::class)->name('offices');
     Route::get('/invites', InvitesController::class)->name('invites');
 
-    Route::resource('/orders', AccountOrdersController::class);
-
-    Route::get('/orders/{order}/pay', [AccountOrdersController::class, 'pay'])->name('orders.pay');
+    Route::name('orders.')->prefix('/orders')->group(function() {
+        Route::get('/', [AccountOrdersController::class, 'index'])->name('index');
+        Route::get('/orders/{order}/paid', [AccountOrdersController::class, 'paid'])->name('paid');
+    });
 
     Route::get('/messages', [MessagesController::class, 'index'])->name('messages');
     Route::get('/messages/{id}', [MessagesController::class, 'show'])->name('messages.show');

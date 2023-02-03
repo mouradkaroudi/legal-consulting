@@ -58,9 +58,7 @@ class BalanceController extends Controller
 
         $user = auth()->user();
 
-        $params = $request['params'] ?? [];
-
-        $order_id = $params['order_id'];
+        $order_id = $request['order_id'];
 
         $order = Order::find($order_id);
 
@@ -69,6 +67,7 @@ class BalanceController extends Controller
         }
 
         OrderService::orderPaid($order);
+		$user->substractFromBalance($order->fee);
 
         return redirect()->route('payment.success');
 

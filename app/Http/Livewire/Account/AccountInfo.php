@@ -36,7 +36,7 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
         $this->user->preferred_lang = $preferred_lang;
 
         $this->user->save();
-
+        redirect()->route("account.settings");
     }
 
     public function submit() {

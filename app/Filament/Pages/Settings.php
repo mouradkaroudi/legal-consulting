@@ -63,7 +63,7 @@ class Settings extends Page
 
 			Setting::where("option", $option)->updateOrCreate([
 				"option" => $option,
-			],[
+			], [
 				"value" => $value
 			]);
 		}
@@ -84,18 +84,23 @@ class Settings extends Page
 		];
 
 		$socialLinksSchema = [
-			Components\Repeater::make('social_links')->schema([
-				Components\TextInput::make('link'),
-				Components\Select::make('platform')->options([
-					'facebook' => __('Facebook'),
-					'whatsapp' => __('Whatsapp'),
-					'instagram' => __('Instagram'),
-					'telegram' => __('Telegram'),
-					'twitter' => __('Twitter'),
-					'tiktok' => __('Tiktok'),
-					'snapchat' => __('Snapchat'),
-				]),
-			])
+			Components\Repeater::make('social_links')
+				->label(__('filament::pages/settings.fields.social.fields.social_links.label'))
+				->schema([
+					Components\TextInput::make('link')
+						->label(__('filament::pages/settings.fields.social.fields.social_links.fields.link.label')),
+					Components\Select::make('platform')
+						->label(__('filament::pages/settings.fields.social.fields.social_links.fields.platform.label'))
+						->options([
+							'facebook' => __('Facebook'),
+							'whatsapp' => __('Whatsapp'),
+							'instagram' => __('Instagram'),
+							'telegram' => __('Telegram'),
+							'twitter' => __('Twitter'),
+							'tiktok' => __('Tiktok'),
+							'snapchat' => __('Snapchat'),
+						]),
+				])
 		];
 
 		$digitalOfficeSettingsScheme = [
@@ -151,7 +156,7 @@ class Settings extends Page
 				->label(__('filament::pages/settings.fields.payment.label'))
 				->schema($paymentSettingScheme)->columns(1),
 			Components\Fieldset::make("social")
-				->label(__('filament::pages/settings.fields.payment.label'))
+				->label(__('filament::pages/settings.fields.social.label'))
 				->schema($socialLinksSchema)->columns(1),
 		];
 	}

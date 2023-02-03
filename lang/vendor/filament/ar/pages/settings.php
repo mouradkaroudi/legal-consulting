@@ -56,15 +56,18 @@ return [
                 ],
             ]
         ],
-        'slider' => [
-            'label' => 'إعدادت سلايدر',
+        'social' => [
+            'label' => 'مواقع التواصل اجتماعي',
             'fields' => [
-                'homepage_slider' => [
-                    'label' => 'سلايدر',
+                'social_links' => [
+                    'label' => 'روابط المنصات',
                     'fields' => [
-                        'title' => 'العنوان',
-                        'content' => 'نص',
-                        'color' => 'اللون',
+                        'link' => [
+                            'label' => 'رابط'
+                        ],
+                        'platform' => [
+                            'label' => 'المنصة'
+                        ]
                     ]
                 ]
             ]

@@ -55,15 +55,18 @@ return [
                 ],
             ]
         ],
-        'slider' => [
-            'label' => 'Slider Settings',
+        'social' => [
+            'label' => 'Social networks',
             'fields' => [
-                'homepage_slider' => [
-                    'label' => 'Slider',
+                'social_links' => [
+                    'label' => 'Platforms links',
                     'fields' => [
-                        'title' => 'Title',
-                        'content' => 'Text',
-                        'color' => 'Color',
+                        'link' => [
+                            'label' => 'Link'
+                        ],
+                        'platform' => [
+                            'label' => 'Platform'
+                        ]
                     ]
                 ]
             ]

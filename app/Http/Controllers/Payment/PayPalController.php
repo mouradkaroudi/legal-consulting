@@ -73,12 +73,12 @@ class PayPalController extends Controller
             ->amount($orderC->fee)
             ->round(2)
             ->get();
-        
+
         $order = $provider->createOrder([
             "intent" => "CAPTURE",
             "application_context" => [
-                "return_url" => 'https//az.com',
-                "cancel_url" => 'https//az.com',
+                "return_url" => route('account.orders.paid', ['order' => $orderC->id]),
+                "cancel_url" => route('account.orders.index'),
             ],
             "purchase_units" => [
                 0 => [
@@ -90,7 +90,7 @@ class PayPalController extends Controller
                 ]
             ]
         ]);
-        
+
         // redirect to approve href
         foreach ($order['links'] as $links) {
             if ($links['rel'] == 'approve') {

@@ -14,6 +14,8 @@
     "Sorry! we're unable to process this payment": "آسف!نحن غير قادرين على معالجة هذه الدفعة",
     "Please retry again or contact our support": "الرجاء إعادة المحاولة مرة أخرى أو الاتصال بدعمنا",
     "Go back to orders": "رجوع للطبات",
+    "Are you ready to join us?": "هل أنت جاهز للانضمام لنا؟",
+    "Start by opening your account on :sitename website now": "إبدأ بفتح حسابك على موقع :sitename الآن",
     "Pay": "دفع",
     "Select a service": "إختر خدمة",
     "Select a profession": "إختر مهنة",
@@ -148,7 +150,8 @@
     "Reviews": "التقييمات",
     "Member since :date": "عضو منذ :date",
     "There are no reviews currently.": "لا توجد مراجعات حاليا.",
-
+    "Sign up now": "سجِل الآن",
+    "Learn more": "اعرف اكثر",
     "Sign to your account": "سجل الدخول لحسابك",
     "Remember me": "تذكرني",
     "Forgot your password ?": "نسيت كلمة السر ؟",

@@ -2,6 +2,17 @@
 return [
     'title' => 'Settings',
     'fields' => [
+        'general_settings' => [
+            'label' => 'إعدادات عامة',
+            'fields' => [
+                'site_logo' => [
+                    'label' => 'شعار الموقع'
+                ],
+                'site_name' => [
+                    'label' => 'اسم الموقع'
+                ]
+            ]
+        ],
         'digital_office' => [
             'label' => 'Offices settings',
             'fields' => [

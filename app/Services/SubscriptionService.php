@@ -44,11 +44,11 @@ class SubscriptionService
 		$started_at = Carbon::now();
 		$expire_at = null;
 
-		if ($plan_type === ProfessionSubscriptionPlan::MONTHLY) {
+		if ($plan_type == ProfessionSubscriptionPlan::MONTHLY) {
 			$expire_at = $started_at->addMonth();
 		}
 
-		if ($plan_type === ProfessionSubscriptionPlan::YEARLY) {
+		if ($plan_type == ProfessionSubscriptionPlan::YEARLY) {
 			$expire_at = $started_at->addYear();
 		}
 

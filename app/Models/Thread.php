@@ -106,7 +106,7 @@ class Thread extends Model
 	 */
 	public function creator()
 	{
-		if ($this->creatorCache === null) {
+		if ($this->creatorCache == null) {
 			$firstMessage = $this->messages()
 				->oldest()
 				->first();
@@ -332,7 +332,7 @@ class Thread extends Model
 			$participant = $this->getParticipantFromUser($userId);
 
 			if (
-				$participant->last_read === null ||
+				$participant->last_read == null ||
 				$this->updated_at->gt($participant->last_read)
 			) {
 				return true;

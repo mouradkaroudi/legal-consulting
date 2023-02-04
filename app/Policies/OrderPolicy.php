@@ -33,7 +33,7 @@ class OrderPolicy
      */
     public function view(User $user, Order $order)
     {
-        return $user->id === $order->beneficiary_id || $user->hasOfficePermission($order->office, 'manage-orders');
+        return $user->id == $order->beneficiary_id || $user->hasOfficePermission($order->office, 'manage-orders');
     }
 
     /**
@@ -56,7 +56,7 @@ class OrderPolicy
      */
     public function update(User $user, Order $order)
     {
-        return $user->id === $order->beneficiary_id || $user->hasOfficePermission($order->office, 'manage-orders');
+        return $user->id == $order->beneficiary_id || $user->hasOfficePermission($order->office, 'manage-orders');
     }
 
     /**
@@ -68,7 +68,7 @@ class OrderPolicy
      */
     public function delete(User $user, Order $order)
     {
-        if( $order->status === Order::PAID ) {
+        if( $order->status == Order::PAID ) {
             return false;
         }
 

@@ -44,7 +44,7 @@ class ThreadPolicy
      */
     public function create(User $user, DigitalOffice $office)
     {
-        return $user->belongsToOffice($office) === false;
+        return $user->belongsToOffice($office) == false;
     }
 
     /**
@@ -56,7 +56,7 @@ class ThreadPolicy
      */
     public function update(User $user, Thread $thread)
     {
-        return $user->id === $thread->user_id || $user->hasOfficePermission($thread->office, 'manage-messages');
+        return $user->id == $thread->user_id || $user->hasOfficePermission($thread->office, 'manage-messages');
     }
 
     /**
@@ -68,7 +68,7 @@ class ThreadPolicy
      */
     public function delete(User $user, Thread $thread)
     {
-        return $user->id === $thread->user_id;
+        return $user->id == $thread->user_id;
     }
     
 }

@@ -68,14 +68,14 @@ class Transaction extends Model
      * Add funds to the holder balance
      */
     public function isDebit() {
-        return $this->type === 'debit';
+        return $this->type == 'debit';
     }
 
     /**
      * Remove funds to the holder balance
      */
     public function isCredit() {
-        return $this->type === 'credit';
+        return $this->type == 'credit';
     }
 
     public function getFormattedAmountAttribute()

@@ -48,7 +48,7 @@ class DigitalOfficeEmployee extends Model
      * @return bool
      */
     public function isOwner( DigitalOffice $office ): bool {
-        return $this->user->id === $office->user_id;
+        return $this->user->id == $office->user_id;
     }
 
     /**

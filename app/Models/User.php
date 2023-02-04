@@ -46,7 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
 	 */
 	public function isCurrentOffice($digitalOffice)
 	{
-		return $digitalOffice->id === $this->currentOffice->id;
+		return $digitalOffice->id == $this->currentOffice->id;
 	}
 
 	/**
@@ -149,7 +149,7 @@ class User extends Authenticatable implements MustVerifyEmail
 			return false;
 		}
 
-		return $this->id === $office->user_id;
+		return $this->id == $office->user_id;
 	}
 
 	/**
@@ -166,7 +166,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
 		return $this->ownsOffice($office) ||
 			$this->offices->contains(function ($t) use ($office) {
-				return $t->id === $office->id &&
+				return $t->id == $office->id &&
 					!$office->employees
 						->where("office_id", $office->id)
 						->where("user_id", $this->id)

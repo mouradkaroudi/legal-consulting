@@ -75,6 +75,8 @@ class Registration extends Component implements HasForms
 	public function submit()
 	{
 
+		$this->validate();
+
 		if( $this->account_type === 'provider' ) {
 			$user = AuthService::registerServiceProvider($this->name, $this->email, $this->password);
 		}else{

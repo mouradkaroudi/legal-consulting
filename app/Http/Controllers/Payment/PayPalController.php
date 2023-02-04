@@ -24,6 +24,7 @@ class PayPalController extends Controller
 
         $provider = new PayPal();
         $provider->setApiCredentials(config('paypal'));
+        $paypalToken = $provider->getAccessToken();
 
         $fee = Currency::convert()
             ->from('SAR')
@@ -31,6 +32,7 @@ class PayPalController extends Controller
             ->amount($professionSubscriptionPlan->fee)
             ->round(2)
             ->get();
+            
         $order = $provider->createOrder([
             "intent" => "CAPTURE",
             "application_context" => [

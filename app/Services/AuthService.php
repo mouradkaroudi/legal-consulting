@@ -49,9 +49,11 @@ class AuthService
 
             $defaultRolePermissions = Role::findByName("OfficeEmployee")->permissions;
             $employee->givePermissionTo($defaultRolePermissions->pluck('name')->all());
+
+            $user->markEmailAsVerified();
         }
         
-        $user->markEmailAsVerified();
+        
         event(new Registered($user));
 
         return $user;

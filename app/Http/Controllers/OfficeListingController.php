@@ -28,6 +28,9 @@ class OfficeListingController extends Controller
         ]);
     }
 
+    /**
+     * 
+     */
     public function show( Service $service, ?Profession $profession, DigitalOffice $digitalOffice ) {
 
         if(!$service->is_available || !$profession->is_available) {

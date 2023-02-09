@@ -18,19 +18,19 @@ class ServiceSeeder extends Seeder
         $services = [
             [
                 'name' => 'الخدمات الإنسانية',
-                'slug' => 'الخدمات-الإنسانية'
+                'slug' => 'human-services'
             ],
             [
                 'name' => 'الخدمات الإجتماعية',
-                'slug' => 'الخدمات-الإجتماعية'
+                'slug' => 'social-services'
             ],
             [
                 'name' => 'الخدمات الإلكترونية',
-                'slug' => 'الخدمات-الإلكترونية'
+                'slug' => 'e-services'
             ],
             [
                 'name' => 'خدمات التدريب',
-                'slug' => 'خدمات-التدريب'
+                'slug' => 'training-services'
             ],
         ];
 

@@ -20,7 +20,7 @@ class CreateOrder extends Component implements HasForms
     public $officeId;
     public $beneficiaryId;
     public $subject;
-    public $fee;
+    public $amount;
 
     protected function getFormSchema(): array
     {
@@ -29,7 +29,7 @@ class CreateOrder extends Component implements HasForms
                 ->label(__('Subject'))
                 ->helperText(__('The service you will provide, e.g., legal consultation.'))
                 ->required(),
-            TextInput::make('fee')
+            TextInput::make('amount')
                 ->label(__('Amount'))
                 ->helperText(__('The amount that the beneficiary must pay, e.g., 1000 SAR.'))
                 ->required(),
@@ -46,7 +46,7 @@ class CreateOrder extends Component implements HasForms
 
         $this->authorize('create', Order::class);
 
-        OrderService::createOrder($this->subject, $this->beneficiaryId, $this->officeId, $this->fee);
+        OrderService::createOrder($this->subject, $this->beneficiaryId, $this->officeId, $this->amount);
 
         $this->dispatchBrowserEvent('close-modal', ['id' => 'create-order-modal']);
         NotificationsNotification::make()

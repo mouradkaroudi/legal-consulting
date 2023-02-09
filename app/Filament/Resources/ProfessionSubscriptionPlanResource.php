@@ -49,8 +49,8 @@ class ProfessionSubscriptionPlanResource extends Resource
                     ->label(__('filament::resources/professions-subscriptions-plans.form.fields.profession_id.label'))
                     ->preload()
                     ->relationship('professionTranslation', 'name'),
-                Forms\Components\TextInput::make('fee')
-                    ->label(__('filament::resources/professions-subscriptions-plans.form.fields.fee.label')),
+                Forms\Components\TextInput::make('amount')
+                    ->label(__('filament::resources/professions-subscriptions-plans.form.fields.amount.label')),
                 Forms\Components\Select::make('type')
                     ->label(__('filament::resources/professions-subscriptions-plans.form.fields.type.label'))
                     ->options([

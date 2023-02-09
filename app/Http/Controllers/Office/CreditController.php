@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Office;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class BalanceController extends Controller
+class CreditController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -16,7 +16,7 @@ class BalanceController extends Controller
     public function __invoke(Request $request)
     {
         
-        return view('pages.office.balance.index', [
+        return view('pages.office.credit.index', [
             'office' => auth()->user()->currentOffice
         ]);
     }

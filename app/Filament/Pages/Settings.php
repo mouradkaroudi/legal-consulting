@@ -129,6 +129,8 @@ class Settings extends Page
 		];
 
 		$paymentSettingScheme = [
+			Components\TextInput::make("tax")->numeric()
+			->label(__('filament::pages/settings.fields.payment.fields.tax.label')),
 			Components\Toggle::make("transactions_bank_transfer")
 				->label(__('filament::pages/settings.fields.payment.fields.bank_transfer.label'))
 				->reactive(),

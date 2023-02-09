@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orders_supervisors', function (Blueprint $table) {
-            $table->id();
-            $table->integer('order_id');
-            $table->integer('employee_id');
-            $table->string('responsibility_name')->nullable();
-            $table->timestamps();
+        Schema::table('professions', function (Blueprint $table) {
+            $table->float('fee_percentage')->default(0);
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders_supervisors');
+        Schema::table('professions', function (Blueprint $table) {
+            
+        });
     }
 };

@@ -18,11 +18,11 @@ return new class extends Migration
             $table->integer('office_id');
             $table->integer('beneficiary_id');
             $table->string('subject');
-            $table->float('fee');
+            $table->float('amount');
             $table->string('status');
             $table->timestamps();
             $table->timestamp('closed_at')->nullable();
-            //TODO: add paid_at
+            $table->timestamp('paid_at')->nullable();
         });
     }
 

@@ -53,6 +53,9 @@ return [
                     'label' => 'Bank Account Identifier Number',
                     'helperText' => 'The bank account number where you want to receive transfers'
                 ],
+                'tax' => [
+                    'label' => 'Tax rate',
+                ],
             ]
         ],
         'social' => [

@@ -26,6 +26,9 @@ return [
             'is_available' => [
                 'label' => 'متوفر ؟'
             ],
+            'fee_percentage' => [
+                'label' => 'نسبة الرسوم'
+            ],
         ]
     ]
 ];

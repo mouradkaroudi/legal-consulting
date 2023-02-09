@@ -8,103 +8,107 @@ use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\PayPal;
 use AmrShawky\LaravelCurrency\Facade\Currency;
 use App\Models\Order;
+use App\Models\Transaction;
+use App\Models\User;
+use App\Services\TransactionService;
 
 class PayPalController extends Controller
 {
 
-    /**
-     * 
-     */
-    public function subscription(Request $request)
+    public function checkout(Request $request)
     {
 
-        $plan_id = $request['plan_id'];
+        // TODO: consider to add authorization
 
-        $professionSubscriptionPlan = ProfessionSubscriptionPlan::find($plan_id);
+        $entities = ['plan', 'order'];
+
+        $entity = $request->input('entity');
+
+        if (!in_array($entity, $entities)) {
+            abort(404);
+        }
+
+        $cancel_url = $request->input('cancel_url');
+        $id = $request->input('id');
+
+        if ($entity === 'plan') {
+            $plan = ProfessionSubscriptionPlan::find($id);
+            $amount = $plan->total_amount;
+            $tax = $plan->tax_amount;
+        }
+
+        if ($entity === 'order') {
+            $order = Order::find($id);
+            $amount = $order->total_amount;
+            $tax = $order->tax_amount;
+        }
 
         $provider = new PayPal();
         $provider->setApiCredentials(config('paypal'));
         $paypalToken = $provider->getAccessToken();
 
-        $fee = Currency::convert()
-            ->from('SAR')
-            ->to('USD')
-            ->amount($professionSubscriptionPlan->fee)
-            ->round(2)
-            ->get();
+        $amountUSD = Currency::convert()->from('SAR')->to('USD')->amount($amount)->round(2)->get();
+        $taxUSD = Currency::convert()->from('SAR')->to('USD')->amount($tax)->round(2)->get();
+
+        $order = $provider->createOrder([
+            "intent" => "CAPTURE",
+            "application_context" => [
+                "return_url" => route('payment.paypal.process', ['entity' => $entity, 'id' => $id]),
+                "cancel_url" => $cancel_url,
+            ],
+            "purchase_units" => [
+                0 => [
+                    "custom_id" => json_encode(['actual_amount' => $amount - $tax]),
+                    "amount" => [
+                        "currency_code" => "USD",
+                        "value" => $amountUSD,
+                    ],
+                    "breakdown" => [
+                        "tax_total" => [
+                            "value" => $taxUSD
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        foreach ($order['links'] as $links) {
+            if ($links['rel'] == 'approve') {
+                return redirect()->away($links['href']);
+            }
+        }
+    }
+
+    public function process(Request $request)
+    {
+        $provider = new PayPal();
+        $provider->setApiCredentials(config('paypal'));
+        $provider->getAccessToken();
+        $response = $provider->capturePaymentOrder($request['token']);
+
+        $entity = $request->input('entity');
+        $id = $request->input('id');
+
+
+        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+
+            $custom_id = json_decode($response['purchase_units'][0]['payments']['captures'][0]['custom_id']);
+            $actualAmount = $custom_id->actual_amount;
+            $user = auth()->user();
+
+            TransactionService::deposit(User::find($user->id), $actualAmount, Transaction::SUCCESS, ['payment_method' => 'paypal']);
+
+            if($entity === 'order') {
+                return redirect()->route('account.orders.pay', ['order' => $id]);
+            }
+
             
-        $order = $provider->createOrder([
-            "intent" => "CAPTURE",
-            "application_context" => [
-                "return_url" => route('office.subscription.subscribe', ['plan_id' => $professionSubscriptionPlan->id]),
-                "cancel_url" => route('office.subscription.index'),
-            ],
-            "purchase_units" => [
-                0 => [
-                    "custom_id" => json_encode(['user_id' => auth()->user()->id]),
-                    "amount" => [
-                        "currency_code" => "USD",
-                        "value" => $fee
-                    ]
-                ]
-            ]
-        ]);
-
-        // redirect to approve href
-        foreach ($order['links'] as $links) {
-            if ($links['rel'] == 'approve') {
-                return redirect()->away($links['href']);
-            }
+        } else {
+            return redirect()->route('account.orders.index')->withErrors([
+              'message' => __("Sorry! we're unable to process this payment")
+            ]);
         }
     }
 
-    public function order(Request $request)
-    {
 
-        $order_id = $request['order_id'];
-
-        $orderC = Order::find($order_id);
-
-        $provider = new PayPal();
-        $provider->setApiCredentials(config('paypal'));
-        $paypalToken = $provider->getAccessToken();
-
-        $fee = Currency::convert()
-            ->from('SAR')
-            ->to('USD')
-            ->amount($orderC->fee)
-            ->round(2)
-            ->get();
-
-        $order = $provider->createOrder([
-            "intent" => "CAPTURE",
-            "application_context" => [
-                "return_url" => route('account.orders.paid', ['order' => $orderC->id]),
-                "cancel_url" => route('account.orders.index'),
-            ],
-            "purchase_units" => [
-                0 => [
-                    "custom_id" => json_encode(['user_id' => auth()->user()->id]),
-                    "amount" => [
-                        "currency_code" => "USD",
-                        "value" => $fee
-                    ]
-                ]
-            ]
-        ]);
-
-        // redirect to approve href
-        foreach ($order['links'] as $links) {
-            if ($links['rel'] == 'approve') {
-                return redirect()->away($links['href']);
-            }
-        }
-    }
-
-    /**
-     * Handle PayPal webhooks request
-     */
-    public function webhook(Request $request)
-    {
-    }
 }

@@ -4,10 +4,14 @@ namespace App\Http\Livewire\Account\Orders;
 
 use App\Models\Order;
 use App\Models\User;
+use App\Services\RatingService;
 use Digikraaft\ReviewRating\Models\Review;
 use Filament\Tables\Actions\Action;
 use Filament\Forms;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -35,7 +39,7 @@ class Table extends Component implements HasTable
 			\Filament\Tables\Columns\TextColumn::make("subject")->label(
 				__('Subject')
 			),
-			\Filament\Tables\Columns\TextColumn::make("fee")
+			\Filament\Tables\Columns\TextColumn::make("amount")
 				->label(__('Amount'))
 				->money("sar", true),
 			\Filament\Tables\Columns\BadgeColumn::make("status")
@@ -58,33 +62,46 @@ class Table extends Component implements HasTable
 				->action(function ($record) {
 					$data = $this->mountedTableActionData;
 					$paymentMethod = $data["paymentMethod"];
-					return redirect()->route('payment.' . $paymentMethod . '.order', ['order_id' => $record->id]);
+
+					return redirect()->route('payment.' . $paymentMethod . '.checkout', ['entity' => 'order', 'id' => $record->id]);
 				})
+				->button()
+				->color('success')
+				->modalHeading(fn ($record) => __('Order ref') . ' ' . $record->id)
 				->form(function ($record) {
 					return [
 						Forms\Components\Grid::make(2)->schema([
 							Forms\Components\Placeholder::make('paymentForm')
 								->label('')
 								->content(view('pages.account.orders.order-summary', [
-									'amount' => $record->fee,
+									'totalAmount' => $record->total_amount,
+									'taxAmount' => $record->tax_amount,
+									'amount' => $record->amount,
 									'orderID' => $record->id,
 									'subject' => $record->subject,
 									'officeName' => $record->office->name
 								])),
-							RadioButton::make("paymentMethod")
-								->label(__('Payment method'))
-								->options([
-									"balance" => __('Balance'),
-									"paypal" => __('PayPal'),
-									"bank-transfer" => __('Bank transfer'),
-								])
-								->descriptions([])
-								->columns(1)
-								->required(),
+							Group::make([
+								RadioButton::make("paymentMethod")
+									->label(__('Choose a payment method'))
+									->options([
+										"balance" => __('Balance'),
+										"paypal" => __('PayPal'),
+										"bank-transfer" => __('Bank transfer'),
+									])
+									->descriptions([
+										'paypal' => __("You'll be redirected to PayPal website to complete your purchase securely")
+									])
+									->columns(1)
+									->required(),
+								Forms\Components\Checkbox::make('agree')
+									->label('أوافق على شروط إستخدام الموقع.')
+									->required(),
+								Placeholder::make('')
+									->hint(__("The total amount doesn't cover the payment gateway fees"))
+									->extraAttributes(['class' => 'text-sm'])
+							])
 						]),
-						Forms\Components\Checkbox::make('agree')
-							->label('أوافق على شروط إستخدام الموقع.')
-							->required()
 					];
 				})
 				->hidden(fn ($record) => $record->status === Order::PAID),
@@ -102,21 +119,40 @@ class Table extends Component implements HasTable
 				->label(fn ($record): string => $record->hasReviewed(auth()->user()) ? __('Edit review') : __('Add review'))
 				->action(function (Order $record, array $data): void {
 
-					if (isset($data['review_id']) && !empty($data['review_id'])) {
+					$review_id = $data['review_id'] ?? '';
 
-						Review::find($data['review_id'])->update([
-							'rating' => $data['rating'],
-							'title' => $data['title'],
-							'review' => $data['review'],
-						]);
+					$review = $data['review'];
+					$rating = $data['rating'];
+					$title = $data['title'];
+
+					if (isset($review_id) && !empty($review_id)) {
+						RatingService::updateReview(
+							Review::find($review_id),
+							[
+								'rating' => $rating,
+								'title' => $title,
+								'review' => $review,
+							]
+						);
+
+						Notification::make()
+						->title(__('The review was successfully updated'))
+						->success()
+						->send();
+
 					} else {
-						$record->review($data['review'], User::find(auth()->user()->id), $data['rating'], $data['title']);
-					}
-
-					Notification::make()
+						RatingService::createOrderReview($record, User::find(auth()->user()->id),[
+							'rating' => $rating,
+							'title' => $title,
+							'review' => $review
+						]);
+						Notification::make()
 						->title(__('The review was successfully added'))
 						->success()
 						->send();
+					}
+
+
 				})
 				->form(function ($record) {
 

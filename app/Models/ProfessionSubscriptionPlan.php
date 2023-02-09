@@ -39,8 +39,36 @@ class ProfessionSubscriptionPlan extends Model
     /**
      * 
      */
-    public function getFeeLabelAttribute() {
-        return money($this->fee, 'sar', true)->__toString() .( $this->type != self::ONE_TIME ? '/' . __('subscriptions.types.' . $this->type) : '');
+    public function getTaxAmountAttribute()
+    {
+        $tax = setting('tax');
+
+        if (empty($tax)) {
+            return 0;
+        }
+
+        return $this->fee * ($tax / 100);
     }
 
+    /**
+     * 
+     */
+    public function getTotalAmountAttribute()
+    {
+        $tax = setting('tax');
+
+        if (empty($tax)) {
+            return $this->fee;
+        }
+
+        return $this->fee + $this->fee * ($tax / 100);
+    }
+
+    /**
+     * 
+     */
+    public function getFeeLabelAttribute()
+    {
+        return money($this->fee, 'sar', true)->__toString() . ($this->type != self::ONE_TIME ? '/' . __('subscriptions.types.' . $this->type) : '');
+    }
 }

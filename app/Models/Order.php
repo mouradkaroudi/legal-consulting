@@ -22,10 +22,13 @@ class Order extends Model
     "office_id",
     "beneficiary_id",
     "subject",
-    "fee",
+    "amount",
     "status",
   ];
 
+  /**
+   * 
+   */
   public function beneficiary()
   {
     return $this->hasOne(User::class, "id", "beneficiary_id");
@@ -37,8 +40,53 @@ class Order extends Model
     return $this->hasOne(DigitalOffice::class, "id", "office_id");
   }
 
-  public function getFormattedFeeAttribute()
+  /**
+   * Change order status to paid 
+   */
+  public function markAsPaid() {
+   
+    $this->status = self::PAID;
+    $this->save();
+
+  }
+
+  /**
+   * 
+   */
+  public function isPaid() {
+    return $this->status == self::PAID;
+  }
+
+  /**
+   * 
+   */
+  public function getTaxAmountAttribute()
   {
-    return $this->fee . ' SAR';
+    $tax = setting('tax');
+
+    if (empty($tax)) {
+      return 0;
+    }
+
+    return $this->amount * ($tax / 100);
+  }
+
+  /**
+   * 
+   */
+  public function getTotalAmountAttribute()
+  {
+    $tax = setting('tax');
+
+    if (empty($tax)) {
+      return $this->amount;
+    }
+
+    return $this->amount + $this->amount * ($tax / 100);
+  }
+
+  public function getFormattedAmountAttribute()
+  {
+    return $this->amount . ' SAR';
   }
 }

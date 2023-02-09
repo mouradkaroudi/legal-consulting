@@ -7,7 +7,7 @@ use App\Http\Controllers\OfficeListingController;
 use App\Http\Controllers\RegistrationController;
 
 use App\Http\Controllers\Account\SettingsController as AccountSettingsController;
-use App\Http\Controllers\Account\BalanceController;
+use App\Http\Controllers\Account\CreditController;
 use App\Http\Controllers\Account\CurrentOfficeController;
 use App\Http\Controllers\Account\DashboardController;
 use App\Http\Controllers\Account\InvitesController;
@@ -15,7 +15,7 @@ use App\Http\Controllers\Account\NotificationsController;
 use App\Http\Controllers\Account\OfficesController;
 use App\Http\Controllers\Account\OrdersController as AccountOrdersController;
 
-use App\Http\Controllers\Office\BalanceController as OfficeBalanceController;
+use App\Http\Controllers\Office\CreditController as OfficeCreditController;
 use App\Http\Controllers\Office\EmployeesController;
 use App\Http\Controllers\Office\MessagesController as OfficeMessagesController;
 use App\Http\Controllers\Office\NotificationsController as OfficeNotificationsController;
@@ -24,9 +24,11 @@ use App\Http\Controllers\Office\OrdersController;
 use App\Http\Controllers\Office\SchedulesController;
 use App\Http\Controllers\Office\SetupOfficeController;
 use App\Http\Controllers\Office\SubscriptionController;
+
 use App\Http\Controllers\Payment\BalanceController as PaymentBalanceController;
 use App\Http\Controllers\Payment\BankTransferController;
 use App\Http\Controllers\Payment\PayPalController;
+
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
@@ -110,9 +112,9 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
         Route::resource('/orders', OrdersController::class)->middleware([
             'can:viewAny, App\Models\Order'
         ]);
-        Route::get('/balance', OfficeBalanceController::class)
+        Route::get('/credit', OfficeCreditController::class)
             ->middleware(['office.employee.can:manage-office'])
-            ->name('balance');
+            ->name('credit');
 
         Route::resource('/schedules', SchedulesController::class);
         Route::resource('/employees', EmployeesController::class);
@@ -130,14 +132,14 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'verified', 'ac
 
 
     Route::get('/settings', [AccountSettingsController::class, 'index'])->name('settings');
-    Route::get('/balance', [BalanceController::class, 'index'])->name('balance');
+    Route::get('/credit', [CreditController::class, 'index'])->name('credit');
     Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications');
     Route::get('/offices', OfficesController::class)->name('offices');
     Route::get('/invites', InvitesController::class)->name('invites');
 
     Route::name('orders.')->prefix('/orders')->group(function() {
         Route::get('/', [AccountOrdersController::class, 'index'])->name('index');
-        Route::get('/orders/{order}/paid', [AccountOrdersController::class, 'paid'])->name('paid');
+        Route::get('/{order}/pay', [AccountOrdersController::class, 'pay'])->name('pay');
     });
 
     Route::get('/messages', [MessagesController::class, 'index'])->name('messages');
@@ -149,12 +151,8 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'verified', 'ac
 
 
 /**
- * Webhooks routes
+ * TODO: Webhooks routes
  */
-Route::name('webhook.')->prefix('/webhook')->group(function () {
-    Route::post('/paypal', [PayPalController::class, 'webhook'])->name('paypal');
-});
-
 
 
 /**
@@ -169,22 +167,22 @@ Route::name('payment.')->prefix('/payment')->middleware(['auth', 'account.settle
     Route::get('/failed', function () {
         return view('pages.payment.failed');
     })->name('failed');
-
-    Route::name('paypal.')->prefix('/paypal')->group(function () {
-        Route::get('/subscription', [PayPalController::class, 'subscription'])->name('subscription');
-        Route::get('/order', [PayPalController::class, 'order'])->name('order');
+    
+    Route::name('paypal.')->prefix('/paypal')->group(function () {        
+        Route::get('/checkout', [PayPalController::class, 'checkout'])->name('checkout');
+        Route::get('/process', [PayPalController::class, 'process'])->name('process');
+        
     });
 
     Route::name('balance.')->prefix('/balance')->group(function () {
-        Route::get('/subscription', [PaymentBalanceController::class, 'subscription'])->name('subscription');
-        Route::get('/order', [PaymentBalanceController::class, 'order'])->name('order');
+        //Route::get('/subscription', [PaymentBalanceController::class, 'subscription'])->name('subscription');
+        //Route::get('/order', [PaymentBalanceController::class, 'order'])->name('order');
     });
 
     Route::name('bank-transfer.')->prefix('/bank-transfer')->group(function () {
-        Route::get('/subscriptions', [BankTransferController::class, 'subscription'])->name('subscription');
-        Route::get('/order', [BankTransferController::class, 'order'])->name('order');
+        //Route::get('/subscriptions', [BankTransferController::class, 'subscription'])->name('subscription');
+        //Route::get('/order', [BankTransferController::class, 'order'])->name('order');
     });
-
 
 });
 

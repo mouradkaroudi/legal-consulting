@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class BalanceController extends Controller
+class CreditController extends Controller
 {
     public function index() {
 
-        return view('pages.account.balance');
+        return view('pages.account.credit');
 
     }
 }

@@ -26,7 +26,8 @@ class Profession extends Model implements TranslatableContract
     protected $fillable = [
         'service_id',
         'slug',
-        'is_available'
+        'is_available',
+        'fee_percentage'
     ];
 
     /**

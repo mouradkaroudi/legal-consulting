@@ -36,7 +36,7 @@ class Table extends Component implements HasTable
 			),
 			\Filament\Tables\Columns\TextColumn::make("subject")
 				->label(__('Subject')),
-			\Filament\Tables\Columns\TextColumn::make("fee")
+			\Filament\Tables\Columns\TextColumn::make("amount")
 				->label(__('Amount'))
 				->money("sar", true),
 			\Filament\Tables\Columns\BadgeColumn::make("status")

@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Services\OrderService;
+use App\Models\Transaction;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
-use Srmklive\PayPal\Services\PayPal;
 
 class OrdersController extends Controller
 {
@@ -15,7 +15,7 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('pages.account.orders.index');
     }
@@ -23,25 +23,31 @@ class OrdersController extends Controller
     /**
      * 
      */
-    public function paid(Request $request)
+    public function pay(Request $request, Order $order)
     {
-
-        $provider = new PayPal();
-        $provider->setApiCredentials(config('paypal'));
-        $provider->getAccessToken();
-        $response = $provider->capturePaymentOrder($request['token']);
         
-        $order_id = $request['order_id'];
-
-        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-
-            OrderService::orderPaid(Order::find($order_id));
-
-            return redirect()->route('account.order.paid');
-
-       } else {
-            return redirect()->route('account.order.failed');
+        if($order->isPaid()) {
+            abort(404);
         }
-    }
 
+        $amount = $order->amount;
+
+        if ($request->user()->available_balance < $amount) {
+            return redirect()->route('account.orders.index')->withErrors([
+                'message' => __("Insufficient account balance. Please try another payment method")
+            ]);
+        }
+
+        TransactionService::pay(
+            $request->user(),
+            $order->office,
+            $amount,
+            Transaction::SUCCESS,
+            ['order_id' => $order->id]
+        );
+
+        $order->markAsPaid();
+
+        return redirect()->route('account.orders.index')->with('success', __('Congratulations! The payment process was completed successfully'));
+    }
 }

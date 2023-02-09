@@ -17,17 +17,17 @@ class ProfessionSeeder extends Seeder
         $professions = [
             [
                 'name' => 'موثق',
-                'slug' => 'موثق',
+                'slug' => 'legalized',
                 'service_id' => 1
             ],
             [
                 'name' => 'محامي',
-                'slug' => 'محامي',
+                'slug' => 'lawyer',
                 'service_id' => 1
             ],
             [
                 'name' => 'تجهيز المعاملات',
-                'slug' => 'تجهيز-المعاملات',
+                'slug' => 'processing-transactions',
                 'service_id' => 3
             ],
         ];

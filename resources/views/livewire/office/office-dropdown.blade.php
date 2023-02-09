@@ -10,7 +10,7 @@
         <x-filament::dropdown.list.item tag="a" :href="route('office.settings')">
             {{ __('Office settings') }}
         </x-filament::dropdown.list.item>
-        <x-filament::dropdown.list.item tag="a" :href="route('office.balance')">
+        <x-filament::dropdown.list.item tag="a" :href="route('office.credit')">
             {{ __('Balance :balance', ['balance' => money($currentOffice->available_balance, 'sar', true)]) }}
         </x-filament::dropdown.list.item>
         @endif

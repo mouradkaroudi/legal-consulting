@@ -17,17 +17,17 @@ class SpecializationSeeder extends Seeder
         $specializations = [
             [
                 'name' => 'عام',
-                'slug' => '',
+                'slug' => 'general',
                 'profession_id' => 2
             ],
             [
                 'name' => 'الإصابات الشخصية',
-                'slug' => '',
+                'slug' => 'personal-injuries',
                 'profession_id' => 2
             ],
             [
                 'name' => 'التخطيط العقاري',
-                'slug' => '',
+                'slug' => 'real-estate-planning',
                 'profession_id' => 2
             ]
         ];

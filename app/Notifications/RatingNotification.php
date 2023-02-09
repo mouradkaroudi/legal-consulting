@@ -2,26 +2,27 @@
 
 namespace App\Notifications;
 
+use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Lang;
 
-class TransactionNotification extends Notification
+class RatingNotification extends Notification
 {
     use Queueable;
+
+    public $review;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($txn, $status, ?string $body = '')
+    public function __construct($review)
     {
-        $this->status = $status;
-        $this->txn = $txn;
-        $this->body = $body;
+        $this->review = $review;
     }
 
     /**
@@ -43,10 +44,7 @@ class TransactionNotification extends Notification
      */
     public function toMail($notifiable)
     {
-
-
     }
-
     /**
      * Get the array representation of the notification.
      *
@@ -56,9 +54,7 @@ class TransactionNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'txn_id' => $this->txn->id,
-            'status' => $this->status,
-            'body' => $this->body
+            'review_id' => json_encode($this->review->id)
         ];
     }
 }

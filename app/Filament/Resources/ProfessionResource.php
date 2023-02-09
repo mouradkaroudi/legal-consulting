@@ -56,6 +56,11 @@ class ProfessionResource extends Resource
                     ->required()
                     ->label(__('filament::resources/professions.form.fields.slug.label'))
                     ->maxLength(255),
+                Forms\Components\TextInput::make('fee_percentage')
+                    ->label(__('filament::resources/professions.form.fields.fee_percentage.label'))
+                    ->numeric()
+                    ->required()
+                    ,
                 Forms\Components\Toggle::make('is_available')
                     ->label(__('filament::resources/professions.form.fields.is_available.label')),
             ]);

@@ -53,24 +53,4 @@ class BalanceController extends Controller
 
         return redirect()->route('office.subscription.success');
     }
-
-    public function order(Request $request) {
-
-        $user = auth()->user();
-
-        $order_id = $request['order_id'];
-
-        $order = Order::find($order_id);
-
-        if ($order->fee > $user->available_balance) {
-            return redirect()->route('payment.failed'); // TODO: consider make route for all failing payment
-        }
-
-        OrderService::orderPaid($order);
-		$user->substractFromBalance($order->fee);
-
-        return redirect()->route('payment.success');
-
-    }
-
 }

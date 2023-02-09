@@ -48,26 +48,26 @@ class SubscriptionController extends Controller
 
             $office = auth()->user()->currentOffice;
             SubscriptionService::createSubscription($office, ProfessionSubscriptionPlan::find($request['plan_id']));
-            
-            if($office->status == DigitalOffice::AVAILABLE || $office->status == DigitalOffice::BUSY) {
+
+            if ($office->status == DigitalOffice::AVAILABLE || $office->status == DigitalOffice::BUSY) {
                 return redirect()->route('office.subscription.success');
             }
 
-            if(setting('digital_office_direct_registration') == 1) {
+            if (setting('digital_office_direct_registration') == 1) {
                 $office->status = DigitalOffice::AVAILABLE;
-            }else{
+            } else {
                 $office->status = DigitalOffice::PENDING;
             }
 
             $office->save();
 
             return redirect()->route('office.subscription.success');
-       } else {
+        } else {
             return redirect()->route('office.subscription.failed');
         }
     }
 
-    public function success( Request $request )
+    public function success(Request $request)
     {
         return view('pages.office.subscription.success');
     }

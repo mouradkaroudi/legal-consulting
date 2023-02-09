@@ -20,7 +20,7 @@ class OfficeStats extends Component
         $this->employees = $user->currentOffice->employees->count();
         $this->orders = $user->currentOffice->orders->count();
         $this->pendingOrders = $user->currentOffice->orders->where('status', Order::UNPAID)->count();
-        $this->revenue = $user->currentOffice->orders->where('status', Order::PAID)->sum('fee');
+        $this->revenue = $user->currentOffice->orders->where('status', Order::PAID)->sum('amount');
 
     }
 

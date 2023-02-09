@@ -26,6 +26,9 @@ return [
             'is_available' => [
                 'label' => 'Is available'
             ],
+            'fee_percentage' => [
+                'label' => 'Fee percentage'
+            ],
         ]
     ]
 ];

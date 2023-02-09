@@ -4,8 +4,7 @@ namespace App\Services;
 
 use App\Models\Transaction;
 use App\Events\Transaction as TransactionEvents;
-use App\Models\DigitalOffice;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
 class TransactionService
 {
@@ -14,6 +13,57 @@ class TransactionService
 	public function __construct(Transaction $txn)
 	{
 		$this->txn = $txn;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param Illuminate\Database\Eloquent\Model $payer ( a person which pay (e.g benificiary) )
+	 * @param Illuminate\Database\Eloquent\Model $payee (a person to whom money is paid (e.g office) )
+	 */
+	public static function pay( Model $payer, Model $payee, $amount, $status, $metadata = [] ) {
+
+		$payerData = [
+			'amount' => $amount,
+			'type' => 'credit',
+			'source' => Transaction::PAY_DUES,
+			'status' => $status,
+			'metadata' => json_encode($metadata)
+		];
+
+		$payeeData = [
+			'amount' => $amount,
+			'type' => 'debit',
+			'source' => Transaction::RECEIVE_EARNINGS,
+			'status' => $status,
+			'metadata' => json_encode($metadata)
+		];
+
+		$payer->transactions()->create($payerData);
+		$payee->transactions()->create($payeeData);
+
+		$payer->substractFromBalance($amount);
+		$payee->addToBalance($amount);
+
+	}
+
+	/**
+	 * Make a deposit
+	 */
+	public static function deposit( Model $holder, $amount, $status, $metadata = [] ): void {
+
+		$data = [
+			"amount" => $amount,
+			"type" => "debit",
+			"source" => Transaction::DEPOSIT,
+			"status" => $status,
+			"metadata" => json_encode($metadata)
+		];
+
+		$holder->transactions()->create($data);
+
+		$holder->addToBalance($amount);
+
 	}
 
 	/**

@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Models\DigitalOfficeEmployee;
 use App\Models\Order;
+use App\Models\Profession;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
@@ -21,7 +22,7 @@ class OrderService
 			"office_id" => $office_id,
 			"beneficiary_id" => $user_id,
 			"subject" => $subject,
-			"fee" => $subtotal,
+			"amount" => $subtotal,
 			"status" => Order::UNPAID,
 		]);
 
@@ -33,31 +34,12 @@ class OrderService
 		}
 	}
 
-	public static function orderPaid($order) {
+	/**
+	 * 
+	 */
+	public static function markAsPaid($order) {
 
-		$beneficiary = $order->beneficiary;
-		$office = $order->office;
-
-		$beneficiary->transactions()->create([
-            'amount' => $order->fee,
-            'type' => 'credit',
-            'source' => Transaction::PAY_DUES,
-            'status' => Transaction::SUCCESS,
-            'metadata' => json_encode(['order_id' => $order->id])
-        ]);
-
-		$office->transactions()->create([
-            'amount' => $order->fee,
-            'type' => 'debit',
-            'source' => Transaction::RECEIVE_EARNINGS,
-            'status' => Transaction::SUCCESS,
-            'metadata' => json_encode(['order_id' => $order->id])
-        ]);
-
-        $office->addToBalance($order->fee);
-		
-		$order->status = Order::PAID;
-		$order->save();
+		$order->markAsPaid();
 
 		Notification::send(
 			$order->office->employees()->permission('manage-orders')->get(),
@@ -69,7 +51,6 @@ class OrderService
 			DigitalOfficeEmployee::where('user_id', $order->office->user_id)->get(),
 			new OrderPaidNotification($order)
 		);
-
 
 	}
 

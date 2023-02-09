@@ -12,9 +12,6 @@ class Invite extends Model
 {
   use HasFactory;
 
-  /**
-   *
-   */
   protected $fillable = ["office_id", "email", "token"];
 
   /**
@@ -40,7 +37,7 @@ class Invite extends Model
   {
     static::created(function ($invite) {
         if(App::environment() === 'production') {
-            Mail::to($invite->email)->send(new InviteCreated($invite));
+          Mail::to($invite->email)->send(new InviteCreated($invite));
         }
     });
   }

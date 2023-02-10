@@ -96,10 +96,7 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
 
     Route::name('subscription.')->prefix('/subscription')->group(function () {
         Route::get('/', [SubscriptionController::class, 'index'])->name('index');
-        Route::get('/subscribe/{profession_subscription_plan}', [SubscriptionController::class, 'subscribe'])->name('subscribe');
-        //Route::get('/success', [SubscriptionController::class, 'success'])->name('success');
-        //Route::get('/failed', [SubscriptionController::class, 'failed'])->name('failed');
-        Route::get('/{profession_subscription_plan}/pay', [SubscriptionController::class, 'pay'])->name('pay');
+        Route::get('/subscribe/{profession_subscription_plan}', [SubscriptionController::class, 'subscribe'])->name('subscribe'); // FIXME: post request
     });
 
     Route::middleware(['office.settled'])->group(function () {
@@ -159,19 +156,10 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'verified', 'ac
  * Payments methods routes
  */
 Route::name('payment.')->prefix('/payment')->middleware(['auth', 'account.settled'])->group(function () {
-
-    Route::get('/success', function () {
-        return view('pages.payment.success');
-    })->name('success');
-    
-    Route::get('/failed', function () {
-        return view('pages.payment.failed');
-    })->name('failed');
     
     Route::name('paypal.')->prefix('/paypal')->group(function () {        
         Route::get('/checkout', [PayPalController::class, 'checkout'])->name('checkout');
-        Route::get('/process', [PayPalController::class, 'process'])->name('process');
-        
+        Route::get('/process', [PayPalController::class, 'process'])->name('process');        
     });
 
     Route::name('balance.')->prefix('/balance')->group(function () {

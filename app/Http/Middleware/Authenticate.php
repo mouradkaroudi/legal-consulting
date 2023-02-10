@@ -9,12 +9,13 @@ class Authenticate extends Middleware
 
     public function handle($request, $next, ...$guards)
     {
+
+        $this->authenticate($request, $guards);
+        
         if ($this->auth->user()->banned_at) {
             $this->auth->logout();
             return redirect()->route('auth.login');
         }
-
-        $this->authenticate($request, $guards);
 
         return $next($request);
     }

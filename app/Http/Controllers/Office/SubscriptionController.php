@@ -63,6 +63,9 @@ class SubscriptionController extends Controller
         $office = $request->user()->currentOffice;
 
         if ($office->status == DigitalOffice::AVAILABLE || $office->status == DigitalOffice::BUSY) {
+            return redirect()->route('office.subscription.index')->with('success',
+                __("Congratulation! You have been subscribed")
+            );
             return redirect()->route('office.subscription.success');
         }
 

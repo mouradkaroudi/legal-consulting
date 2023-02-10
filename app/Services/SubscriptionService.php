@@ -2,13 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Order;
 use App\Models\ProfessionSubscriptionPlan;
 use App\Models\Subscription;
-use App\Models\User;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\OrderCreatedNotification;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
 class SubscriptionService
 {
@@ -21,10 +18,6 @@ class SubscriptionService
 	/**
 	 * Return true if subscription expiring in next 3 days
 	 * 
-	 * @param $subscription
-	 * @param int $days
-	 * 
-	 * @return bool
 	 */
 	public static function isSubscriptionExpireAfter(Subscription $subscription, int $days)
 	{
@@ -38,7 +31,7 @@ class SubscriptionService
 	/**
 	 * Create subscription or update exsiting subscription
 	 */
-	public static function createSubscription($subscriber, ProfessionSubscriptionPlan $professionSubscriptionPlan)
+	public static function createSubscription(Model $subscriber, ProfessionSubscriptionPlan $professionSubscriptionPlan)
 	{
 		$plan_type = $professionSubscriptionPlan->type;
 		$started_at = Carbon::now();

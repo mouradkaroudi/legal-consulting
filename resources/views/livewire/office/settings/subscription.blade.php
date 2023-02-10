@@ -5,7 +5,7 @@
             <h3 class="text-lg font-medium leading-6 text-gray-900">{{ __('Subscription settings') }}</h3>
             <p class="mt-1 text-sm text-gray-600">{{ __('Office subscription settings on the site.') }}</p>
         </div>
-
+        @if($digitalOffice->subscription)
         <div class="border rounded-lg p-4">
             <div class="flex justify-between">
                 <div>
@@ -17,6 +17,14 @@
                 </div>
             </div>
         </div>
+        @else
+        <p>
+            {{ __('You have no subscriptions') }}. 
+            <x-filament::link :href="@route('office.subscription.index')">
+                {{ __('Subscribe now') }}
+            </x-filament::link>
+        </p>
+        @endif
 
         @if($expirationDuration)
         <div class="border p-4 rounded-lg bg-red-50 border-red-500">

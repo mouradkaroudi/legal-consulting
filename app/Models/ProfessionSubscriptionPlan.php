@@ -18,7 +18,7 @@ class ProfessionSubscriptionPlan extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['profession_id', 'name', 'description', 'fee', 'type'];
+    protected $fillable = ['profession_id', 'name', 'description', 'amount', 'type'];
 
     /**
      * 
@@ -47,7 +47,7 @@ class ProfessionSubscriptionPlan extends Model
             return 0;
         }
 
-        return $this->fee * ($tax / 100);
+        return $this->amount * ($tax / 100);
     }
 
     /**
@@ -58,10 +58,10 @@ class ProfessionSubscriptionPlan extends Model
         $tax = setting('tax');
 
         if (empty($tax)) {
-            return $this->fee;
+            return $this->amount;
         }
 
-        return $this->fee + $this->fee * ($tax / 100);
+        return $this->amount + $this->amount * ($tax / 100);
     }
 
     /**
@@ -69,6 +69,6 @@ class ProfessionSubscriptionPlan extends Model
      */
     public function getFeeLabelAttribute()
     {
-        return money($this->fee, 'sar', true)->__toString() . ($this->type != self::ONE_TIME ? '/' . __('subscriptions.types.' . $this->type) : '');
+        return money($this->amount, 'sar', true)->__toString() . ($this->type != self::ONE_TIME ? '/' . __('subscriptions.types.' . $this->type) : '');
     }
 }

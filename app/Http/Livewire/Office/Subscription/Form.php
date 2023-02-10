@@ -35,7 +35,7 @@ class Form extends Component implements HasForms
             $paymentMethod = 'balance';
         }
 
-        return redirect()->route('payment.' . $paymentMethod . '.subscription', $params);        
+        return redirect()->route('payment.paypal.checkout', ['entity' => 'plan', 'id' => $this->plan_id]);  
     }
 
     protected function getFormSchema(): array

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('profession_id');
             $table->string('name');
             $table->string('description');
-            $table->float('fee');
+            $table->float('amount');
             $table->enum('type', ['one-time', 'monthly', 'yearly']);
             $table->timestamps();
         });

@@ -17,6 +17,8 @@
     "Tax": "الضريبة",
     "Total": "المجموع",
     "Order ref": "معرف الطلب",
+    "Account balance": "رصيد الحساب",
+    "Office balance": "رصيد المكتب",
     "The service you will provide, e.g., legal consultation.": "الخدمة التي ستقدمها ، على سبيل المثال ، استشارة قانونية.",
     "The amount that the beneficiary must pay, e.g., 1000 SAR.": "المبلغ الذي يجب على المستفيد دفعه ، على سبيل المثال ، 1000 ر.س.",
     "Sorry! we're unable to process this payment": "آسف!نحن غير قادرين على معالجة هذه الدفعة",

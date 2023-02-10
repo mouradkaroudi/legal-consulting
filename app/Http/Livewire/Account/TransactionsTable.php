@@ -21,7 +21,7 @@ class TransactionsTable extends Component implements Tables\Contracts\HasTable
 		return [
 			TextColumn::make("id")
 				->label(__('Transaction ID')),
-			TextColumn::make('amount')
+			TextColumn::make('actual_amount')
 				->label(__('Amount'))
 				->money('sar', true),
 			TextColumn::make("details")

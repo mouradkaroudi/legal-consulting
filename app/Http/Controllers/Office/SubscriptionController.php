@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Office;
 use App\Http\Controllers\Controller;
 use App\Models\DigitalOffice;
 use App\Models\ProfessionSubscriptionPlan;
+use App\Models\Transaction;
 use App\Services\SubscriptionService;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
-use Srmklive\PayPal\Services\PayPal;
 
 class SubscriptionController extends Controller
 {
-
 
     /**
      * Handle the incoming request.
@@ -25,55 +25,55 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * 
+     * Handle subscribe to a profession plan request.
      */
-    public function pay(ProfessionSubscriptionPlan $professionSubscriptionPlan)
+    public function subscribe(Request $request, ProfessionSubscriptionPlan $professionSubscriptionPlan)
     {
+        
+        $from = $request['from'] ?? 'account';
 
-        return view('pages.office.subscription.pay', compact('professionSubscriptionPlan'));
-    }
+        $payer = $from === 'account' ? auth()->user() :  auth()->user()->currentOffice;
 
-    /**
-     * 
-     */
-    public function subscribe(Request $request)
-    {
-
-        $provider = new PayPal();
-        $provider->setApiCredentials(config('paypal'));
-        $provider->getAccessToken();
-        $response = $provider->capturePaymentOrder($request['token']);
-
-        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-
-            $office = auth()->user()->currentOffice;
-            SubscriptionService::createSubscription($office, ProfessionSubscriptionPlan::find($request['plan_id']));
-
-            if ($office->status == DigitalOffice::AVAILABLE || $office->status == DigitalOffice::BUSY) {
-                return redirect()->route('office.subscription.success');
-            }
-
-            if (setting('digital_office_direct_registration') == 1) {
-                $office->status = DigitalOffice::AVAILABLE;
-            } else {
-                $office->status = DigitalOffice::PENDING;
-            }
-
-            $office->save();
-
-            return redirect()->route('office.subscription.success');
-        } else {
-            return redirect()->route('office.subscription.failed');
+        if (empty($payer)) {
+            return response('', 400);
         }
+
+        $planId = $professionSubscriptionPlan->id;
+
+        $professionSubscriptionPlan = ProfessionSubscriptionPlan::find($planId);
+
+        if ($professionSubscriptionPlan->amount > $payer->available_balance) {
+            return redirect()->route('office.subscription.index')->withErrors([
+                'message' => __("Insufficient account balance. Please try another payment method")
+            ]);
+        }
+
+        TransactionService::subscribe(
+            $payer, 
+            $professionSubscriptionPlan->amount, 
+            Transaction::SUCCESS,
+            ['subscription_plan' => $professionSubscriptionPlan->id]
+        );
+
+        SubscriptionService::createSubscription(
+            $payer instanceof DigitalOffice ? $payer : $payer->currentOffice,
+            $professionSubscriptionPlan
+        );
+
+        $office = $request->user()->currentOffice;
+
+        if ($office->status == DigitalOffice::AVAILABLE || $office->status == DigitalOffice::BUSY) {
+            return redirect()->route('office.subscription.success');
+        }
+
+        if (setting('digital_office_direct_registration') == 1) {
+            $office->status = DigitalOffice::AVAILABLE;
+        } else {
+            $office->status = DigitalOffice::PENDING;
+        }
+
+        $office->save();
+
     }
 
-    public function success(Request $request)
-    {
-        return view('pages.office.subscription.success');
-    }
-
-    public function failed()
-    {
-        return view('pages.office.subscription.failed');
-    }
 }

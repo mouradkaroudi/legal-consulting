@@ -89,7 +89,6 @@ class PayPalController extends Controller
         $entity = $request->input('entity');
         $id = $request->input('id');
 
-
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
 
             $custom_id = json_decode($response['purchase_units'][0]['payments']['captures'][0]['custom_id']);
@@ -102,6 +101,9 @@ class PayPalController extends Controller
                 return redirect()->route('account.orders.pay', ['order' => $id]);
             }
 
+            if($entity === 'plan') {
+                return redirect()->route('office.subscription.subscribe', ['profession_subscription_plan' => $id]);
+            }
             
         } else {
             return redirect()->route('account.orders.index')->withErrors([

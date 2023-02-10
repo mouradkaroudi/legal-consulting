@@ -16,6 +16,10 @@ class Subscription extends Component
         
         $subscription = $this->digitalOffice->subscription;
 
+        if( empty($subscription) ) {
+            return;
+        }
+
         if( SubscriptionService::isSubscriptionExpireAfter( $subscription, 3 ) ) {
             $this->expirationDuration = 3;
         }

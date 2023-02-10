@@ -96,9 +96,9 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
 
     Route::name('subscription.')->prefix('/subscription')->group(function () {
         Route::get('/', [SubscriptionController::class, 'index'])->name('index');
-        Route::get('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
-        Route::get('/success', [SubscriptionController::class, 'success'])->name('success');
-        Route::get('/failed', [SubscriptionController::class, 'failed'])->name('failed');
+        Route::get('/subscribe/{profession_subscription_plan}', [SubscriptionController::class, 'subscribe'])->name('subscribe');
+        //Route::get('/success', [SubscriptionController::class, 'success'])->name('success');
+        //Route::get('/failed', [SubscriptionController::class, 'failed'])->name('failed');
         Route::get('/{profession_subscription_plan}/pay', [SubscriptionController::class, 'pay'])->name('pay');
     });
 

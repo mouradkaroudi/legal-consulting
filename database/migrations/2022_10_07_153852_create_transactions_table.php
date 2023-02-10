@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->float('amount');
+            $table->float('fees');
+            $table->float('actual_amount');
             $table->enum('type', ['debit', 'credit']);
             $table->string('source'); // deposit, payment, earning, refund
             $table->string('status');

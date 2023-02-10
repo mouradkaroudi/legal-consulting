@@ -20,6 +20,7 @@ class Transaction extends Model
     public const RECHARGE = 'RECHARGE';
     public const WITHDRAWALS = 'withdrawals';
     public const DEPOSIT = 'deposit';
+    public const SUBSCRIPTION_FEES = 'subscription_fees';
 
     /**
      * The attributes that are mass assignable.
@@ -28,6 +29,8 @@ class Transaction extends Model
      */
     protected $fillable = [
         'amount',
+        'fees',
+        'actual_amount',
         'type',
         'source',
         'status',

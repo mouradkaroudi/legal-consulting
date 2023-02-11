@@ -109,9 +109,11 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
         Route::resource('/orders', OrdersController::class)->middleware([
             'can:viewAny, App\Models\Order'
         ]);
-        Route::get('/credit', OfficeCreditController::class)
-            ->middleware(['office.employee.can:manage-office'])
-            ->name('credit');
+
+
+        Route::name('credit.')->prefix('/credit')->group(function() {
+            Route::get('/', [OfficeCreditController::class,'index'])->name('index');
+        })->middleware(['office.employee.can:manage-office']);
         
         Route::resource('/schedules', SchedulesController::class);
         Route::resource('/employees', EmployeesController::class);

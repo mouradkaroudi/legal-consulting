@@ -32,7 +32,7 @@ class ProfessionSubscriptionPlanResource extends Resource
 
     protected static function getNavigationGroup(): ?string
     {
-        return __('Content Management');
+        return __('Financial Management');
     }
 
     public static function form(Form $form): Form

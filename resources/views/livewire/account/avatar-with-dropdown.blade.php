@@ -16,7 +16,7 @@
             {{ __('Account settings') }}
         </x-filament::dropdown.list.item>
 
-        <x-filament::dropdown.list.item tag="a" :href="route('account.credit')">
+        <x-filament::dropdown.list.item tag="a" :href="route('account.credit.index')">
             {{ __('Balance :balance', ['balance' => money($user->available_balance, 'sar', true)]) }}
         </x-filament::dropdown.list.item>
 

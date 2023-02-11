@@ -112,7 +112,7 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
         Route::get('/credit', OfficeCreditController::class)
             ->middleware(['office.employee.can:manage-office'])
             ->name('credit');
-
+        
         Route::resource('/schedules', SchedulesController::class);
         Route::resource('/employees', EmployeesController::class);
         Route::get('/notifications', OfficeNotificationsController::class)->name('notifications');
@@ -129,7 +129,13 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'verified', 'ac
 
 
     Route::get('/settings', [AccountSettingsController::class, 'index'])->name('settings');
-    Route::get('/credit', [CreditController::class, 'index'])->name('credit');
+    
+
+    Route::name('credit.')->prefix('/credit')->group(function() {
+        Route::get('/', [CreditController::class, 'index'])->name('index');
+        Route::get('/{txn}/receipt', [CreditController::class, 'receipt'])->name('receipt');
+    });
+
     Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications');
     Route::get('/offices', OfficesController::class)->name('offices');
     Route::get('/invites', InvitesController::class)->name('invites');

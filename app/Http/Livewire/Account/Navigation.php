@@ -35,7 +35,7 @@ class Navigation extends Component
             ],
             [
                 'label' => __('Balance'),
-                'routeName' => 'account.credit'
+                'routeName' => 'account.credit.index'
             ],
 
         ];

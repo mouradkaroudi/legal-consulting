@@ -8,7 +8,7 @@ use Filament\Tables\Contracts\HasTable;
 use Livewire\Component;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables;
-use Filament\Tables\Actions\EditAction;
+use Filament\Forms;
 
 class Table extends Component implements HasTable
 {
@@ -34,7 +34,22 @@ class Table extends Component implements HasTable
     protected function getTableActions(): array
     {
         return [
-            EditAction::make()
+            Tables\Actions\Action::make('add')
+                ->action(function ($record, $data) {
+                    $office = auth()->user()->currentOffice;
+                    $office->withdrawal_methods = json_encode($data);
+                    $office->save();
+                })
+                ->form(function ($record) {
+
+                    $schema = [Forms\Components\Hidden::make('method_id')];
+
+                    foreach($record->information_required as $k=>$field) {
+                        $schema[] = Forms\Components\TextInput::make('field_' . $k)->label($field['field_label']);
+                    }
+
+                    return $schema;
+                })
         ];
     }
 

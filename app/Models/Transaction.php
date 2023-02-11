@@ -33,24 +33,27 @@ class Transaction extends Model
         'metadata'
     ];
 
-	protected $casts = [
-		"metadata" => "json",
-	];
+    protected $casts = [
+        "metadata" => "json",
+    ];
 
     public function transactionable()
     {
         return $this->morphTo();
     }
 
-    public function office() {
+    public function office()
+    {
         return $this->morphOne(DigitalOffice::class, 'transactionable');
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->morphTo(User::class, 'transactionable');
     }
 
-    public function allTransactions() {
+    public function allTransactions()
+    {
         return $this->offices->merge($this->users);
     }
 
@@ -69,20 +72,36 @@ class Transaction extends Model
     /**
      * Add funds to the holder balance
      */
-    public function isDebit() {
+    public function isDebit()
+    {
         return $this->type == 'debit';
     }
 
     /**
      * Remove funds to the holder balance
      */
-    public function isCredit() {
+    public function isCredit()
+    {
         return $this->type == 'credit';
+    }
+
+    /**
+     * Friendly description about the transaction
+     */
+    public function getDescriptionAttribute()
+    {
+
+        if ($this->source == self::PAY_DUES || $this->source == self::RECEIVE_EARNINGS) {
+            return __("transactions.details." . $this->source, ["order_id" => $this->metadata['order_id']]);
+        }
+
+        return __("transactions.details." . $this->source, [
+            "amount" => money($this->actual_amount, 'SAR', true)
+        ]);
     }
 
     public function getFormattedAmountAttribute()
     {
-      return $this->amount . ' SAR';
+        return $this->amount . ' SAR';
     }
-
 }

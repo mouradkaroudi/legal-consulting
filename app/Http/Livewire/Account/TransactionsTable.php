@@ -16,6 +16,16 @@ class TransactionsTable extends Component implements Tables\Contracts\HasTable
 {
 	use Tables\Concerns\InteractsWithTable;
 
+	protected function getTableActions(): array
+	{
+		return [
+			Tables\Actions\Action::make('print')
+			->label(__('Print'))
+			->url(fn($record) => route('account.credit.receipt', ['txn' => $record->id]))
+			->visible(fn($record) => in_array($record->source, [Transaction::DEPOSIT, Transaction::WITHDRAWALS]))
+		];
+	}
+
 	protected function getTableColumns(): array
 	{
 		return [
@@ -24,27 +34,8 @@ class TransactionsTable extends Component implements Tables\Contracts\HasTable
 			TextColumn::make('actual_amount')
 				->label(__('Amount'))
 				->money('sar', true),
-			TextColumn::make("details")
-				->label(__('Details'))
-				->getStateUsing(function ($record) {
-					if($record->source == Transaction::PAY_DUES || $record->source == Transaction::RECEIVE_EARNINGS) {
-						return __(
-							"transactions.details." . $record->source,
-							[
-								"order_id" => $record->metadata['order_id'],
-							]
-						);
-					}
-
-					return __(
-						"transactions.details." .
-							$record->source,
-						[
-							"amount" => money($record->actual_amount, 'SAR', true),
-							"order_id" => $record->id,
-						]
-					);
-				}),
+			TextColumn::make("description")
+				->label(__('Details')),
 			BadgeColumn::make("status")
 				->label(__('Status'))
 				->getStateUsing(

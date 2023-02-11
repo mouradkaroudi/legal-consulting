@@ -1,19 +1,20 @@
 @if($slides)
-<div id="homepage-hero" class="relative" style="background-color: {{ $slides[0]['color'] }};">
-    <div class="relative px-4 py-16 mx-auto overflow-hidden sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+<div id="homepage-hero" class="relative bg-no-repeat bg-cover" style="background-image: url({{ $slides[0]['image'] }});">
+    <div class="bg-blue-500 bg-opacity-10 absolute top-0 left-0 w-full h-full"></div>
+    <div class="relative z-10 px-4 py-16 mx-auto overflow-hidden sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
         <div class="flex flex-col items-center justify-between xl:flex-row">
             <div class="w-full max-w-xl mb-12 xl:mb-0 xl:pr-16 xl:w-7/12">
                 @foreach( $slides as $index=>$slider )
                 <div data-index="{{ $index }}" class="hero-slide-item animate-fade {{ $index == 0 ? 'active' : '' }}">
-                    <h2 class="max-w-lg mb-6 font-sans text-3xl font-bold tracking-tight text-white sm:text-4xl sm:leading-none">
+                    <h2 class="max-w-lg mb-6 font-sans text-5xl leading-tight font-bold text-white">
                         {{ $slider['title'] }}
                     </h2>
-                    <p class="max-w-xl mb-4 text-base text-gray-200 md:text-lg">
+                    <p class="max-w-xl mb-4  text-gray-200 text-lg">
                         {!! $slider['content'] !!}
                     </p>
                 </div>
                 @endforeach
-                <div class="flex gap-4">
+                <div class="flex gap-2 mt-4">
                     @foreach( $slides as $index=>$slider )
                     <button data-index="{{ $index }}" class="hero-slide-pagination {{ $index == 0 ? 'active' : '' }} w-4 h-4"></button>
                     @endforeach
@@ -32,7 +33,7 @@
     </div>
 </div>
 <script>
-    var slides = JSON.parse('{!! json_encode(array_column($slides,"color")) !!}');
+    var slides = JSON.parse('{!! json_encode(array_column($slides,"image")) !!}');
     var currentSlide = 1;
 
     function displaySlide(index) {
@@ -41,7 +42,7 @@
 
         document.querySelector(`.hero-slide-item[data-index="${index}"]`).classList.add('active')
         document.querySelector(`.hero-slide-pagination[data-index="${index}"]`).classList.add('active')
-        document.getElementById('homepage-hero').style.backgroundColor = slides[index]
+        document.getElementById('homepage-hero').style.backgroundImage = `url(${slides[index]})`
 
     }
 
@@ -51,7 +52,7 @@
             displaySlide(parseInt(e.target.dataset.index))
         })
     })
-    
+    /*
     setInterval(function() {
         displaySlide(currentSlide)
         if(currentSlide == (document.querySelectorAll('.hero-slide-item').length - 1)) {
@@ -59,6 +60,6 @@
         }else{
             currentSlide = currentSlide + 1;
         }
-    }, 15000);
+    }, 15000);*/
 </script>
 @endif

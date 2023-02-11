@@ -1,4 +1,4 @@
-<div class="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-16 md:grid-cols-2 xl:grid-cols-3">
+<div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
     @foreach($services as $service)
     <a href="{{ route('search.listing', ['service' => $service->slug]) }}" class="block space-y-3 border rounded-lg p-4 bg-white hover:border-gray-300">
         <h3 class="text-2xl font-semibold text-gray-700 capitalize dark:text-white">{{ $service->name }}</h3>

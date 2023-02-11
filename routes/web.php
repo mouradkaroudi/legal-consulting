@@ -49,13 +49,13 @@ Route::get('/', function () {
     $slides = Post::where('post_type', 'slide')->get();
 
     $n = [];
-
     foreach ($slides as $slide) {
 
         $n[] = [
             'title' => $slide->title,
             'content' => $slide->content,
-            'color' => $slide->meta->where('option', 'bg_color')->first()?->value
+            'color' => $slide->meta->where('option', 'bg_color')->first()?->value,
+            'image' => asset('storage/' . $slide->meta->where('option', 'bg_image')->first()?->value)
         ];
     }
 

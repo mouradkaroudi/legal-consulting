@@ -11,6 +11,9 @@ return [
                 ],
                 'site_name' => [
                     'label' => 'اسم الموقع'
+                ],
+                'company_address' => [
+                    'label' => 'عنوان الشركة'
                 ]
             ]
         ],

@@ -29,7 +29,7 @@ return [
             'profession_id' => [
                 'label' => 'Profession'
             ],
-            'fee' => [
+            'amount' => [
                 'label' => 'Fee'
             ],
             'type' => [

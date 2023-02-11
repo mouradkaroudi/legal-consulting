@@ -23,45 +23,36 @@
                 <div class="bg-white rounded-b-md">
                     <div class="p-9">
                         <div class="space-y-6 text-slate-700">
-                            <p class="text-xl font-extrabold tracking-tight uppercase font-body">
+                            <p class="text-4xl font-extrabold tracking-tight uppercase font-body">
                                 {{ setting('general_settings_site_name_' . app()->getLocale()) }}
                             </p>
                         </div>
                     </div>
                     <div class="p-9">
-                        <div class="flex w-full">
-                            <div class="grid grid-cols-4 gap-12">
-                                <div class="text-sm font-light text-slate-500">
-                                    <p class="text-sm font-normal text-slate-700">
-                                        {{ __('Invoice Detail') }}:
+                        <div class="">
+                            <div class="grid grid-cols-2">
+                                <div class="text-slate-500">
+                                    <p class="text-slate-700">{{ __('Receipt number') }}</p>
+                                    <p>{{ $txn->id }}</p>
+                                </div>
+                                <div class=" text-slate-500">
+                                    <p class="text-slate-700">{{ __('Date') }}</p>
+                                    <p>{{ $txn->created_at }}</p>
+                                </div>
+                            </div>
+                            <hr class="my-6"/>
+                            <div class="grid grid-cols-2 gap-12">
+                                <div class="text-slate-500">
+                                    <p class="text-slate-700">
+                                        {{ __('From') }}:
                                     </p>
-                                    <p>Unwrapped</p>
-                                    <p>Fake Street 123</p>
-                                    <p>San Javier</p>
-                                    <p>CA 1234</p>
+                                    <p>{!! setting('general_settings_company_address') !!}</p>
                                 </div>
-                                <div class="text-sm font-light text-slate-500">
-                                    <p class="text-sm font-normal text-slate-700">{{ __('Billed To') }}</p>
-                                    <p>The Boring Company</p>
-                                    <p>Tesla Street 007</p>
-                                    <p>Frisco</p>
-                                    <p>CA 0000</p>
-                                </div>
-                                <div class="text-sm font-light text-slate-500">
-                                    <p class="text-sm font-normal text-slate-700">{{ __('Invoice Number') }}</p>
-                                    <p>000000</p>
-
-                                    <p class="mt-2 text-sm font-normal text-slate-700">
-                                        {{ __('Date of Issue') }}
-                                    </p>
-                                    <p>00.00.00</p>
-                                </div>
-                                <div class="text-sm font-light text-slate-500">
-                                    <p class="text-sm font-normal text-slate-700">Terms</p>
-                                    <p>0 Days</p>
-
-                                    <p class="mt-2 text-sm font-normal text-slate-700">Due</p>
-                                    <p>00.00.00</p>
+                                <div class="text-slate-500">
+                                    <p class="text-slate-700">{{ __('To') }}</p>
+                                    <p>{{ $txn->transactionable->name }}</p>
+                                    <p>{{ __('Account number') }}: {{ $txn->transactionable->id }}</p>
+                                    <p>{{ $txn->transactionable->address }}</p>
                                 </div>
                             </div>
                         </div>
@@ -72,22 +63,22 @@
                             <table class="min-w-full divide-y divide-slate-500">
                                 <thead>
                                     <tr>
-                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left rtl:text-right text-sm font-normal text-slate-700 sm:pl-6 md:pl-0">
+                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left rtl:text-right text-slate-700 sm:pl-6 md:pl-0">
                                             {{ __('Description') }}
                                         </th>
-                                        <th scope="col" class="py-3.5 pl-3 pr-4 text-right text-sm font-normal text-slate-700 sm:pr-6 md:pr-0">
+                                        <th scope="col" class="py-3.5 pl-3 pr-4 text-right  text-slate-700 sm:pr-6 md:pr-0">
                                             {{ __('Amount') }}
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr class="border-b border-slate-200">
-                                        <td class="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
+                                        <td class="py-4 pl-4 pr-3 sm:pl-6 md:pl-0">
                                             <div class="font-medium text-slate-700">
                                                 {{ $txn->description }}
                                             </div>
                                         </td>
-                                        <td class="py-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                                        <td class="py-4 pl-3 pr-4 text-right text-slate-500 sm:pr-6 md:pr-0">
                                             <x-money amount="{{ $txn->amount }}" currency="sar" convert="true" />
                                         </td>
                                     </tr>
@@ -96,35 +87,35 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th scope="row" colspan="3" class="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
+                                        <th scope="row" colspan="3" class="hidden pt-6 pl-6 pr-3 font-light text-right text-slate-500 sm:table-cell md:pl-0">
                                             {{ __('Subtotal') }}
                                         </th>
-                                        <th scope="row" class="pt-6 pl-4 pr-3 text-sm font-light text-left text-slate-500 sm:hidden">
+                                        <th scope="row" class="pt-6 pl-4 pr-3 font-light text-left text-slate-500 sm:hidden">
                                             {{ __('Subtotal') }}
                                         </th>
-                                        <td class="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                                        <td class="pt-6 pl-3 pr-4 text-right text-slate-500 sm:pr-6 md:pr-0">
                                             <x-money amount="{{ $txn->amount }}" currency="sar" convert="true" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row" colspan="3" class="hidden pt-4 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
-                                            {{ __('Tex') }}
-                                        </th>
-                                        <th scope="row" class="pt-4 pl-4 pr-3 text-sm font-light text-left text-slate-500 sm:hidden">
+                                        <th scope="row" colspan="3" class="hidden pt-4 pl-6 pr-3 font-light text-right text-slate-500 sm:table-cell md:pl-0">
                                             {{ __('Tax') }}
                                         </th>
-                                        <td class="pt-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                                        <th scope="row" class="pt-4 pl-4 pr-3 font-light text-left text-slate-500 sm:hidden">
+                                            {{ __('Tax') }}
+                                        </th>
+                                        <td class="pt-4 pl-3 pr-4 text-right text-slate-500 sm:pr-6 md:pr-0">
                                             <x-money amount="{{ $txn->fees }}" currency="sar" convert="true" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row" colspan="3" class="hidden pt-4 pl-6 pr-3 text-sm font-normal text-right text-slate-700 sm:table-cell md:pl-0">
+                                        <th scope="row" colspan="3" class="hidden pt-4 pl-6 pr-3  text-right text-slate-700 sm:table-cell md:pl-0">
                                             {{ __('Total') }}
                                         </th>
-                                        <th scope="row" class="pt-4 pl-4 pr-3 text-sm font-normal text-left text-slate-700 sm:hidden">
+                                        <th scope="row" class="pt-4 pl-4 pr-3  text-left text-slate-700 sm:hidden">
                                             {{ __('Total') }}
                                         </th>
-                                        <td class="pt-4 pl-3 pr-4 text-sm font-normal text-right text-slate-700 sm:pr-6 md:pr-0">
+                                        <td class="pt-4 pl-3 pr-4  text-right text-slate-700 sm:pr-6 md:pr-0">
                                             <x-money amount="{{ $txn->actual_amount }}" currency="sar" convert="true" />
                                         </td>
                                     </tr>

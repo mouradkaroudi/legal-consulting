@@ -3,13 +3,16 @@ return [
     'title' => 'Settings',
     'fields' => [
         'general_settings' => [
-            'label' => 'إعدادات عامة',
+            'label' => 'General settings',
             'fields' => [
                 'site_logo' => [
-                    'label' => 'شعار الموقع'
+                    'label' => 'Logo'
                 ],
                 'site_name' => [
-                    'label' => 'اسم الموقع'
+                    'label' => 'Site name'
+                ],
+                'company_address' => [
+                    'label' => 'Company address'
                 ]
             ]
         ],

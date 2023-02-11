@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
 				\Filament\Navigation\NavigationGroup::make(__("Financial Management")),
 			]);
 			
-			\RyanChandler\FilamentNavigation\Filament\Resources\NavigationResource::navigationGroup(__('Content Management'));
+			\RyanChandler\FilamentNavigation\Filament\Resources\NavigationResource::navigationGroup(__('Appearance'));
 			\RyanChandler\FilamentNavigation\Filament\Resources\NavigationResource::pluralLabel(__('filament::resources/navigations.label.plural'));
 			\RyanChandler\FilamentNavigation\Filament\Resources\NavigationResource::label(__('filament::resources/navigations.label.singular'));
 			

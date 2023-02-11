@@ -29,7 +29,7 @@ return [
             'profession_id' => [
                 'label' => 'المهنة'
             ],
-            'fee' => [
+            'amount' => [
                 'label' => 'الرسوم'
             ],
             'type' => [

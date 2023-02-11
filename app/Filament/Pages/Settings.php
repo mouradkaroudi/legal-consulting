@@ -79,6 +79,9 @@ class Settings extends Page
 				),
 				Components\TextInput::make("general_settings_site_name")->label(
 					__('filament::pages/settings.fields.general_settings.fields.site_name.label')
+				),
+				Components\RichEditor::make('general_settings_company_address')->label(
+					__('filament::pages/settings.fields.general_settings.fields.company_address.label')
 				)
 			]),
 		];

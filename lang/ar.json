@@ -183,5 +183,15 @@
     "Add review": "أضف تقييم",
     "Edit review": "تعديل تقييم",
     "Page": "صفحة",
-    "Print": "طباعة"
+    "Print": "طباعة",
+    "Account number": "رقم الحساب",
+    "Date": "التاريخ",
+    "Receipt number": "رقم الإيصال",
+    "From": "من",
+    "To": "إلى",
+    "Subtotal": "مبلغ إجمالي",
+    "Content Management": "إدارة المحتوى",
+    "Financial Management": "ادارة المالية",
+    "Appearance": "المظهر"
+
 }

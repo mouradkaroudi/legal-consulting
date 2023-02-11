@@ -60,7 +60,7 @@ class PostResource extends Resource
                             Forms\Components\TextInput::make('title')
                                 ->label(__('filament::resources/posts.form.fields.title.label'))
                                 ->required(),
-                            Forms\Components\RichEditor::make('content')
+                            Forms\Components\Textarea::make('content')
                                 ->label(__('filament::resources/posts.form.fields.content.label'))
                                 ->required(),
                         ]),

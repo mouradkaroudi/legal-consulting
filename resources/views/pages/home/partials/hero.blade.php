@@ -10,7 +10,7 @@
                         {{ $slider['title'] }}
                     </h2>
                     <p class="max-w-xl mb-4  text-gray-200 text-lg">
-                        {!! $slider['content'] !!}
+                        {{ $slider['content'] }}
                     </p>
                 </div>
                 @endforeach

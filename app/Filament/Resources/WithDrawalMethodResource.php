@@ -15,7 +15,7 @@ use Filament\Resources\Resource;
 
 class WithDrawalMethodResource extends Resource
 {
-    protected static ?string $model = WithDrawalMethod::class;
+    protected static ?string $model = WithdrawalMethod::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 

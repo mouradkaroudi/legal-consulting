@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\WithDrawalMethodResource\Pages;
 use App\Models\Country;
-use App\Models\WithDrawalMethod;
+use App\Models\WithdrawalMethod;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;

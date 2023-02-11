@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Office\Transactions;
 
+use App\Models\Transaction;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -23,16 +24,25 @@ class Table extends Component implements Tables\Contracts\HasTable
 				->money('sar', true),
 			TextColumn::make("details")
 				->label(__('Details'))
-				->getStateUsing(
-					fn ($record) => __(
+				->getStateUsing(function ($record) {
+					if($record->source == Transaction::PAY_DUES || $record->source == Transaction::RECEIVE_EARNINGS) {
+						return __(
+							"transactions.details." . $record->source,
+							[
+								"order_id" => $record->metadata['order_id'],
+							]
+						);
+					}
+
+					return __(
 						"transactions.details." .
-							\Illuminate\Support\Str::lower($record->source),
+							$record->source,
 						[
-							"amount" => $record->formattedAmount,
+							"amount" => money($record->actual_amount, 'SAR', true),
 							"order_id" => $record->id,
 						]
-					)
-				),
+					);
+				}),
 			BadgeColumn::make("status")
 				->label(__('Status'))
 				->getStateUsing(

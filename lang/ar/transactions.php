@@ -2,9 +2,9 @@
 
 return [
     'details' => [
-        'recharge' => 'شحن الحساب بمبلغ :amount',
-        'pay_dues' => 'دفع مستحقات الطلب رقم :order_id',
-        'receive_earnings' => 'الربح من تنفيذ الطلب رقم :order_id',
+        'deposit' => 'شحن الحساب بمبلغ :amount',
+        'pay_dues' => 'دفع مستحقات الطلب رقم #:order_id',
+        'recieve_earnings' => 'الربح من تنفيذ الطلب رقم #:order_id',
         'withdrawals' => 'ارسال الأرباح لحسابك البنكي'
     ],
     'pending' => 'قيد المراجعة',

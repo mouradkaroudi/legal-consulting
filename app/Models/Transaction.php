@@ -22,11 +22,6 @@ class Transaction extends Model
     public const DEPOSIT = 'deposit';
     public const SUBSCRIPTION_FEES = 'subscription_fees';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'amount',
         'fees',
@@ -38,6 +33,9 @@ class Transaction extends Model
         'metadata'
     ];
 
+	protected $casts = [
+		"metadata" => "json",
+	];
 
     public function transactionable()
     {

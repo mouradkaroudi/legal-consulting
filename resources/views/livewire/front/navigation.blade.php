@@ -1,5 +1,5 @@
 <nav class="bg-white border-gray-30 border-b">
-    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2">
+    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-4">
 
         <a href="{{ route('home') }}" class="flex items-center">
             <livewire:shared.site-logo />
@@ -33,7 +33,7 @@
         </div>
 
         <div id="mega-menu-full" class="flex justify-between items-center w-auto">
-            <ul class="flex items-center p-4 space-x-4 rtl:space-x-reverse">
+            <ul class="flex items-center space-x-4 rtl:space-x-reverse">
                 <li>
                     <x-filament::dropdown placement="bottom-end">
                         <x-slot name="trigger">

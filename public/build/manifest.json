@@ -4,14 +4,14 @@
     "src": "resources/js/app.js",
     "isEntry": true
   },
-  "resources/css/app.css": {
-    "file": "assets/app.51f7cec3.css",
-    "src": "resources/css/app.css",
+  "resources/css/filament.css": {
+    "file": "assets/filament.66297f28.css",
+    "src": "resources/css/filament.css",
     "isEntry": true
   },
-  "resources/css/filament.css": {
-    "file": "assets/filament.94892e9a.css",
-    "src": "resources/css/filament.css",
+  "resources/css/app.css": {
+    "file": "assets/app.6ff4c607.css",
+    "src": "resources/css/app.css",
     "isEntry": true
   }
 }

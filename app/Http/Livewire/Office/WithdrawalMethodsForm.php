@@ -24,11 +24,17 @@ class WithdrawalMethodsForm extends Component implements HasForms
     {
         $office = auth()->user()->currentOffice;
 
-        $withDrawalMethods = WithdrawalMethod::all();
+        $officeWithdrawalMethods = $office->withdrawal_methods ?? [];
 
-        $withDrawalMethodsForm = [];
+        $officeWithdrawalMethodsIds = array_column($officeWithdrawalMethods, 'method_id');
 
-        foreach ($withDrawalMethods as $j=>$withDrawalMethod) {
+        $withdrawalMethods = WithdrawalMethod::whereIn('id', $officeWithdrawalMethodsIds)->get();
+
+        dd($withdrawalMethods);
+
+        $withdrawalMethodsForm = [];
+
+        foreach ($withdrawalMethods as $j=>$withDrawalMethod) {
 
             $requiredFields = [];
             $availableIn = $withDrawalMethod->countries->pluck('id')->toArray();
@@ -43,22 +49,15 @@ class WithdrawalMethodsForm extends Component implements HasForms
                 $requiredFields[] = TextInput::make('method[' . $j . '][field][' . $i . ']')->label($field['field_label']);
             }
 
-            $withDrawalMethodsForm[] = Tab::make($withDrawalMethod->name)->schema($requiredFields);
+            $withdrawalMethodsForm[] = Tab::make($withDrawalMethod->name)->schema($requiredFields);
         }
 
-        if (empty($withDrawalMethodsForm)) {
+        if (empty($withdrawalMethodsForm)) {
             return [
                 Placeholder::make('')->content(__('There is no payment method available for you. Please get in touch with our support') . '.')
             ];
         } else {
-            return [
-                TextInput::make('s')
-            ];
-            return [
-                Tabs::make(__('Withdrawals methods'))
-                    ->label(__('Fill in your preferred withdrawal methods'))
-                    ->tabs($withDrawalMethodsForm)
-            ];
+            return $withdrawalMethodsForm;
         }
     }
 

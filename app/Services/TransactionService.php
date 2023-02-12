@@ -21,17 +21,16 @@ class TransactionService
 	public static function subscribe(Model $payer, $amount, $status, $metadata = [])
 	{
 		$payer->transactions()->create([
-            'amount' => $amount,
+			'amount' => $amount,
 			'fees' => 0,
 			'actual_amount' => $amount,
-            'type' => 'credit',
-            'source' => Transaction::SUBSCRIPTION_FEES,
-            'status' => $status,
-            'metadata' => json_encode($metadata)
-        ]);
+			'type' => 'credit',
+			'source' => Transaction::SUBSCRIPTION_FEES,
+			'status' => $status,
+			'metadata' => json_encode($metadata)
+		]);
 
 		$payer->substractFromBalance($amount);
-
 	}
 
 	/**
@@ -42,7 +41,7 @@ class TransactionService
 	 */
 	public static function pay(Model $payer, Model $payee, $amount, $status, $metadata = [])
 	{
-		
+
 		$professionFees = $payee->profession->fee_percentage;
 		$payeeAmount = $amount;
 		$payeeAmountFees = 0;
@@ -142,6 +141,10 @@ class TransactionService
 	 */
 	public static function withdraw($holder, $amount, $metadata = [])
 	{
+
+		if ($holder->available_balance < $amount) {
+			throw new \Exception(__('Insufficient account credit'));
+		}
 
 		$holder->transactions()->create([
 			"amount" => $amount,

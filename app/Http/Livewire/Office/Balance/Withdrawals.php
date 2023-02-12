@@ -6,6 +6,7 @@ use App\Models\Withdrawal;
 use App\Models\WithdrawalMethod;
 use App\Services\TransactionService;
 use App\Services\WithDrawalsService;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -19,34 +20,53 @@ class Withdrawals extends Component implements HasForms
 
 	public $office;
 	public $amount;
+	public $method;
 
-	public function mount() {
+	public function mount()
+	{
 		$this->office = auth()->user()->currentOffice;
 	}
 
 	protected function getFormSchema(): array
 	{
 
-		$withDrawalMethods = WithdrawalMethod::query()->whereHas('countries', function($query) {
-			//return $query->where('country_id', $this->office->country_code);
-		})->pluck('name', 'id');
+		$office = auth()->user()->currentOffice;
 
-		$withDrawalMethodsForm = [];
+		$officeWithdrawalMethods = $office->withdrawal_methods ?? [];
 
-		if($withDrawalMethods) {
-			$withDrawalMethodsForm[] = Radio::make("withdrawalMethod")
-			->label("أختر طريقة السحب")
-			->options($withDrawalMethods)
-			->required();
+		$officeWithdrawalMethodsIds = array_column($officeWithdrawalMethods, 'method_id');
+
+		$withdrawalMethods = WithdrawalMethod::whereIn('id', $officeWithdrawalMethodsIds)->get();
+
+		$withdrawalMethodsForm = [];
+
+		$options = [];
+		$descriptions = [];
+
+		foreach ($withdrawalMethods as $j => $withdrawalMethod) {
+			$options[$withdrawalMethod->id] = $withdrawalMethod->name;
+			$descriptions[$withdrawalMethod->id] = $withdrawalMethod->description;
 		}
 
-		$withDrawalMethodsForm[] = TextInput::make("amount")
-		->type("number")
-		->label("المبلغ")
-		->required();
+		$withdrawalMethodsForm[] = Radio::make('method')
+			->label(__('Withdrawal methods'))
+			->options($options)
+			->descriptions($descriptions)
+			->required()
+			;
 
+		if (empty($withdrawalMethodsForm)) {
+			return [
+				Placeholder::make('')->content(__('There is no payment method available for you. Please get in touch with our support') . '.')
+			];
+		}
 
-		return $withDrawalMethodsForm;
+		$withdrawalMethodsForm[] = TextInput::make("amount")
+			->type("number")
+			->label(__("Amount"))
+			->required();
+
+		return $withdrawalMethodsForm;
 	}
 
 	public function render()
@@ -56,18 +76,8 @@ class Withdrawals extends Component implements HasForms
 
 	public function submit()
 	{
-
-        if($this->amount > $office->available_balance) {
-            $this->addError('amount', 'المرجو التحقق من المبلغ المتوفر في الحساب.');
-			return;
-        }
-
-		TransactionService::withdraw( $office, $this->amount );		
-
-        Notification::make()
-        ->title('تم ارسال طلب السحب الى الإدارة بنجاح')
-        ->success()
-        ->send();
-
+		TransactionService::withdraw(auth()->user()->currentOffice, 10000, [
+			'preffered_payment_method' => 1
+		]);
 	}
 }

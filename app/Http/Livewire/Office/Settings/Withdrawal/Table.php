@@ -9,12 +9,17 @@ use Livewire\Component;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables;
 use Filament\Forms;
+use Illuminate\Database\Eloquent\Model;
 
 class Table extends Component implements HasTable
 {
 
     use InteractsWithTable;
 
+    public function getTableRecordTitle(Model $record): string {
+        return $record->name;
+    }
+    
     protected function getTableQuery(): Builder
     {
         return WithdrawalMethod::query()->available();
@@ -34,12 +39,46 @@ class Table extends Component implements HasTable
     protected function getTableActions(): array
     {
         return [
-            Tables\Actions\Action::make('add')
+            Tables\Actions\EditAction::make('add')
                 ->action(function ($record, $data) {
+                    // TODO: check if office have the ability to add a particular method
+                    
+                    $withdrawals = auth()->user()->currentOffice->withdrawal_methods ?? [];
                     $office = auth()->user()->currentOffice;
-                    $office->withdrawal_methods = json_encode($data);
+
+                    if(!empty($withdrawals) && is_array($withdrawals)) {
+                        $index = array_search($data['method_id'], array_column($withdrawals, 'method_id'));
+                        if($index === false) {
+                            $withdrawals[] = $data;
+                        }else{
+                            $withdrawals[$index] = $data;
+                        }
+
+                    }else{
+                        $withdrawals[] = $data;
+                    }
+
+                    $office->withdrawal_methods = $withdrawals;
                     $office->save();
                 })
+                ->mountUsing(function (Forms\ComponentContainer $form, $record) {
+
+                    $withdrawals = auth()->user()->currentOffice->withdrawal_methods ?? [];
+                    $data = [
+                        "method_id" => $record->id
+                    ];
+
+                    if(!empty($withdrawals) && is_array($withdrawals)) {
+                        $currentMethodIndex = array_search($record->id, array_column($withdrawals, 'method_id'));
+                        if($currentMethodIndex !== false) {
+                            $currentMethod = $withdrawals[$currentMethodIndex];
+                            $data = $currentMethod;    
+                        }
+                    }
+
+                    $form->fill($data);
+
+				})
                 ->form(function ($record) {
 
                     $schema = [Forms\Components\Hidden::make('method_id')];

@@ -24,11 +24,6 @@ class DigitalOffice extends Model
 	public const PENDING = 'PENDING';
 	public const PENDING_PAYMENT = 'PENDING_PAYMENT';
 
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array<int, string>
-	 */
 	protected $fillable = [
 		"user_id", // TODO: remove this
 		"name",
@@ -46,6 +41,10 @@ class DigitalOffice extends Model
 		"location",
 		"status",
 		"withdrawal_methods"
+	];
+
+	protected $casts = [
+		"withdrawal_methods" => "array"
 	];
 
 	/**

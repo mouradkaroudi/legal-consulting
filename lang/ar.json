@@ -10,6 +10,8 @@
     ":officeName has invited you to join them": ":officeName قام بدعوتك للإنظمام له",
     "The total amount doesn't cover the payment gateway fees": "لا يغطي المبلغ الإجمالي رسوم بوابة الدفع",
     "Insufficient account balance. Please try another payment method": "رصيد حساب غير كاف. يرجى تجربة طريقة دفع أخرى",
+    "Insufficient account credit": "رصيد الحساب غير كافي",
+
     "Let's Connect": "تواصل معه",
     "Back to account": "رجوع للحساب",
     "Unlock exclusive benefits with a subscription": "افتح المزايا الحصرية بالاشتراك",

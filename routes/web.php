@@ -25,8 +25,6 @@ use App\Http\Controllers\Office\SchedulesController;
 use App\Http\Controllers\Office\SetupOfficeController;
 use App\Http\Controllers\Office\SubscriptionController;
 
-use App\Http\Controllers\Payment\BalanceController as PaymentBalanceController;
-use App\Http\Controllers\Payment\BankTransferController;
 use App\Http\Controllers\Payment\PayPalController;
 
 use App\Http\Middleware\RedirectIfAuthenticated;

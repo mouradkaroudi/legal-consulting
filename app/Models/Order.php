@@ -66,7 +66,7 @@ class Order extends Model
    */
   public function getTaxAmountAttribute()
   {
-    $tax = setting('tax');
+    $tax = setting('tax') ?? 0;
 
     if (empty($tax)) {
       return 0;
@@ -81,12 +81,12 @@ class Order extends Model
   public function getTotalAmountAttribute()
   {
     $tax = setting('tax') ?? 0;
-
+    dd($tax);
     if (empty($tax)) {
       return $this->amount;
     }
 
-    return $this->amount;
+    return $this->amount + ($this->amount * ($tax / 100));
   }
 
   public function getFormattedAmountAttribute()

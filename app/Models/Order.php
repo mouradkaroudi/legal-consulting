@@ -85,7 +85,7 @@ class Order extends Model
     if (empty($tax)) {
       return $this->amount;
     }
-    dd($this->amount);
+    dd($this->amount * ($tax / 100));
     return $this->amount + ($this->amount * ($tax / 100));
   }
 

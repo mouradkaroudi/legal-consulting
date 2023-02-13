@@ -91,6 +91,6 @@ class Order extends Model
 
   public function getFormattedAmountAttribute()
   {
-    return $this->amount . ' SAR';
+    return (string) $this->amount . ' SAR';
   }
 }

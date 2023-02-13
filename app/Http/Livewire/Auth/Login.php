@@ -30,6 +30,12 @@ class Login extends Component implements HasForms
 
         $user = User::where('email', $data['email'])->first();
 
+        if(empty($user)) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+        
         if($user->email && $user->isBanned()) {
             throw ValidationException::withMessages([
                 'email' => __('auth.banned'),

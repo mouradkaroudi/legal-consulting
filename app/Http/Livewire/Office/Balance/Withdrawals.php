@@ -76,8 +76,14 @@ class Withdrawals extends Component implements HasForms
 
 	public function submit()
 	{
-		TransactionService::withdraw(auth()->user()->currentOffice, 10000, [
-			'preffered_payment_method' => 1
-		]);
+
+		try {
+			TransactionService::withdraw(auth()->user()->currentOffice, $this->amount, [
+				'preffered_payment_method' => $this->method
+			]);
+		} catch (\Throwable $th) {
+			$this->addError('amount', $th->getMessage());
+		}
+
 	}
 }

@@ -1,30 +1,31 @@
 <div>
-   <div>
-      <h2 class="text-xl font-bold mb-2">{{ __('Subscription plan') }}</h2>
-   </div>
-   <div class="mb-6">
-      {{ $this->plansForm }}
-   </div>
+
+
+   {{ $this->paymentAccountOptionsForm }}
 
    <div>
-      <h2 class="text-xl font-bold mb-2">{{ __('Payment') }}</h2>
+      <div class="mb-4">
+         <ul class="space-y-2">
+            <li class="flex justify-between">
+               <span class="font-semibold">{{ __('Amount') }}</span>
+               <span class="text-gray-700">
+                  <x-money amount="0" currency="sar" convert="true" />
+               </span>
+            </li>
+            <li class="flex justify-between text-sm text-gray-700">
+               <span>{{ __('Tax') }} ({{ setting('tax') }}%)</span><span>
+                  <x-money amount="0" currency="sar" convert="true" />
+               </span>
+            </li>
+         </ul>
+         <div class="flex justify-between">
+            <span class="font-semibold">{{ __('Total') }}</span>
+            <span class="font-semibold text-green-700">
+               <x-money amount="0" currency="sar" convert="true" />
+            </span>
+         </div>
+      </div>
    </div>
-
-   <form wire:submit.prevent="submit">
-
-      {{ $this->paymentAccountOptionsForm }}
-      <x-filament::button class="w-full mt-4" :type="'submit'" size='lg'>
-         {{ __('Subscribe now') }}
-      </x-filament::button>
-
-   </form>
-
-   <div class="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
-      <p class="text-center font-semibold mx-4 mb-0">
-         {{ __('Or') }}
-      </p>
-   </div>
-
-   <livewire:payment.form :wire:key="'payment-subscribe-' . $plan_id" :plan_id="$plan_id" />
 
 </div>
+<!-- Add new component to handle pricing calculation(payment-summary)  -->

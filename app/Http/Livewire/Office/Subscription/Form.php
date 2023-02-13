@@ -5,7 +5,9 @@ namespace App\Http\Livewire\Office\Subscription;
 use App\Models\ProfessionSubscriptionPlan;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\View;
 use Livewire\Component;
 use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 
@@ -18,6 +20,7 @@ class Form extends Component implements HasForms
     public $paymentMethod;
     public $plan_id;
     public $agree;
+    public $credit;
 
     public function mount()
     {
@@ -53,37 +56,73 @@ class Form extends Component implements HasForms
                 ->descriptions(function () use ($plans) {
                     return $plans->pluck('name', 'id');
                 })
-                ->columns(4)
+                ->columns(2)
                 ->required()
         ];
     }
 
-    protected function getPaymentAccountOptionsFormSchema(): array {
+    protected function getPaymentAccountOptionsFormSchema(): array
+    {
         return [
-            RadioButton::make("paymentMethod")
-                ->label('')
-                ->options([
-                    "accountBalance" => __('Account balance'),
-                    "officeBalance" => __('Office balance')
+            Section::make(__('Bank transfer'))
+            ->schema([
+                View::make('livewire.payment.bank-transfer-form')->schema([
+                    TextInput::make('test')
                 ])
-                ->descriptions([
-                    "accountBalance" => __('The payment will be taken from your account credit'),
-                    "officeBalance" => __('The payment will be taken from your the office credit')
+            ])
+            ->collapsible()
+            ,
+            Section::make(__('Pay from balance'))
+                ->schema([
+                    RadioButton::make("credit")
+                        ->label('')
+                        ->options([
+                            "account" => __('Account balance'),
+                            "office" => __('Office balance')
+                        ])
+                        ->descriptions([
+                            "account" => __('The payment will be taken from your account credit'),
+                            "office" => __('The payment will be taken from your the office credit')
+                        ])
+                        ->columns(1)
+                        ->required(),
+                ])->collapsible()
+        ];
+    }
+
+    protected function getPaymentFormSchema(): array
+    {
+        return [
+
+            Section::make(__('Make a deposit'))
+                ->schema([
+                    RadioButton::make("paymentMethod")
+                        ->label(__('Choose a payment method'))
+                        ->options([
+                            "paypal" => __('PayPal'),
+                            "bank-transfer" => __('Bank transfer'),
+                        ])
+                        ->descriptions([
+                            'paypal' => __("You'll be redirected to PayPal website to complete your purchase securely")
+                        ])
                 ])
-                ->columns(2)
-                ->required(),
+                ->collapsible()
+                ->collapsed()
         ];
     }
 
     protected function getForms(): array
-	{
-		return [
-			"plansForm" => $this->makeForm()->schema($this->getPlansFormSchema()),
-			"paymentAccountOptionsForm" => $this->makeForm()->schema(
-				$this->getPaymentAccountOptionsFormSchema()
-			),
-		];
-	}
+    {
+        return [
+            "plansForm" => $this->makeForm()->schema($this->getPlansFormSchema()),
+            "paymentAccountOptionsForm" => $this->makeForm()->schema(
+                $this->getPaymentAccountOptionsFormSchema()
+            ),
+            'paymentForm' => $this->makeForm()->schema(
+                $this->getPaymentFormSchema()
+            )
+        ];
+    }
 
     public function render()
     {

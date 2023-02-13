@@ -86,7 +86,7 @@ class Order extends Model
       return $this->amount;
     }
 
-    return $this->amount + ($this->amount * ($tax / 100));
+    return $this->amount;
   }
 
   public function getFormattedAmountAttribute()

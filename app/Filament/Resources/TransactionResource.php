@@ -37,7 +37,7 @@ class TransactionResource extends Resource
 
 	public static function table(Table $table): Table
 	{
-
+		// TODO: Add print button
 		return $table
 			->columns([
 				\Filament\Tables\Columns\TextColumn::make("from")

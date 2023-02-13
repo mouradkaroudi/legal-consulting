@@ -29,7 +29,7 @@ class Table extends Component implements Tables\Contracts\HasTable
 						return __(
 							"transactions.details." . $record->source,
 							[
-								"order_id" => $record->metadata['order_id'],
+								"order_id" => is_array($record->metadata) ? $record->metadata['order_id'] : '',
 							]
 						);
 					}

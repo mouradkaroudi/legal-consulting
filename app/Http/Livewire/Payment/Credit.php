@@ -16,7 +16,7 @@ class Credit extends Component implements HasForms
     public $entity;
     public $entityId = '';
 
-    //TODO: credit payment should be remove and placed with subscription
+    //TODO: credit payment should be removed and placed with subscription
 
     protected function getFormSchema(): array
     {

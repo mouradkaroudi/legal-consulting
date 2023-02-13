@@ -52,8 +52,7 @@ class Withdrawals extends Component implements HasForms
 			->label(__('Withdrawal methods'))
 			->options($options)
 			->descriptions($descriptions)
-			->required()
-			;
+			->required();
 
 		if (empty($withdrawalMethodsForm)) {
 			return [
@@ -77,13 +76,21 @@ class Withdrawals extends Component implements HasForms
 	public function submit()
 	{
 
+		$this->resetErrorBag();
+
 		try {
 			TransactionService::withdraw(auth()->user()->currentOffice, $this->amount, [
 				'preffered_payment_method' => $this->method
 			]);
+
+			Notification::make()
+				->title(__('The order was created successfully')) // FIXME: change message
+				->success()
+				->send();
+
+			redirect()->route("office.credit.index");
 		} catch (\Throwable $th) {
 			$this->addError('amount', $th->getMessage());
 		}
-
 	}
 }

@@ -58,6 +58,7 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
 
     protected function getFormSchema(): array
     {
+        // TODO: add ID image, number(*); phone number, walk license image , drive license image
         return [
             Grid::make(2)->schema([
                 Forms\Components\TextInput::make('name')

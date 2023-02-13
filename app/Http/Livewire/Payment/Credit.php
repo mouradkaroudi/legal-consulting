@@ -40,7 +40,7 @@ class Credit extends Component implements HasForms
         $url = '';
 
         if($this->entity == 'subscription') {
-            $url = route('office.subscription.subscribe', ['profession_subscription_plan' => $this->entityId, 'account' => $this->account]);
+            $url = route('office.subscription.subscribe', ['profession_subscription_plan' => $this->entityId, 'from' => $this->account]);
         }
 
         if($this->entity == 'order') {

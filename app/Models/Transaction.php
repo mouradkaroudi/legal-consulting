@@ -92,7 +92,7 @@ class Transaction extends Model
     {
 
         if ($this->source == self::PAY_DUES || $this->source == self::RECEIVE_EARNINGS) {
-            return __("transactions.details." . $this->source, ["order_id" => $this->metadata['order_id']]);
+            return __("transactions.details." . $this->source, ["order_id" => is_array($this->metadata) ? $this->metadata['order_id']: '']);
         }
 
         return __("transactions.details." . $this->source, [

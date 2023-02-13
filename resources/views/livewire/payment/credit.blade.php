@@ -1,4 +1,4 @@
-<form>
+<form wire:submit.prevent="submit">
     {{ $this->form }}
     <x-filament::button class="w-full mt-4" :type="'submit'" size='lg'>
         {{ __('Complete the payment') }}

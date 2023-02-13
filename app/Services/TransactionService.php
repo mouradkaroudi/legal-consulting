@@ -16,7 +16,7 @@ class TransactionService
 	}
 
 	/**
-	 * 
+	 * FIXME: move this to Subscription service
 	 */
 	public static function subscribe(Model $payer, $amount, $status, $metadata = [])
 	{
@@ -83,7 +83,7 @@ class TransactionService
 	 */
 	public static function deposit(Model $holder, $amount, $status, $metadata = []): void
 	{
-
+		// FIXME: add tax
 		$data = [
 			"amount" => $amount,
 			"type" => "debit",

@@ -53,8 +53,8 @@ $currentUrl = request()->fullUrl();
                     <div class="bg-red-100 border font-semibold text-red-900 border-red-700 rounded-lg p-4 mb-6">
                         {{ $message }}
                     </div>
-                    <livewire:office.settings.subscription :digitalOffice="$digitalOffice" />
                     @enderror
+                    <livewire:office.settings.subscription :digitalOffice="$digitalOffice" />
                 @endif
             </div>
         </div>

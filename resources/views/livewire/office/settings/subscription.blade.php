@@ -20,7 +20,7 @@
         @else
         <p>
             {{ __('You have no subscriptions') }}. 
-            <x-filament::link :href="@route('office.subscription.index')">
+            <x-filament::link :href="@route('office.subscription.select')">
                 {{ __('Subscribe now') }}
             </x-filament::link>
         </p>
@@ -33,7 +33,7 @@
                 {{ __('subscriptions.alerts.expiration', ['days_num' => $expirationDuration]) }}
             </p>
             <div>
-                <x-filament::button tag="a" href="{{ route('office.subscription.index') }}">
+                <x-filament::button tag="a" href="{{ route('office.subscription.select') }}">
                     {{ __('Renew') }}
                 </x-filament::button>
             </div>

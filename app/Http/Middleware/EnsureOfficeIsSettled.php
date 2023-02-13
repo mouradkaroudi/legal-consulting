@@ -49,7 +49,7 @@ class EnsureOfficeIsSettled extends Middleware
                 $currentOffice->isSubscribed() === false
             )
         ) {
-            return redirect()->route('office.subscription.index');
+            return redirect()->route('office.subscription.select');
         }
 
         if ($currentOffice->status === DigitalOffice::PENDING) {

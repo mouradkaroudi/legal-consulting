@@ -37,7 +37,30 @@
 
             </div>
             <div>
-                <livewire:payment.form />
+
+                @error('message')
+                <div class="bg-red-100 border font-semibold text-red-900 border-red-700 rounded-lg p-4 mb-6">
+                    {{ $message }}
+                </div>
+                @enderror
+
+                <div class="border bg-blue-100 border-blue-500 rounded-lg p-4 mb-6">
+                    <div class="flex justify-between">
+                        <div>
+                            <h4 class="text-xl mb-2 font-bold">{{ $plan->name }}</h4>
+                            <p class="text-sm text-gray-700">{{ $plan->description }}</p>
+                        </div>
+                        <div>
+                            <span class="text-xl font-bold">{{ $plan->fee_label }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <livewire:payment.form 
+                    :amount="$plan->amount"
+                    entity="subscription"
+                    :entityId="$plan->id"
+                />
             </div>
 
         </div>

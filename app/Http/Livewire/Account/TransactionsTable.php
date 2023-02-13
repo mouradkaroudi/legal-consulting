@@ -22,6 +22,7 @@ class TransactionsTable extends Component implements Tables\Contracts\HasTable
 			Tables\Actions\Action::make('print')
 			->label(__('Print'))
 			->url(fn($record) => route('account.credit.receipt', ['txn' => $record->id]))
+			->openUrlInNewTab()
 			->visible(fn($record) => in_array($record->source, [Transaction::DEPOSIT, Transaction::WITHDRAWALS]))
 		];
 	}

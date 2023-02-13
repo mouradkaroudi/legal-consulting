@@ -20,7 +20,7 @@ class PayPalController extends Controller
 
         // TODO: consider to add authorization
 
-        $entities = ['plan', 'order'];
+        $entities = ['subscription', 'order'];
 
         $entity = $request->input('entity');
 
@@ -31,7 +31,7 @@ class PayPalController extends Controller
         $cancel_url = $request->input('cancel_url');
         $id = $request->input('id');
 
-        if ($entity === 'plan') {
+        if ($entity === 'subscription') {
             $plan = ProfessionSubscriptionPlan::find($id);
             $amount = $plan->total_amount;
             $tax = $plan->tax_amount;
@@ -101,7 +101,7 @@ class PayPalController extends Controller
                 return redirect()->route('account.orders.pay', ['order' => $id]);
             }
 
-            if($entity === 'plan') {
+            if($entity === 'subscription') {
                 return redirect()->route('office.subscription.subscribe', ['profession_subscription_plan' => $id]);
             }
             

@@ -93,8 +93,9 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
     Route::name('logout')->get('/logout', [CurrentOfficeController::class, 'logout']);
 
     Route::name('subscription.')->prefix('/subscription')->group(function () {
-        Route::get('/', [SubscriptionController::class, 'index'])->name('index');
-        Route::get('/subscribe/{profession_subscription_plan}', [SubscriptionController::class, 'subscribe'])->name('subscribe'); // FIXME: post request
+        Route::get('/{profession_subscription_plan}', [SubscriptionController::class, 'index'])->name('index');
+        Route::get('/{profession_subscription_plan}/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe'); // FIXME: post request
+        Route::get('/', [SubscriptionController::class, 'select'])->name('select');
     });
 
     Route::middleware(['office.settled'])->group(function () {

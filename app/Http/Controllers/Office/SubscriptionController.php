@@ -19,10 +19,28 @@ class SubscriptionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, ProfessionSubscriptionPlan $professionSubscriptionPlan)
     {
-        return view('pages.office.subscription.index');
+        return view('pages.office.subscription.index', [
+            'plan' => $professionSubscriptionPlan
+        ]);
     }
+
+    /**
+     * Handle the incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function select(Request $request)
+    {
+        $plans = ProfessionSubscriptionPlan::where('profession_id', $request->user()->currentOffice->profession_id)->get();
+
+        return view('pages.office.subscription.select', [
+            'plans' => $plans ?? []
+        ]);
+    }
+
 
     /**
      * Handle subscribe to a profession plan request.
@@ -42,15 +60,16 @@ class SubscriptionController extends Controller
 
         $professionSubscriptionPlan = ProfessionSubscriptionPlan::find($planId);
 
+        // FIXME: move this to Transaction service
         if ($professionSubscriptionPlan->amount > $payer->available_balance) {
-            return redirect()->route('office.subscription.index')->withErrors([
+            return redirect()->route('office.subscription.index', ['profession_subscription_plan' => $professionSubscriptionPlan->id])->withErrors([
                 'message' => __("Insufficient account balance. Please try another payment method")
             ]);
         }
 
         TransactionService::subscribe(
-            $payer, 
-            $professionSubscriptionPlan->amount, 
+            $payer,
+            $professionSubscriptionPlan->amount,
             Transaction::SUCCESS,
             ['subscription_plan' => $professionSubscriptionPlan->id]
         );
@@ -61,22 +80,18 @@ class SubscriptionController extends Controller
         );
 
         $office = $request->user()->currentOffice;
-
-        if ($office->status == DigitalOffice::AVAILABLE || $office->status == DigitalOffice::BUSY) {
-            return redirect()->route('office.subscription.index')->with('success',
-                __("Congratulation! You have been subscribed")
-            );
-            return redirect()->route('office.subscription.success');
-        }
-
+        $office->status = DigitalOffice::AVAILABLE;
         if (setting('digital_office_direct_registration') == 1) {
-            $office->status = DigitalOffice::AVAILABLE;
+            
         } else {
-            $office->status = DigitalOffice::PENDING;
+            //$office->status = DigitalOffice::PENDING;
         }
 
         $office->save();
 
+        return redirect()->route('office.settings',['tab' => 'subscription'])->with(
+            'success',
+            __("Congratulation! You have been subscribed")
+        );
     }
-
 }

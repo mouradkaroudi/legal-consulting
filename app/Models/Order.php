@@ -80,12 +80,11 @@ class Order extends Model
    */
   public function getTotalAmountAttribute()
   {
-    $tax = setting('tax') ?? 0;
+    $tax = (float) setting('tax');
 
     if (empty($tax)) {
       return $this->amount;
     }
-    dd($this->amount * ($tax / 100));
     return $this->amount + ($this->amount * ($tax / 100));
   }
 

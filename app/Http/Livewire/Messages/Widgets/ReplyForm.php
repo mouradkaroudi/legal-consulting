@@ -51,10 +51,9 @@ class ReplyForm extends Component implements HasForms
     }
 
     public function submit() {
-        $data = $this->form->getState();
 
         $thread = Thread::find($this->threadId);
-        $body = $data['message'];
+        $body = $this->message;
 
         // Message
         Message::create([

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Account;
 
+use App\Models\Country;
 use App\Models\User;
 use Livewire\Component;
 use Filament\Forms;
@@ -21,7 +22,10 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
             'email' => $user->email,
             'avatar_url' => $user->avatar_url,
             'preferred_lang' => $user->preferred_lang,
-            'address' => $user->address
+            'address' => $user->address,
+            'ID_number' => $user->ID_number,
+            'ID_image' => $user->ID_image,
+            'driving_license_image' => $user->driving_license_image,
         ]);
     }
 
@@ -32,12 +36,20 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
         $avatar_url = $data['avatar_url'];
         $preferred_lang = $data['preferred_lang'];
         $address = $data['address'];
+        $ID_number = $data['ID_number'];
+        $ID_image = $data['ID_image'];
+        $driving_license_image = $data['driving_license_image'];
+        $country_id = $data['country_id'];
 
         $this->user->email = $email;
         $this->user->name = $name;
         $this->user->avatar_url = $avatar_url;
         $this->user->preferred_lang = $preferred_lang;
         $this->user->address = $address;
+        $this->user->ID_number = $ID_number;
+        $this->user->ID_image = $ID_image;
+        $this->user->driving_license_image = $driving_license_image;
+        $this->user->country_id = $country_id;
 
         $this->user->save();
         redirect()->route("account.settings");
@@ -50,6 +62,7 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
             'name' => 'required|string|min:6',
             'address' => 'required|string|min:6',
             'email' => ['sometimes', Rule::unique('users')->ignore($this->user->id)],
+            "country_id" => "nullable|int|exists:App\Models\Country,id",
         ]);
 
         $data = $this->form->getState();
@@ -58,7 +71,8 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
 
     protected function getFormSchema(): array
     {
-        // TODO: add ID image, number(*); phone number, walk license image , drive license image
+        $citizenships = Country::all()->pluck("citizenship", "id");
+
         return [
             Grid::make(2)->schema([
                 Forms\Components\TextInput::make('name')
@@ -80,9 +94,18 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
                         'en' => 'English'
                     ]),
             ]),
-            Forms\Components\TextInput::make('address')
-            ->label(__('validation.attributes.address'))
+            Forms\Components\TextInput::make('ID_number')
+            ->label(__('validation.attributes.ID'))
             ->required(),
+            Forms\Components\FileUpload::make('ID_image')
+            ->label(__('validation.attributes.ID_image'))
+            ->required(),
+            Forms\Components\FileUpload::make('driving_license_image')
+            ->label(__('Driving license image'))
+            ->required(),
+            Forms\Components\Select::make("country_id")
+            ->label(__('validation.attributes.nationality'))
+            ->options($citizenships)
         ];
     }
 

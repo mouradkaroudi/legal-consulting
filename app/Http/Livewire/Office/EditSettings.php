@@ -82,8 +82,7 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 				->label(__('Licenses'))
 				->schema([
 					Forms\Components\TextInput::make("commercial_registration_number")
-						->label(__('Commercial registre number'))
-						->required(),
+						->label(__('Commercial registre number')),
 					Forms\Components\TextInput::make("professional_license_number")
 						->label(__('Professional license number')),
 					Forms\Components\TextInput::make("municipal_license_number")

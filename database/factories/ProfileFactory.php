@@ -18,10 +18,8 @@ class ProfileFactory extends Factory
     public function definition()
     {
         return [
-            'national_ID' => fake()->nationalIdNumber(),
             'gender' => 'male',
             'status' => Profile::AVAILABLE,
-            'original_country' => '0'
         ];
     }
 }

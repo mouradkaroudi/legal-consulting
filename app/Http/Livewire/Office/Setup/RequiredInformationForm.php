@@ -50,7 +50,6 @@ class RequiredInformationForm extends Component implements HasForms
             'name' => $data['name'],
             'service_id' => $data['service_id'],
             'profession_id' => $data['profession_id'],
-            'commercial_registration_number' => $data['commercial_registration_number'],
             'country_code' => $data['country_code'],
             'city' => $data['city'],
             'status' => $status
@@ -104,10 +103,6 @@ class RequiredInformationForm extends Component implements HasForms
                                 $service = Service::find($serviceId);
                                 return $service->professions()->available()->with('translation')->get()->pluck("translation.name", "id");
                             })
-                            ->required(),
-                        Forms\Components\TextInput::make("commercial_registration_number")
-                            ->label(__('Commercial registre number'))
-                            ->unique(table: DigitalOffice::class, column: 'commercial_registration_number')
                             ->required(),
                         Forms\Components\Grid::make(2)->schema([
                             Forms\Components\Select::make("country_code")

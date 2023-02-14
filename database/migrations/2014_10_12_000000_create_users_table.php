@@ -20,7 +20,11 @@ return new class extends Migration
             $table->string('phone_number')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->foreignId('country_id')->nullable();
             $table->string('avatar_url')->nullable();
+            $table->string('ID_number')->nullable();
+            $table->string('ID_image')->nullable();
+            $table->string('driving_license_image')->nullable();
             $table->float('hold_balance')->default(0);
             $table->float('available_balance')->default(0);
             $table->foreignId('current_office_id')->nullable();

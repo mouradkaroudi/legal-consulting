@@ -19,12 +19,12 @@ class Profile extends Model
 	 * @var array<int, string>
 	 */
 	protected $fillable = [
-		"national_ID",
-		"original_country",
 		"gender",
-		"national_id_attachment",
 		"experiences",
 		"education",
+		"car_license_image",
+		"professional_license_number",
+		"professional_license_image",
 		"status"
 	];
 

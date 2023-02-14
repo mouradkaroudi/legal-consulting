@@ -15,7 +15,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
 	use HasApiTokens, HasFactory, Notifiable;
 
-	protected $fillable = ["name", "email", "password", "withdrawal_methods", "preferred_lang", "address"];
+	protected $fillable = ["name", "email", "password", "withdrawal_methods", "preferred_lang", "address", "ID_number", "ID_image", "driving_license_image", "country_id"];
 
 	protected $hidden = ["password", "remember_token"];
 
@@ -104,7 +104,7 @@ class User extends Authenticatable implements MustVerifyEmail
 			"user_id",
 			"office_id"
 		)
-		->wherePivot('digital_office_employees.ended_at', null);
+			->wherePivot('digital_office_employees.ended_at', null);
 	}
 
 	public function officeEmployee($office)
@@ -286,7 +286,8 @@ class User extends Authenticatable implements MustVerifyEmail
 		$this->save();
 	}
 
-	public function isBanned() {
+	public function isBanned()
+	{
 		return $this->banned_at != null;
 	}
 }

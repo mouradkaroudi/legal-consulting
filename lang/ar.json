@@ -63,7 +63,8 @@
     "Select specializations": "اختر التخصصات",
     "Licenses": "تراخيص",
     "Commercial registre number": "رقم السجل التجاري",
-    "Professional license number": "رقم الترخيص المهني",
+    "Professional license number": "رقم الرخصة المهنية",
+    "Professional license image": "صورة الرخصة المهنية",
     "Municipal license number": "رقم السجل البلدي",
     "Tax establishment number": "رقم المنشأة الضريبي",
     "Commercial register": "السجل التجاري",
@@ -204,6 +205,7 @@
     "Subtotal": "مبلغ إجمالي",
     "Content Management": "إدارة المحتوى",
     "Financial Management": "ادارة المالية",
-    "Appearance": "المظهر"
-
+    "Appearance": "المظهر",
+    "Driving license image": "صورة رخصة القيادة",
+    "Vehicle License": "رخصة السير"
 }

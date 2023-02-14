@@ -46,9 +46,6 @@ class ProfileResource extends Resource
 				\Filament\Tables\Columns\TextColumn::make("user.name")->label(
 					"اسم المستخدم"
 				),
-				\Filament\Tables\Columns\TextColumn::make("national_ID")->label(
-					"الهوية الوطنية"
-				),
 				\Filament\Tables\Columns\BadgeColumn::make("status")
 					->enum([
 						Profile::AVAILABLE => __("profile.available"),

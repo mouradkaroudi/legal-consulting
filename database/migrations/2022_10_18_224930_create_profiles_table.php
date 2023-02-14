@@ -17,12 +17,12 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('national_ID')->nullable();
-            $table->string('national_id_attachment')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
-            $table->foreignId('original_country')->nullable();
             $table->json('experiences')->nullable();
             $table->json('education')->nullable();
+            $table->string('car_license_image')->nullable();
+            $table->string('professional_license_number')->nullable();
+            $table->string('professional_license_image')->nullable();
             $table->string('status')->default(Profile::UNCOMPLETED); // available, busy, uncompleted
             $table->timestamps();
         });

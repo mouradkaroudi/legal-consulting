@@ -24,12 +24,9 @@ class Profile extends Component implements HasForms
 
 	protected function getFormSchema(): array
 	{
-		$citizenships = Country::all()->pluck("citizenship", "id");
-		// TODO: add add professional license
+		
 		$formScheme = [
-			Components\TextInput::make("national_ID")
-				->label(__('validation.attributes.ID'))
-				->required(),
+
 			Components\Select::make("gender")
 				->label(__('validation.attributes.sex'))
 				->options([
@@ -37,12 +34,13 @@ class Profile extends Component implements HasForms
 					"female" => __('Female'),
 				])
 				->required(),
-			Components\Select::make("original_country")
-				->label(__('validation.attributes.nationality'))
-				->options($citizenships),
 
-			Components\FileUpload::make("national_id_attachment")
-				->label(__('validation.attributes.ID_image')),
+			Components\FileUpload::make("car_license_image")
+				->label(__('Vehicle License')),
+			Components\TextInput::make("professional_license_number")
+				->label(__('Professional license number')),
+			Components\FileUpload::make("professional_license_image")
+				->label(__('Professional license image')),
 			Components\Repeater::make("experiences")
 				->schema([
 					Components\TextInput::make("title")
@@ -99,9 +97,7 @@ class Profile extends Component implements HasForms
 		$redirect = false;
 
 		$data = $this->validate([
-			"national_ID" => "required|string|min:4",
 			"gender" => ["required", Rule::in(["male", "female"])],
-			"original_country" => "nullable|int|exists:App\Models\Country,id",
 		]);
 
 		if (!$this->profile->isCompleted) {

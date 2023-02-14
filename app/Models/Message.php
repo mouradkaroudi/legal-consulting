@@ -22,7 +22,7 @@ class Message extends Model
      *
      * @var array
      */
-    protected $fillable = ['thread_id', 'user_id', 'body'];
+    protected $fillable = ['thread_id', 'user_id', 'body', 'type'];
 
     /**
      * Thread relationship.

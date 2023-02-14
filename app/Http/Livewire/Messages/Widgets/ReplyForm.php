@@ -13,15 +13,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Filament\Forms\Components;
+use Illuminate\Support\Str;
 
 class ReplyForm extends Component implements HasForms
 {
 
     use InteractsWithForms;
     
-    public $threadId;
+    public $thread;
     public $message;
     public $attachment;
+    public $displayUpload = false;
 
     protected function getReplyFormSchema(): array {
 
@@ -39,7 +41,27 @@ class ReplyForm extends Component implements HasForms
     protected function getUploadFormSchema(): array {
         return [
             Components\FileUpload::make('attachment')
+                ->label(__('Attachment'))
+                ->hint(__('Only documents and images are allowed. Max file size :maxsize Mo', ['maxsize' => 24]))
+                ->directory('attachments')
+                ->acceptedFileTypes([
+                    'image/*', 
+                    'application/pdf', 
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'application/vnd.ms-powerpoint',
+                    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                    'application/vnd.ms-excel',
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'application/zip',
+                    'application/vnd.rar',
+                ])
+                ->maxSize(12000)
         ];
+    }
+
+    public function upload($file) {
+        //dd($file);
     }
 
     protected function getForms(): array
@@ -52,14 +74,25 @@ class ReplyForm extends Component implements HasForms
 
     public function submit() {
 
-        $thread = Thread::find($this->threadId);
         $body = $this->message;
+
+        $data = $this->uploadForm->getState();
+
+        if(!empty($this->attachment)) {
+            Message::create([
+                'thread_id' => $this->thread->id,
+                'user_id' => Auth::id(),
+                'body' => $data['attachment'],
+                'type' => 'attachment'    
+            ]);
+        }
 
         // Message
         Message::create([
-            'thread_id' => $thread->id,
+            'thread_id' => $this->thread->id,
             'user_id' => Auth::id(),
             'body' => $body,
+            'type' => 'text'
         ]);
 
         return redirect(url()->previous());

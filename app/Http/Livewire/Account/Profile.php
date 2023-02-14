@@ -96,9 +96,8 @@ class Profile extends Component implements HasForms
 	{
 		$redirect = false;
 
-		$data = $this->validate([
-			"gender" => ["required", Rule::in(["male", "female"])],
-		]);
+
+		$data = $this->form->getState();
 
 		if (!$this->profile->isCompleted) {
 			$redirect = true;

@@ -26,6 +26,7 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
             'ID_number' => $user->ID_number,
             'ID_image' => $user->ID_image,
             'driving_license_image' => $user->driving_license_image,
+            'country_id' => $user->country_id,
         ]);
     }
 
@@ -57,14 +58,6 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
 
     public function submit()
     {
-
-        $this->validate([
-            'name' => 'required|string|min:6',
-            'address' => 'required|string|min:6',
-            'email' => ['sometimes', Rule::unique('users')->ignore($this->user->id)],
-            "country_id" => "nullable|int|exists:App\Models\Country,id",
-        ]);
-
         $data = $this->form->getState();
         $this->updateProfile($data);
     }
@@ -95,17 +88,21 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
                     ]),
             ]),
             Forms\Components\TextInput::make('ID_number')
-            ->label(__('validation.attributes.ID'))
-            ->required(),
+                ->label(__('validation.attributes.ID'))
+                ->unique()
+                ->required(),
+            Forms\Components\TextInput::make('address')
+                ->label(__('validation.attributes.address'))
+                ->required(),
             Forms\Components\FileUpload::make('ID_image')
-            ->label(__('validation.attributes.ID_image'))
-            ->required(),
+                ->label(__('validation.attributes.ID_image'))
+                ->required(),
             Forms\Components\FileUpload::make('driving_license_image')
-            ->label(__('Driving license image'))
-            ->required(),
+                ->label(__('Driving license image'))
+                ->required(),
             Forms\Components\Select::make("country_id")
-            ->label(__('validation.attributes.nationality'))
-            ->options($citizenships)
+                ->label(__('validation.attributes.nationality'))
+                ->options($citizenships)
         ];
     }
 

@@ -19,12 +19,6 @@
                 <div class="px-4 py-2">{{ $office->owner->name }}</div>
             </div>
             <div class="grid grid-cols-2">
-                <div class="px-4 py-2 font-semibold">{{ __('Phone number') }}</div>
-                <div class="px-4 py-2">
-                    <a href="tel:{{ $office->owner->phone_number }}">{{ $office->owner->phone_number }}</a>
-                </div>
-            </div>
-            <div class="grid grid-cols-2">
                 <div class="px-4 py-2 font-semibold">{{ __('Email address') }}</div>
                 <div class="px-4 py-2">
                     <a class="text-blue-800" href="mailto:{{ $office->owner->email }}">{{ $office->owner->email }}</a>

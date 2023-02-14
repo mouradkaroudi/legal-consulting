@@ -29,6 +29,10 @@ class EnsureOfficeIsSettled extends Middleware
         $user = $request->user();
         $currentOffice = $user->currentOffice;
         
+        if(!$currentOffice) {
+            return redirect()->route('account.overview');
+        }
+
         if($currentOffice->isBanned()) {
             abort(403, 'This office is banned. please contact our support');
         }

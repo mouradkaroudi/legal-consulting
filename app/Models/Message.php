@@ -10,6 +10,9 @@ class Message extends Model
 {
     use HasFactory;
 
+    public const ATTACHMENT = 'attachment';
+    public const TEXT = 'text';
+
     /**
      * The relationships that should be touched on save.
      *

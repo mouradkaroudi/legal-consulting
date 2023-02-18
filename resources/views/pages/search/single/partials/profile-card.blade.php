@@ -24,13 +24,27 @@
     <ul class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
         <li class="flex gap-2 items-center py-3">
             <span>{{ __('Status') }}</span>
-            <span><span class="bg-success-500 py-1 px-2 rounded text-white text-sm">
-                    {{ __(\Illuminate\Support\Str::lower($office->status)) }}
-                </span></span>
+            <span>
+                @if($office->status === 'available')
+                <span class="rounded py-1 px-2 font-semibold text-sm bg-green-500 text-green-100 animate-pulse">
+                    {{ __('Available') }}
+                </span>
+                @endif
+                @if($office->status == 'busy')
+                <span class="rounded py-1 px-2 font-semibold text-sm bg-orange-500 text-orange-100 animate-pulse">
+                    {{ __('Busy') }}
+                </span>
+                @endif
+                @if($office->status == 'closed')
+                <span class="rounded  py-1 px-2 font-semibold text-sm bg-red-500 text-red-100 animate-pulse">
+                    {{ __('Closed') }}
+                </span>
+                @endif
+            </span>
         </li>
         <li class="flex gap-2 items-center py-3">
             <span>{{ __('Member since') }}</span>
-            <span>{{ $office->created_at->format(config('tables.date_format')) }}</span>
+            <span>{{ $office->created_at->translatedFormat(config('tables.date_format')) }}</span>
         </li>
     </ul>
 </div>

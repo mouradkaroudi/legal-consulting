@@ -44,7 +44,7 @@ class ThreadPolicy
      */
     public function create(User $user, DigitalOffice $office)
     {
-        return $user->belongsToOffice($office) == false;
+        return $user->belongsToOffice($office) == false && $office->canAcceptNewMessage();
     }
 
     /**

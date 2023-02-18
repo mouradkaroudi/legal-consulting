@@ -48,6 +48,7 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 					Grid::make(2)->schema([
 						Forms\Components\TextInput::make("name")
 							->label(__('Office name'))
+							->minLength(4)
 							->required(),
 						Forms\Components\TextInput::make("phone_number")->label(
 							__("validation.attributes.phone")
@@ -104,9 +105,11 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 			$fields[] = Forms\Components\Select::make("status")
 				->label(__('Status'))
 				->options([
-					DigitalOffice::BUSY => __('Busy'),
 					DigitalOffice::AVAILABLE => __('Available'),
+					DigitalOffice::BUSY => __('Busy'),
+					DigitalOffice::CLOSED => __('Closed'),
 				])
+				->in([DigitalOffice::BUSY, DigitalOffice::AVAILABLE, DigitalOffice::CLOSED])
 				->columns(1);
 		}
 
@@ -117,14 +120,9 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 	{
 		$this->authorize("update", $this->digitalOffice);
 
-		$validatedData = $this->validate([
-			"name" => "required|string|min:6",
-			"commercial_registration_number" => "required|min:4",
-		]);
-
 		$data = $this->form->getState();
 
-		$data = array_merge($validatedData, [
+		$data = [
 			"image" => $data["image"],
 			"description" => $data["description"],
 			"phone_number" => $data["phone_number"],
@@ -133,20 +131,7 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 			"tax_establishment_number" => $data["tax_establishment_number"],
 			"license_attachment" => $data["license_attachment"],
 			"status" => $data["status"] ?? ""
-		]);
-
-		$redirect = false;
-
-		$currentStatus = $this->digitalOffice->status;
-
-		if ($currentStatus == DigitalOffice::UNCOMPLETED) {
-			$data["status"] = DigitalOffice::AVAILABLE;
-			$redirect = true;
-		} elseif (in_array($data["status"], [DigitalOffice::BUSY, DigitalOffice::AVAILABLE])) {
-			$data["status"] = $data["status"];
-		} else {
-			$data["status"] = $currentStatus;
-		}
+		];
 
 		$this->digitalOffice->update($data);
 
@@ -154,10 +139,6 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 			->title(__('The information has been updated successfully'))
 			->success()
 			->send();
-
-		if ($redirect) {
-			redirect()->route('office.settings', $this->digitalOffice);
-		}
 	}
 
 	public function render()

@@ -11,6 +11,10 @@ class Profile extends BaseProfile
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
+    protected function getTitle(): string {
+        return __('Login credentials');
+    }
+
     protected function getBreadcrumbs(): array
     {
         return [

@@ -15,14 +15,13 @@ class DigitalOffice extends Model
 {
 	use HasFactory, Notifiable;
 
-	public const AVAILABLE = "AVAILABLE";
-	public const BUSY = "BUSY";
+	public const AVAILABLE = "available";
+	public const BUSY = "busy";
+	public const CLOSED = "closed";
+	public const UNCOMPLETED = "uncompleted";
 
-	public const UNCOMPLETED = "UNCOMPLETED";
-	public const BLOCKED = "BLOCKED"; // TODO: consider remove this
-
-	public const PENDING = 'PENDING';
-	public const PENDING_PAYMENT = 'PENDING_PAYMENT';
+	public const PENDING = 'pending';
+	public const PENDING_PAYMENT = 'pending_payment';
 
 	protected $fillable = [
 		"user_id", // TODO: remove this
@@ -131,7 +130,16 @@ class DigitalOffice extends Model
 	 * @return bool
 	 */
 	public function isSetuped(): bool {
-		return in_array($this->status,[self::AVAILABLE, self::BUSY]); 
+		return in_array($this->status,[self::AVAILABLE, self::BUSY, self::CLOSED]); 
+	}
+
+	/**
+	 * Determine if office can accpet new messages
+	 * 
+	 * @return bool
+	 */
+	public function canAcceptNewMessage() {
+		return $this->status == self::AVAILABLE;
 	}
 
 	/**
@@ -179,7 +187,7 @@ class DigitalOffice extends Model
 	 *  
 	 */
 	public function scopeSetuped( Builder $query ) {
-		return $query->whereIn('status', [self::AVAILABLE, self::BUSY])->where('banned_at', null);
+		return $query->whereIn('status', [self::AVAILABLE, self::BUSY, self::CLOSED])->where('banned_at', null);
 	}
 
 	/**

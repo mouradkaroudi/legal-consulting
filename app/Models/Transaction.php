@@ -100,6 +100,26 @@ class Transaction extends Model
         ]);
     }
 
+    /**
+     * Get payment method
+     */
+    public function getPaymentMethodAttribute() {
+
+        if(!empty($this->metadata) && isset($this->metadata['payment_method'])) {
+            return __('transactions.' . $this->metadata['payment_method']);
+        }
+
+        return '-';
+
+    }
+
+    /**
+     * 
+     */
+    public function getPaymentTypeAttribute() {
+        return __('transactions.' . $this->type);
+    }
+
     public function getFormattedAmountAttribute()
     {
         return $this->amount . ' SAR';

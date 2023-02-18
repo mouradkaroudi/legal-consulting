@@ -25,6 +25,14 @@ class User extends Authenticatable implements MustVerifyEmail
 	];
 
 	/**
+	 * User country
+	 */
+	public function country()
+	{
+		return $this->hasOne(Country::class, "id", "country_id");
+	}
+
+	/**
 	 * Determine if the given office is the current office.
 	 *
 	 * @param  mixed  $digitalOffice

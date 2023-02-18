@@ -19,6 +19,17 @@ function setting($name)
 /**
  * 
  */
+function site_name() {
+    
+    $name = setting('general_settings_site_name_' . app()->getLocale());
+
+    return $name ? $name : config('app.name');
+
+}
+
+/**
+ * 
+ */
 function buildMenuUrl(&$menuItems)
 {
     foreach ($menuItems as &$menuItem) {

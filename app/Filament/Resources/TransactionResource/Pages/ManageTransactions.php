@@ -50,17 +50,19 @@ class ManageTransactions extends ManageRecords
 							->button()
 							->label("موافقة")
 							->action("accept")
+							->visible($record->status === Transaction::PENDING)
 							->color("success"),
 						$action
 							->makeModalAction("refuse")
 							->button()
 							->label("رفض")
+							->visible($record->status === Transaction::PENDING)
 							->action("refuse", ["txn_id" => $record->id])
 							->color("danger"),
 					]
 				)
-				->modalContent(view("filament.resources.transactions.details"))
-				->visible(fn($record) => $record->status === Transaction::PENDING)
+				->modalContent(fn($record) => view("filament.resources.transactions.details", compact('record')))
+				//
 				->form([Forms\Components\Textarea::make("notes")->label("ملاحظات")]),
 		];
 	}
@@ -73,7 +75,7 @@ class ManageTransactions extends ManageRecords
 			->options([
 					Transaction::RECEIVE_EARNINGS => __('transactions.' . Str::lower(Transaction::RECEIVE_EARNINGS)),
 					Transaction::PAY_DUES => __('transactions.' . Str::lower(Transaction::PAY_DUES)),
-					Transaction::RECHARGE => __('transactions.' . Str::lower(Transaction::RECHARGE)),
+					Transaction::DEPOSIT => __('transactions.' . Str::lower(Transaction::DEPOSIT)),
 					Transaction::WITHDRAWALS => __('transactions.' . Str::lower(Transaction::WITHDRAWALS)),
 				])
 				->attribute('source'),

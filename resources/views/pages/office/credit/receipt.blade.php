@@ -14,7 +14,6 @@
     <title>{{ __('Receipt No') }}: {{ $txn->id }}</title>
 
     @vite(['resources/css/app.css'])
-
 </head>
 
 <body>
@@ -24,7 +23,7 @@
                 <div class="bg-white rounded-b-md">
                     <div class="p-9">
                         <div class="space-y-6 text-slate-700">
-                            <livewire:shared.site-logo />
+                            <livewire.shared.site-logo />
                         </div>
                     </div>
                     <div class="p-9">
@@ -39,7 +38,7 @@
                                     <p>{{ $txn->created_at }}</p>
                                 </div>
                             </div>
-                            <hr class="my-6" />
+                            <hr class="my-6"/>
                             <div class="grid grid-cols-2 gap-12">
                                 <div class="text-slate-500">
                                     <p class="text-slate-700">

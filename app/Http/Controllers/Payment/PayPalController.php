@@ -95,7 +95,11 @@ class PayPalController extends Controller
             $actualAmount = $custom_id->actual_amount;
             $user = auth()->user();
 
-            TransactionService::deposit(User::find($user->id), $actualAmount, Transaction::SUCCESS, ['payment_method' => 'paypal']);
+            TransactionService::deposit(User::find($user->id), [
+                'amount' => $actualAmount,
+                'status' => Transaction::SUCCESS, 
+                'metadata' => ['payment_method' => 'paypal']
+            ]);
 
             if($entity === 'order') {
                 return redirect()->route('account.orders.pay', ['order' => $id]);

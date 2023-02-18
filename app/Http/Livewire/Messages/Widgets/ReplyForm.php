@@ -83,7 +83,7 @@ class ReplyForm extends Component implements HasForms
                 'thread_id' => $this->thread->id,
                 'user_id' => Auth::id(),
                 'body' => $data['attachment'],
-                'type' => 'attachment'    
+                'type' => Message::ATTACHMENT    
             ]);
         }
 
@@ -92,7 +92,7 @@ class ReplyForm extends Component implements HasForms
             'thread_id' => $this->thread->id,
             'user_id' => Auth::id(),
             'body' => $body,
-            'type' => 'text'
+            'type' => Message::TEXT
         ]);
 
         return redirect(url()->previous());

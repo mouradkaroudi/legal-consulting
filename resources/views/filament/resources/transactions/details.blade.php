@@ -2,12 +2,12 @@
   <div>
     <dl>
       <div class="bg-gray-50 px-4 py-5 grid grid-cols-3 gap-4">
-        <dt class=" font-medium text-gray-500">نوع التحويل</dt>
-        <dd class="mt-1  text-gray-900 sm:col-span-2 sm:mt-0">Margot Foster</dd>
+        <dt class=" font-medium text-gray-500">نوع المعاملة</dt>
+        <dd class="mt-1  text-gray-900 sm:col-span-2 sm:mt-0">{{ $record->payment_type }}</dd>
       </div>
       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class=" font-medium text-gray-500">المصدر</dt>
-        <dd class="mt-1  text-gray-900 sm:col-span-2 sm:mt-0">Backend Developer</dd>
+        <dt class=" font-medium text-gray-500">المعاملة</dt>
+        <dd class="mt-1  text-gray-900 sm:col-span-2 sm:mt-0">{{ $record->description }}</dd>
       </div>
       <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class=" font-medium text-gray-500">الحالة</dt>
@@ -15,7 +15,21 @@
       </div>
       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class=" font-medium text-gray-500">المبلغ</dt>
-        <dd class="mt-1  text-gray-900 sm:col-span-2 sm:mt-0">$120,000</dd>
+        <dd class="mt-1  text-gray-900 sm:col-span-2 sm:mt-0">
+          @money($record->amount, 'sar', true)
+        </dd>
+      </div>
+      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class=" font-medium text-gray-500">الرسوم</dt>
+        <dd class="mt-1  text-gray-900 sm:col-span-2 sm:mt-0">
+          @money($record->fees, 'sar', true)
+        </dd>
+      </div>
+      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class=" font-medium text-gray-500">وسيلة الدفع</dt>
+        <dd class="mt-1  text-gray-900 sm:col-span-2 sm:mt-0">
+          {{ $record->payment_method }}
+        </dd>
       </div>
       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class=" font-medium text-gray-500">مرفقات</dt>

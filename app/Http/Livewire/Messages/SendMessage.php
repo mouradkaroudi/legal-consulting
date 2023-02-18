@@ -55,6 +55,7 @@ class SendMessage extends Component implements HasForms
         Message::create([
             'thread_id' => $thread->id,
             'user_id' => Auth::id(),
+            'type' => Message::TEXT,
             'body' => $body,
         ]);
 

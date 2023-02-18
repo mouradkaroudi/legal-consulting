@@ -1,10 +1,15 @@
 <?php
 
 return [
+    'credit' => 'ائتمان',
+    'debit' => 'مدين',
+    'methods' => [
+        'paypal' => 'بايبال'
+    ],
     'details' => [
         'deposit' => 'شحن الحساب بمبلغ :amount',
-        'pay_dues' => 'دفع مستحقات الطلب رقم :order_id',
-        'recieve_earnings' => 'الربح من تنفيذ الطلب رقم :order_id',
+        'pay_dues' => 'دفع مستحقات الطلب رقم #:order_id',
+        'recieve_earnings' => 'الربح من تنفيذ الطلب رقم #:order_id',
         'withdrawals' => 'ارسال الأرباح لحسابك البنكي',
         'subscription_fees' => 'دفع مستحقات الإشتراك'
     ],

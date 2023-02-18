@@ -57,39 +57,4 @@ class MessagesController extends Controller
         return view('pages.account.messages.show', compact('thread', 'users', 'viewer'));
     }
 
-    /*  
-    public function update($id)
-    {
-        try {
-            $thread = Thread::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            Session::flash('error_message', 'The thread with ID: ' . $id . ' was not found.');
-
-            return redirect()->route('messages');
-        }
-
-        //$thread->activateAllParticipants();
-
-        // Message
-        Message::create([
-            'thread_id' => $thread->id,
-            'user_id' => Auth::id(),
-            'body' => Request::input('message'),
-        ]);
-
-        // Add replier as a participant
-        $participant = Participant::firstOrCreate([
-            'thread_id' => $thread->id,
-            'user_id' => Auth::id(),
-        ]);
-        // $participant->last_read = new Carbon();
-        $participant->save();
-
-        // Recipients
-        if (Request::has('recipients')) {
-            $thread->addParticipant(Request::input('recipients'));
-        }
-
-        return redirect()->route('messages.show', $id);
-    }*/
 }

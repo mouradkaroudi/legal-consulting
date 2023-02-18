@@ -27,7 +27,7 @@ class TransactionService
 			'type' => 'credit',
 			'source' => Transaction::SUBSCRIPTION_FEES,
 			'status' => $status,
-			'metadata' => json_encode($metadata)
+			'metadata' => $metadata
 		]);
 
 		$payer->substractFromBalance($amount);
@@ -41,7 +41,7 @@ class TransactionService
 	 */
 	public static function pay(Model $payer, Model $payee, $amount, $status, $metadata = [])
 	{
-
+		// FIXME: consider moving fee calculation to where we call this method
 		$professionFees = $payee->profession->fee_percentage;
 		$payeeAmount = $amount;
 		$payeeAmountFees = 0;
@@ -58,7 +58,7 @@ class TransactionService
 			'type' => 'credit',
 			'source' => Transaction::PAY_DUES,
 			'status' => $status,
-			'metadata' => json_encode($metadata)
+			'metadata' => $metadata
 		];
 
 		$payeeData = [
@@ -68,7 +68,7 @@ class TransactionService
 			'type' => 'debit',
 			'source' => Transaction::RECEIVE_EARNINGS,
 			'status' => $status,
-			'metadata' => json_encode($metadata)
+			'metadata' => $metadata
 		];
 
 		$payer->transactions()->create($payerData);
@@ -81,17 +81,22 @@ class TransactionService
 	/**
 	 * Make a deposit
 	 */
-	public static function deposit(Model $holder, $amount, $status, $metadata = []): void
-	{
-		// FIXME: add tax
+	public static function deposit(Model $holder, $args): void
+	{	
+
+		$amount = $args['amount'];
+		$fees = $args['fees'] ?? 0;
+		$status = $args['status'];
+		$metadata = $args['metadata'] ?? [];
+
 		$data = [
 			"amount" => $amount,
 			"type" => "debit",
-			"fees" => 0,
+			"fees" => $fees,
 			"actual_amount" => $amount,
 			"source" => Transaction::DEPOSIT,
 			"status" => $status,
-			"metadata" => json_encode($metadata)
+			"metadata" => $metadata
 		];
 
 		$holder->transactions()->create($data);
@@ -153,7 +158,7 @@ class TransactionService
 			"type" => "credit",
 			"source" => Transaction::WITHDRAWALS,
 			"status" => Transaction::PENDING,
-			"metadata" => json_encode($metadata),
+			"metadata" => $metadata,
 		]);
 
 		$holder->substractFromBalance($amount);

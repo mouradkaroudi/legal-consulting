@@ -114,7 +114,10 @@ class DigitalOffice extends Model
 	 */
 	public function haveSubscriptionPlan(): bool
 	{
-		return !$this->profession->subscriptions->isEmpty();
+		if($this->profession) {
+			return !$this->profession->subscriptions->isEmpty();
+		}
+		return false;
 	}
 
 	/**

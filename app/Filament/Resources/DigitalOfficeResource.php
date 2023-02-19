@@ -85,7 +85,7 @@ class DigitalOfficeResource extends Resource
                     Tables\Actions\Action::make('viewProfile')
                         ->label(__('filament::resources/offices.table.actions.viewProfile.label'))
                         ->url(fn (DigitalOffice $record) => route('search.office', [
-                            'digitalOffice' => $record,
+                            'digitalOffice' => $record->id,
                             'name' => $record->url_name,
                             'service' => $record->service,
                             'profession' => $record->profession,

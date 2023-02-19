@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Vite;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
+
+		if(env('FORCE_HTTPS',false)) { 
+			URL::forceScheme('https');
+		}
 		
 		Filament::serving(function () {
 			Filament::registerViteTheme("resources/css/filament.css");

@@ -102,7 +102,8 @@ class DigitalOffice extends Model
 	/**
 	 * 
 	 */
-	public function subscription() {
+	public function subscription()
+	{
 		return $this->morphOne(Subscription::class, 'subscriber');
 	}
 
@@ -111,7 +112,8 @@ class DigitalOffice extends Model
 	 * 
 	 * @return bool
 	 */
-	public function haveSubscriptionPlan(): bool {
+	public function haveSubscriptionPlan(): bool
+	{
 		return !$this->profession->subscriptions->isEmpty();
 	}
 
@@ -120,7 +122,8 @@ class DigitalOffice extends Model
 	 * 
 	 * @return bool
 	 */
-	public function isSubscribed(): bool {
+	public function isSubscribed(): bool
+	{
 		return $this->subscription && !$this->subscription->where('expire_at', null)->orWhere('expire_at', '>', Carbon::now())->get()->isEmpty();
 	}
 
@@ -129,8 +132,9 @@ class DigitalOffice extends Model
 	 * 
 	 * @return bool
 	 */
-	public function isSetuped(): bool {
-		return in_array($this->status,[self::AVAILABLE, self::BUSY, self::CLOSED]); 
+	public function isSetuped(): bool
+	{
+		return in_array($this->status, [self::AVAILABLE, self::BUSY, self::CLOSED]);
 	}
 
 	/**
@@ -138,7 +142,8 @@ class DigitalOffice extends Model
 	 * 
 	 * @return bool
 	 */
-	public function canAcceptNewMessage() {
+	public function canAcceptNewMessage()
+	{
 		return $this->status == self::AVAILABLE;
 	}
 
@@ -177,8 +182,9 @@ class DigitalOffice extends Model
 	/**
 	 * 
 	 */
-	public function scopeSubscribed( $query ) {
-		return $query->whereHas('subscription', function(Builder $query) {
+	public function scopeSubscribed($query)
+	{
+		return $query->whereHas('subscription', function (Builder $query) {
 			$query->where('expire_at', null)->orWhere('expire_at', '>=', Date::now());
 		});
 	}
@@ -186,14 +192,16 @@ class DigitalOffice extends Model
 	/**
 	 *  
 	 */
-	public function scopeSetuped( Builder $query ) {
+	public function scopeSetuped(Builder $query)
+	{
 		return $query->whereIn('status', [self::AVAILABLE, self::BUSY, self::CLOSED])->where('banned_at', null);
 	}
 
 	/**
 	 * 
 	 */
-	public function scopeNoHidden(Builder $query) {
+	public function scopeNoHidden(Builder $query)
+	{
 		return $query->where('is_hidden', false);
 	}
 
@@ -224,14 +232,48 @@ class DigitalOffice extends Model
 		$this->save();
 	}
 
-	public function isBanned() {
+	public function isBanned()
+	{
 		return $this->banned_at != null;
+	}
+
+	/**
+	 * Get withdrawal method for the user
+	 * 
+	 * @return array|null
+	 */
+	public function withdrawalTransactionMethod(Transaction $txn)
+	{
+		$txnPreferredMethod = $txn->preferredWithdrawalMethod();
+
+		$userMethods = $this->withdrawal_methods;
+
+		if (!$txnPreferredMethod || !$userMethods) {
+			return;
+		}
+
+		$index = array_search($txnPreferredMethod->id, array_column($userMethods, 'method_id'));
+
+		$userTxnPreferredMethod = $userMethods[$index];
+		$fields = [];
+		foreach ($txnPreferredMethod->information_required as $fieldIndex => $field) {
+			$fields[] = [
+				'label' => $field['field_label'],
+				'value' => $userTxnPreferredMethod['field_' . $fieldIndex]
+			];
+		}
+
+		return [
+			'name' => $txnPreferredMethod->name,
+			'fields' => $fields,
+		];
 	}
 
 	/**
 	 * 
 	 */
-	public function getUrlNameAttribute() {
+	public function getUrlNameAttribute()
+	{
 		return Str::replace(' ', '-', $this->name);
 	}
 

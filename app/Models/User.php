@@ -260,6 +260,40 @@ class User extends Authenticatable implements MustVerifyEmail
 	}
 
 	/**
+	 * Get withdrawal method for the user
+	 * 
+	 * @return array|null
+	 */
+	public function withdrawalTransactionMethod(Transaction $txn)
+	{
+		$txnPreferredMethod = $txn->preferredWithdrawalMethod();
+
+		$userMethods = $this->withdrawal_methods;
+
+		if (!$txnPreferredMethod || $userMethods) {
+			return;
+		}
+
+		$index = array_search($txnPreferredMethod->id, array_column($userMethods, 'method_id'));
+
+		$userTxnPreferredMethod = $userMethods[$index];
+
+		$fields = [];
+
+		foreach ($txnPreferredMethod->fields as $fieldIndex => $field) {
+			$fields[] = [
+				'label' => $field->field_label,
+				'value' => $userTxnPreferredMethod['field_' . $fieldIndex]
+			];
+		}
+
+		return [
+			'name' => $userTxnPreferredMethod->name,
+			'fields' => $fields,
+		];
+	}
+
+	/**
 	 *
 	 */
 	public function can_contact_offices()

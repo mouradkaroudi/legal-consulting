@@ -44,12 +44,12 @@ class BankTransferForm extends Component implements HasForms
 		$user->transactions()->create([
 			"amount" => $data["amount"],
 			"type" => "debit",
-			"source" => Transaction::RECHARGE,
+			"source" => Transaction::DEPOSIT,
 			"status" => Transaction::PENDING,
-			"metadata" => json_encode([
+			"metadata" => [
 				"txn_id" => $data["txn_id"],
 				"receipt_attachment" => $data["receipt_attachment"],
-			]),
+			],
 		]);
 	}
 

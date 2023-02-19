@@ -51,8 +51,9 @@ class TransactionResource extends Resource
 						Transaction::RECEIVE_EARNINGS => __(
 							"transactions.receive_earnings"
 						),
-						Transaction::RECHARGE => __("transactions.recharge"),
+						Transaction::DEPOSIT => __("transactions.deposit"),
 						Transaction::PAY_DUES => __("transactions.pay_dues"),
+						Transaction::WITHDRAWALS => __("transactions.withdrawals"),
 					]),
 				\Filament\Tables\Columns\BadgeColumn::make("status")
 					->label(__('filament::resources/transactions.table.columns.status.label'))
@@ -61,7 +62,8 @@ class TransactionResource extends Resource
 						Transaction::PENDING => __("transactions.pending"),
 					]),
 				\Filament\Tables\Columns\TextColumn::make("created_at")
-					->label(__('filament::resources/transactions.table.columns.created_at.label')),
+					->label(__('filament::resources/transactions.table.columns.created_at.label'))
+					->dateTime(),
 				\Filament\Tables\Columns\TextColumn::make("due_date")
 					->label(__('filament::resources/transactions.table.columns.due_date.label')),
 			])

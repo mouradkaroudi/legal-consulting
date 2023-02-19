@@ -22,8 +22,8 @@ class WithdrawalMethod extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        "fees" => "object",
-        "information_required" => "array",
+        "fees" => "json",
+        "information_required" => "json",
     ];
 
     /**

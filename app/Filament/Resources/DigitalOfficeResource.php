@@ -62,12 +62,7 @@ class DigitalOfficeResource extends Resource
                         DigitalOffice::AVAILABLE => __('offices.status.available'),
                         DigitalOffice::BUSY => __('offices.status.busy'),
                         DigitalOffice::UNCOMPLETED => __('offices.status.uncompleted'),
-                        DigitalOffice::BLOCKED => __('offices.status.blocked'),
                     ])->color(function ($record) {
-
-                        if ($record->status === DigitalOffice::BLOCKED) {
-                            return 'danger';
-                        }
 
                         if ($record->status === DigitalOffice::AVAILABLE) {
                             return 'success';

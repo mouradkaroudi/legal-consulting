@@ -58,12 +58,10 @@ class Table extends Component implements HasTable
 			Action::make("pay")
 				->label(__('Pay'))
 				->action(function ($record) {
-					$data = $this->mountedTableActionData;
-					$paymentMethod = $data["paymentMethod"];
 
-					return redirect()->route('payment.' . $paymentMethod . '.checkout', ['entity' => 'order', 'id' => $record->id]);
 				})
 				->button()
+				->slideOver()
 				->color('success')
 				->modalHeading(fn ($record) => __('Order ref') . ' ' . $record->id)
 				->form(function ($record) {
@@ -84,8 +82,6 @@ class Table extends Component implements HasTable
 									->label(__('Choose a payment method'))
 									->options([
 										"balance" => __('Balance'),
-										"paypal" => __('PayPal'),
-										"bank-transfer" => __('Bank transfer'),
 									])
 									->descriptions([
 										'paypal' => __("You'll be redirected to PayPal website to complete your purchase securely")
@@ -95,9 +91,6 @@ class Table extends Component implements HasTable
 								Forms\Components\Checkbox::make('agree')
 									->label('أوافق على شروط إستخدام الموقع.')
 									->required(),
-								Placeholder::make('')
-									->hint(__("The total amount doesn't cover the payment gateway fees"))
-									->extraAttributes(['class' => 'text-sm'])
 							])
 						]),
 					];

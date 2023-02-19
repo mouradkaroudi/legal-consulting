@@ -4,7 +4,7 @@
     "The invitation has been sent": "تم ارسال الدعوة",
     "The order was created successfully": "تم إنشاء الطلب بنجاح",
     "The review was successfully added": "تم اضافة التقييم بنجاح",
-    "There is no payment method available for you. Please get in touch with our support": "لا توجد طريقة دفع متاحة لك. يرجى التواصل مع الدعم",
+    "There is no withdrawal method available for you. Please get in touch with our support": "لا توجد طريقة سحب متاحة لك. يرجى التواصل مع الدعم",
     "You are only a few steps behind opening your office": "أنت على بعد خطوات قليلة فقط من فتح مكتبك",
     "Please fill in all required fields to open your office": "يرجى ملء جميع الحقول المطلوبة لفتح مكتبك",
     ":officeName has invited you to join them": ":officeName قام بدعوتك للإنظمام له",
@@ -217,5 +217,11 @@
     "Confirm Password": "تأكيد كلمة المرور",
     "Cancel": "الغاء",
     "Closed": "مغلق",
-    "Receipt No": "رقم الإيصال"
+    "Receipt No": "رقم الإيصال",
+    "Please add at least one withdrawal method to your account to be able to withdraw your funds": "يرجى إضافة طريقة سحب واحدة على الأقل إلى حسابك لتتمكن من سحب أموالك",
+    "Balance withdrawal request": "طلب سحب الرصيد",
+    "Your withdrawal request has been submitted. we will transfer your funds to your preferred withdraw method in the next few business days": "تم تسجيل طلب السحب الخاصة بك. سنقوم بتحويل أموالك إلى طريقة السحب المفضلة لديك في أيام العمل القليلة القادمة",
+    "preferred withdrawal method": "طريقة السحب المفضلة",
+    "Accept": "موافقة",
+    "Reject": "رفض"
 }

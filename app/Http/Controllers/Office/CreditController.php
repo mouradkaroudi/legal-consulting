@@ -21,6 +21,9 @@ class CreditController extends Controller
         ]);
     }
 
+    /**
+     * 
+     */
     public function receipt( Request $request, Transaction $txn ) {
 
         $office = auth()->user()->currentOffice;

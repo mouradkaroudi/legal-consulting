@@ -30,8 +30,11 @@ class OrdersController extends Controller
             abort(404);
         }
 
-        $amount = $order->amount;
+        return view('pages.account.orders.pay', compact('order'));
+    }
+}
 
+/*
         if ($request->user()->available_balance < $amount) {
             return redirect()->route('account.orders.index')->withErrors([
                 'message' => __("Insufficient account balance. Please try another payment method")
@@ -47,7 +50,4 @@ class OrdersController extends Controller
         );
 
         $order->markAsPaid();
-
-        return redirect()->route('account.orders.index')->with('success', __('Congratulations! The payment process was completed successfully'));
-    }
-}
+*/

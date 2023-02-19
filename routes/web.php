@@ -112,6 +112,7 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
 
         Route::name('credit.')->prefix('/credit')->group(function() {
             Route::get('/', [OfficeCreditController::class,'index'])->name('index');
+            Route::get('/{txn}/receipt', [OfficeCreditController::class,'receipt'])->name('receipt');
         })->middleware(['office.employee.can:manage-office']);
         
         Route::resource('/schedules', SchedulesController::class);

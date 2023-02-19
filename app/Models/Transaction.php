@@ -101,7 +101,7 @@ class Transaction extends Model
     }
 
     /**
-     * Get payment method
+     * Get transaction payment method
      */
     public function getPaymentMethodAttribute() {
 
@@ -114,10 +114,31 @@ class Transaction extends Model
     }
 
     /**
-     * 
+     * Get transaction type
      */
     public function getPaymentTypeAttribute() {
         return __('transactions.' . $this->type);
+    }
+
+    /**
+     * Get transaction attachments
+     */
+    public function getAttachmentsAttribute() {
+        
+        if(!empty($this->metadata) && isset($this->metadata['attachments'])) {
+            return $this->metadata['attachments']; 
+        }
+
+        return [];
+    }
+
+    /**
+     * Get user preffered withdrawal method
+     */
+    public function preferredWithdrawalMethod() {
+        if(!empty($this->metadata) && isset($this->metadata['preferred_payment_method'])) {
+            return WithdrawalMethod::find($this->metadata['preferred_payment_method']); 
+        }
     }
 
     public function getFormattedAmountAttribute()

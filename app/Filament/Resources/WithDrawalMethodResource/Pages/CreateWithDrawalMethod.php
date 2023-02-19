@@ -12,11 +12,11 @@ class CreateWithDrawalMethod extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
 
-        $data['fees'] = json_encode([
+        $data['fees'] = [
             'min_fee' => $data['min_fee'],
             'max_fee' => $data['max_fee'],
             'percentage_fee' => $data['percentage_fee']
-        ]);
+        ];
 
         unset($data['min_fee']);
         unset($data['max_fee']);

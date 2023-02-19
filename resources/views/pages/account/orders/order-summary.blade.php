@@ -9,6 +9,7 @@
             </div>
         </div>
     </div>
+    <livewire:payment.form :amount="$amount" entity="subscription" :entityId="1" />
     <div class="p-6 border rounded-lg mt-auto">
         <h4 class="border-b pb-2 mb-4 text-lg font-semibold">{{ __('Payment summary') }}</h4>
 

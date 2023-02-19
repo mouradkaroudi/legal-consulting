@@ -48,22 +48,21 @@ class ManageTransactions extends ManageRecords
 						$action
 							->makeModalAction("accept")
 							->button()
-							->label("موافقة")
+							->label(__('Accept'))
 							->action("accept")
 							->visible($record->status === Transaction::PENDING)
 							->color("success"),
 						$action
 							->makeModalAction("refuse")
 							->button()
-							->label("رفض")
+							->label(__('Reject'))
 							->visible($record->status === Transaction::PENDING)
 							->action("refuse", ["txn_id" => $record->id])
 							->color("danger"),
 					]
 				)
 				->modalContent(fn($record) => view("filament.resources.transactions.details", compact('record')))
-				//
-				->form([Forms\Components\Textarea::make("notes")->label("ملاحظات")]),
+				//->form([Forms\Components\Textarea::make("notes")->label("ملاحظات")]),
 		];
 	}
 
@@ -73,18 +72,18 @@ class ManageTransactions extends ManageRecords
 			Filters\SelectFilter::make("source")
 			->label(__('filament::resources/transactions.table.filters.source.label'))
 			->options([
-					Transaction::RECEIVE_EARNINGS => __('transactions.' . Str::lower(Transaction::RECEIVE_EARNINGS)),
-					Transaction::PAY_DUES => __('transactions.' . Str::lower(Transaction::PAY_DUES)),
-					Transaction::DEPOSIT => __('transactions.' . Str::lower(Transaction::DEPOSIT)),
-					Transaction::WITHDRAWALS => __('transactions.' . Str::lower(Transaction::WITHDRAWALS)),
+					Transaction::RECEIVE_EARNINGS => __('transactions.' . Transaction::RECEIVE_EARNINGS),
+					Transaction::PAY_DUES => __('transactions.' . Transaction::PAY_DUES),
+					Transaction::DEPOSIT => __('transactions.' . Transaction::DEPOSIT),
+					Transaction::WITHDRAWALS => __('transactions.' . Transaction::WITHDRAWALS),
 				])
 				->attribute('source'),
 			Filters\SelectFilter::make("status")
 				->label(__('filament::resources/transactions.table.filters.status.label'))
 				->options([
-					Transaction::SUCCESS => __('transactions.' . Str::lower(Transaction::SUCCESS)),
-					Transaction::PENDING => __('transactions.' . Str::lower(Transaction::PENDING)),
-					Transaction::FAILED => __('transactions.' . Str::lower(Transaction::FAILED)),
+					Transaction::SUCCESS => __('transactions.' . Transaction::SUCCESS),
+					Transaction::PENDING => __('transactions.' . Transaction::PENDING),
+					Transaction::FAILED => __('transactions.' . Transaction::FAILED),
 				])
 				->attribute('status')
 		];

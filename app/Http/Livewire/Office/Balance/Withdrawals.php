@@ -2,11 +2,8 @@
 
 namespace App\Http\Livewire\Office\Balance;
 
-use App\Models\Withdrawal;
 use App\Models\WithdrawalMethod;
 use App\Services\TransactionService;
-use App\Services\WithDrawalsService;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -22,23 +19,16 @@ class Withdrawals extends Component implements HasForms
 	public $amount;
 	public $method;
 
-	public function mount()
-	{
-		$this->office = auth()->user()->currentOffice;
-	}
-
 	protected function getFormSchema(): array
 	{
 
-		$office = auth()->user()->currentOffice;
+		$withdrawalMethodsForm = [];
 
-		$officeWithdrawalMethods = $office->withdrawal_methods ?? [];
+		$officeWithdrawalMethods = $this->office->withdrawal_methods ?? [];
 
 		$officeWithdrawalMethodsIds = array_column($officeWithdrawalMethods, 'method_id');
 
 		$withdrawalMethods = WithdrawalMethod::whereIn('id', $officeWithdrawalMethodsIds)->get();
-
-		$withdrawalMethodsForm = [];
 
 		$options = [];
 		$descriptions = [];
@@ -48,22 +38,18 @@ class Withdrawals extends Component implements HasForms
 			$descriptions[$withdrawalMethod->id] = $withdrawalMethod->description;
 		}
 
-		$withdrawalMethodsForm[] = Radio::make('method')
-			->label(__('Withdrawal methods'))
-			->options($options)
-			->descriptions($descriptions)
-			->required();
+		if (!empty($options)) {
+			$withdrawalMethodsForm[] = Radio::make('method')
+				->label(__('Withdrawal methods'))
+				->options($options)
+				->descriptions($descriptions)
+				->required();
 
-		if (empty($withdrawalMethodsForm)) {
-			return [
-				Placeholder::make('')->content(__('There is no payment method available for you. Please get in touch with our support') . '.')
-			];
+			$withdrawalMethodsForm[] = TextInput::make("amount")
+				->type("number")
+				->label(__("Amount"))
+				->required();
 		}
-
-		$withdrawalMethodsForm[] = TextInput::make("amount")
-			->type("number")
-			->label(__("Amount"))
-			->required();
 
 		return $withdrawalMethodsForm;
 	}
@@ -79,12 +65,13 @@ class Withdrawals extends Component implements HasForms
 		$this->resetErrorBag();
 
 		try {
-			TransactionService::withdraw(auth()->user()->currentOffice, $this->amount, [
-				'preffered_payment_method' => $this->method
+			TransactionService::withdraw($this->office, [
+				'amount' => $this->amount,
+				'metadata' => ['preferred_payment_method' => $this->method]
 			]);
 
 			Notification::make()
-				->title(__('The order was created successfully')) // FIXME: change message
+				->title(__('Your withdrawal request has been submitted. we will transfer your funds to your preferred withdraw method in the next few business days'))
 				->success()
 				->send();
 

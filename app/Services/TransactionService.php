@@ -16,7 +16,7 @@ class TransactionService
 	}
 
 	/**
-	 * FIXME: move this to Subscription service
+	 * FIXME: consider pass all payment from pay() method
 	 */
 	public static function subscribe(Model $payer, $amount, $status, $metadata = [])
 	{
@@ -41,6 +41,8 @@ class TransactionService
 	 */
 	public static function pay(Model $payer, Model $payee, $amount, $status, $metadata = [])
 	{
+		// TODO: group all params excpet $payer, $payee in one param ($args)
+		// TODO: consider add balance check here
 		// FIXME: consider moving fee calculation to where we call this method
 		$professionFees = $payee->profession->fee_percentage;
 		$payeeAmount = $amount;
@@ -142,10 +144,13 @@ class TransactionService
 	}
 
 	/**
-	 * 
+	 * Save new withdrawal request
 	 */
-	public static function withdraw($holder, $amount, $metadata = [])
+	public static function withdraw($holder, $args)
 	{
+
+		$amount = $args['amount'];
+		$metadata = $args['metadata'];
 
 		if ($holder->available_balance < $amount) {
 			throw new \Exception(__('Insufficient account credit'));

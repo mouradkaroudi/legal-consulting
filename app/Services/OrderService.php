@@ -33,9 +33,9 @@ class OrderService
 			);
 		}
 	}
-
+	
 	/**
-	 * 
+	 * Mark order as paid
 	 */
 	public static function markAsPaid($order) {
 

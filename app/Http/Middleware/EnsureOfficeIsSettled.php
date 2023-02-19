@@ -43,7 +43,7 @@ class EnsureOfficeIsSettled extends Middleware
         
         // FIXME: consider check the subscription rather than status
         if (
-            $currentOffice->status === DigitalOffice::PENDING_PAYMENT
+            $currentOffice->status == DigitalOffice::PENDING_PAYMENT
             ||
             (
                 SubscriptionService::isEnabled()
@@ -56,7 +56,7 @@ class EnsureOfficeIsSettled extends Middleware
             return redirect()->route('office.subscription.select');
         }
 
-        if ($currentOffice->status === DigitalOffice::PENDING) {
+        if ($currentOffice->status == DigitalOffice::PENDING) {
             return redirect()->route('office.setup.approval');
         }
 

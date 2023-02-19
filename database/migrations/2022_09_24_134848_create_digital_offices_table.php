@@ -32,7 +32,7 @@ return new class extends Migration
             $table->foreignId('profession_id')->nullable();
             $table->float('hold_balance')->default(0);
             $table->float('available_balance')->default(0);
-            $table->string('status')->default('UNCOMPLETED');
+            $table->string('status')->default('uncompleted');
             $table->boolean('is_hidden')->default(0);
             $table->json('withdrawal_methods')->nullable();
             $table->timestamp('banned_at')->nullable();

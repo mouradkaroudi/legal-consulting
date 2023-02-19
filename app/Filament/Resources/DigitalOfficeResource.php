@@ -91,6 +91,7 @@ class DigitalOfficeResource extends Resource
                             'name' => $record->url_name
                         ]))
                         ->openUrlInNewTab()
+                        ->visible(fn($record) => $record->status != DigitalOffice::UNCOMPLETED)
                         ->icon('heroicon-o-external-link'),
                     Tables\Actions\Action::make('ban')
                         ->label(__('filament::resources/offices.table.actions.ban.label'))

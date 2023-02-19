@@ -41,7 +41,7 @@ class ProfessionSubscriptionPlan extends Model
      */
     public function getTaxAmountAttribute()
     {
-        $tax = setting('tax');
+        $tax = (float) setting('tax');
 
         if (empty($tax)) {
             return 0;
@@ -55,7 +55,7 @@ class ProfessionSubscriptionPlan extends Model
      */
     public function getTotalAmountAttribute()
     {
-        $tax = setting('tax');
+        $tax = (float) setting('tax');
 
         if (empty($tax)) {
             return $this->amount;

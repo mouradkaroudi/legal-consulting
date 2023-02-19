@@ -28,7 +28,7 @@ class Form extends Component
     public function mount()
     {
 
-        $this->taxRate = setting('tax');
+        $this->taxRate = (float) setting('tax');
         if ($this->method != 'credit') {
             $this->taxable = true;
         }

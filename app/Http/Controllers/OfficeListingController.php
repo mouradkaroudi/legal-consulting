@@ -33,15 +33,15 @@ class OfficeListingController extends Controller
     {
 
         if (!$service->is_available || !$profession->is_available) {
-            //abort(404);
+            abort(404);
         }
 
         if (!$digitalOffice->isSetuped()) {
-            //return abort(404);
+            return abort(404);
         }
 
         if (setting('digital_office_hide_unsubscribed_offices') == 1 && $digitalOffice->isSubscribed() === false) {
-            //return abort(404);
+            return abort(404);
         }
 
         $displayMessagingForm = true;

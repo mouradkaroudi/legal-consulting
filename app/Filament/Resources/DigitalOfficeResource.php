@@ -64,11 +64,11 @@ class DigitalOfficeResource extends Resource
                         DigitalOffice::UNCOMPLETED => __('offices.status.uncompleted'),
                     ])->color(function ($record) {
 
-                        if ($record->status === DigitalOffice::AVAILABLE) {
+                        if ($record->status == DigitalOffice::AVAILABLE) {
                             return 'success';
                         }
 
-                        if ($record->status === DigitalOffice::BUSY) {
+                        if ($record->status == DigitalOffice::BUSY) {
                             return 'warning';
                         }
 

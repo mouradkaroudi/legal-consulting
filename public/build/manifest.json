@@ -5,12 +5,12 @@
     "isEntry": true
   },
   "resources/css/filament.css": {
-    "file": "assets/filament.5f15bb72.css",
+    "file": "assets/filament.d8cb7bca.css",
     "src": "resources/css/filament.css",
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app.cdf19f6c.css",
+    "file": "assets/app.b4511c22.css",
     "src": "resources/css/app.css",
     "isEntry": true
   }

@@ -57,44 +57,9 @@ class Table extends Component implements HasTable
 		return [
 			Action::make("pay")
 				->label(__('Pay'))
-				->action(function ($record) {
-
-				})
+				->url(fn($record) => route('account.orders.pay', ['order' => $record->id]))
 				->button()
-				->slideOver()
 				->color('success')
-				->modalHeading(fn ($record) => __('Order ref') . ' ' . $record->id)
-				->form(function ($record) {
-					return [
-						Forms\Components\Grid::make(2)->schema([
-							Forms\Components\Placeholder::make('paymentForm')
-								->label('')
-								->content(view('pages.account.orders.order-summary', [
-									'totalAmount' => $record->total_amount,
-									'taxAmount' => $record->tax_amount,
-									'amount' => $record->amount,
-									'orderID' => $record->id,
-									'subject' => $record->subject,
-									'officeName' => $record->office->name
-								])),
-							Group::make([
-								RadioButton::make("paymentMethod")
-									->label(__('Choose a payment method'))
-									->options([
-										"balance" => __('Balance'),
-									])
-									->descriptions([
-										'paypal' => __("You'll be redirected to PayPal website to complete your purchase securely")
-									])
-									->columns(1)
-									->required(),
-								Forms\Components\Checkbox::make('agree')
-									->label('أوافق على شروط إستخدام الموقع.')
-									->required(),
-							])
-						]),
-					];
-				})
 				->hidden(fn ($record) => $record->status === Order::PAID),
 			Action::make('add_review')
 				->mountUsing(function (Forms\ComponentContainer $form, Order $record) {

@@ -10,6 +10,7 @@
     ":officeName has invited you to join them": ":officeName قام بدعوتك للإنظمام له",
     "The total amount doesn't cover the payment gateway fees": "لا يغطي المبلغ الإجمالي رسوم بوابة الدفع",
     "Insufficient account balance. Please try another payment method": "رصيد حساب غير كاف. يرجى تجربة طريقة دفع أخرى",
+    "The amount will be deducted from your account balance": "سيتم خصم المبلغ من رصيد حسابك",
     "Insufficient account credit": "رصيد الحساب غير كافي",
     "Checkout with PayPal": "ادفع باستعمال باي بال",
     "You'll be redirected to PayPal website to complete your purchase securely": "ستتم إعادة توجيهك إلى موقع PayPal لإكمال عملية الشراء بأمان",

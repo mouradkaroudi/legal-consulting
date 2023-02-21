@@ -16,7 +16,7 @@ class TransactionService
 	}
 
 	/**
-	 * FIXME: consider pass all payment from pay() method
+	 * 
 	 */
 	public static function subscribe(Model $payer, $amount, $status, $metadata = [])
 	{
@@ -39,11 +39,18 @@ class TransactionService
 	 * @param Illuminate\Database\Eloquent\Model $payer ( a person which pay (e.g benificiary) )
 	 * @param Illuminate\Database\Eloquent\Model $payee (a person to whom money is paid (e.g office) )
 	 */
-	public static function pay(Model $payer, Model $payee, $amount, $status, $metadata = [])
+	public static function pay(Model $payer, Model $payee, $args)
 	{
-		// TODO: group all params excpet $payer, $payee in one param ($args)
-		// TODO: consider add balance check here
-		// FIXME: consider moving fee calculation to where we call this method
+
+		$amount = $args['amount'];
+		$status = $args['status'];
+		$metadata = $args['metadata'];
+
+		if ($payer->available_balance < $amount) {
+			throw new \Exception(__('Insufficient account credit'));
+		}
+
+		// TODO: consider moving fee calculation to where we call this method
 		$professionFees = $payee->profession->fee_percentage;
 		$payeeAmount = $amount;
 		$payeeAmountFees = 0;

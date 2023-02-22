@@ -50,7 +50,7 @@ class PayPalController extends Controller
         $amountUSD = Currency::convert()->from('SAR')->to('USD')->amount($amount)->round(2)->get();
         $taxUSD = Currency::convert()->from('SAR')->to('USD')->amount($tax)->round(2)->get();
 
-        $order = $provider->createOrder([
+        $data = [
             "intent" => "CAPTURE",
             "application_context" => [
                 "return_url" => route('payment.paypal.process', ['entity' => $entity, 'id' => $id]),
@@ -70,7 +70,9 @@ class PayPalController extends Controller
                     ]
                 ]
             ]
-        ]);
+        ];
+
+        $order = $provider->createOrder($data);
 
         foreach ($order['links'] as $links) {
             if ($links['rel'] == 'approve') {
@@ -102,7 +104,7 @@ class PayPalController extends Controller
             ]);
 
             if($entity === 'order') {
-                return redirect()->route('account.orders.pay', ['order' => $id]);
+                return redirect()->route('account.orders.pay', ['order' => $id])->with('success', __('Congratulations, the amount was successfully deposited with your account. You can now complete the payment'));
             }
 
             if($entity === 'subscription') {

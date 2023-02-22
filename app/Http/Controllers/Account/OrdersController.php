@@ -30,7 +30,9 @@ class OrdersController extends Controller
             abort(404);
         }
 
-        return view('pages.account.orders.pay', compact('order'));
+        $autopay = $request->input('autopay');
+
+        return view('pages.account.orders.pay', compact('order', 'autopay'));
     }
 }
 

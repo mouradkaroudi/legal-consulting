@@ -25,7 +25,10 @@ class Pay extends Component implements HasForms
 
     public $isBalancePaymentSelected = true;
 
-    protected $listeners = ['payment-method-update' => 'paymentMethodUpdated'];
+    protected $listeners = [
+        'payment-method-update' => 'paymentMethodUpdated',
+        'balance-payment-selected' => 'balancePaymentSelected',
+    ];
 
     public function mount() {
         $this->taxRate = (float) setting('tax');
@@ -39,15 +42,20 @@ class Pay extends Component implements HasForms
         $this->form->fill([
             'order_id' => $this->order->id
         ]);
+
+
+    }
+
+    public function balancePaymentSelected() {
+        $this->isBalancePaymentSelected = true;
+        $this->applyTax = false;
+        $this->setTotalAmount();
     }
 
     public function paymentMethodUpdated() {
         $this->isBalancePaymentSelected = false;
         $this->applyTax = true;
         $this->setTotalAmount();
-        $this->form->fill([
-            'balance' => null,
-        ]);
     }
 
     protected function getFormSchema(): array
@@ -77,8 +85,11 @@ class Pay extends Component implements HasForms
             );
 
             OrderService::markAsPaid($this->order);
+
+            return redirect()->route('account.orders.index')->with('success', __('Congratulations! The payment process was completed successfully'));
+
         } catch (\Throwable $th) {
-            $this->addError('order_id', $th->getMessage());
+            $this->addError('balance', $th->getMessage());
         }
     }
 

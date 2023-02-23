@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Admin;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -16,8 +17,13 @@ class OrderPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User|Admin $user)
     {
+
+        if($user instanceof Admin) {
+            return true;
+        }
+
 		return $user->hasOfficePermission(
 			$user->currentOffice,
 			"manage-orders"
@@ -31,8 +37,12 @@ class OrderPolicy
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Order $order)
+    public function view(User|Admin $user, Order $order)
     {
+        if($user instanceof Admin) {
+            return true;
+        }
+
         return $user->id == $order->beneficiary_id || $user->hasOfficePermission($order->office, 'manage-orders');
     }
 
@@ -42,8 +52,12 @@ class OrderPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User|Admin $user)
     {
+        if($user instanceof Admin) {
+            return true;
+        }
+
         return $user->hasOfficePermission($user->currentOffice, 'manage-orders');
     }
 
@@ -54,8 +68,11 @@ class OrderPolicy
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Order $order)
+    public function update(User|Admin $user, Order $order)
     {
+        if($user instanceof Admin) {
+            return true;
+        }
         return $user->id == $order->beneficiary_id || $user->hasOfficePermission($order->office, 'manage-orders');
     }
 
@@ -66,8 +83,12 @@ class OrderPolicy
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Order $order)
+    public function delete(User|Admin $user, Order $order)
     {
+        if($user instanceof Admin) {
+            return true;
+        }
+        
         if( $order->status == Order::PAID ) {
             return false;
         }

@@ -23,40 +23,49 @@ class AuthService
     public static function registerUser($name, $email, $password, $inviteToken = null)
     {
 
-        $user = User::create([
-            "name" => $name,
-            "email" => $email,
-            "password" => Hash::make($password),
-        ]);
+        try {
+            DB::beginTransaction();
 
-        if (empty($inviteToken)) {
+            $user = User::create([
+                "name" => $name,
+                "email" => $email,
+                "password" => Hash::make($password),
+            ]);
+
+            if (empty($inviteToken)) {
+
+                event(new Registered($user));
+
+                return $user;
+            }
+
+            $invite = Invite::where("token", $inviteToken)->first();
+            if ($invite) {
+                $employee = DigitalOfficeEmployee::create([
+                    "office_id" => $invite->office_id,
+                    "user_id" => $user->id,
+                ]);
+
+                $profile = new Profile();
+                $profile->user_id = $user->id;
+                $profile->save();
+
+                $defaultRolePermissions = Role::findByName("OfficeEmployee")->permissions;
+                $employee->givePermissionTo($defaultRolePermissions->pluck('name')->all());
+
+                $user->markEmailAsVerified();
+            }
+
 
             event(new Registered($user));
 
+            DB::commit();
+
             return $user;
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw new Exception($th->getMessage());
         }
-
-        $invite = Invite::where("token", $inviteToken)->first();
-        if ($invite) {
-            $employee = DigitalOfficeEmployee::create([
-                "office_id" => $invite->office_id,
-                "user_id" => $user->id,
-            ]);
-
-            $profile = new Profile();
-            $profile->user_id = $user->id;
-            $profile->save();
-
-            $defaultRolePermissions = Role::findByName("OfficeEmployee")->permissions;
-            $employee->givePermissionTo($defaultRolePermissions->pluck('name')->all());
-
-            $user->markEmailAsVerified();
-        }
-        
-        
-        event(new Registered($user));
-
-        return $user;
     }
 
     /**
@@ -87,17 +96,15 @@ class AuthService
                 'user_id' => $user->id,
                 'job_title' => __('auth.providers.default_job_title')
             ]);
-
+            event(new Registered($user));
             DB::commit();
 
             return $user;
-
         } catch (Throwable $e) {
             DB::rollback();
             throw new Exception($e->getMessage());
         }
 
-        event(new Registered($user));
-
+        
     }
 }

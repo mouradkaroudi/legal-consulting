@@ -68,6 +68,7 @@ class ListOffices extends Component implements HasForms
 			\Filament\Forms\Components\Grid::make()
 				->schema([
 					\Filament\Forms\Components\TextInput::make("officeName")
+					->reactive()
 					->label(__('Office name')),
 					\Filament\Forms\Components\Select::make("professionId")
 						->label(__('Profession'))

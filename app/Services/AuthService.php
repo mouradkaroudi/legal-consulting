@@ -54,6 +54,9 @@ class AuthService
                 $employee->givePermissionTo($defaultRolePermissions->pluck('name')->all());
 
                 $user->markEmailAsVerified();
+
+                $invite->delete();
+
             }
 
 

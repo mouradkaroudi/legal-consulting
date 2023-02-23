@@ -17,7 +17,6 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->enum('gender', ['male', 'female'])->nullable();
             $table->json('experiences')->nullable();
             $table->json('education')->nullable();
             $table->string('car_license_image')->nullable();

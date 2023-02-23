@@ -23,7 +23,6 @@
                 <main class="flex-1 max-h-full overflow-hidden overflow-y-scroll">
                     <!-- Main content header -->
                     <div class="w-full p-4 mx-auto md:px-6 lg:px-8 max-w-7xl">
-                        <livewire:office.important-alerts />
                         <div class="flex justify-between items-center">
                         <div class="filament-header space-y-2 items-start justify-between sm:flex sm:space-y-0 sm:space-x-4 sm:rtl:space-x-reverse sm:py-4">
                             <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $pageTitle }}</h1>

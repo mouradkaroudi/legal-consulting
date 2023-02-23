@@ -19,11 +19,11 @@ class EnsureAccountIsSettled
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
+
         if (
 			$user &&
-			$user->profile &&
-			$user->profile->status === DigitalOffice::UNCOMPLETED &&
-			!in_array(Route::currentRouteName(), ["account.settings", "auth.logout"]) // FIXME: You may exclude this route in routes/web.php
+			!$user->isAccountSettled() &&
+			!in_array(Route::currentRouteName(), ["account.settings", "auth.logout"]) // TODO: You may exclude this route in routes/web.php
 		) {
 			return redirect()->route("account.settings");
 		}

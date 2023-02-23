@@ -73,6 +73,22 @@ return [
                 ]
             ]
         ],
+        'whatsapp' => [
+            'label' => 'رقم الواتساب',
+            'fields' => [
+                'number' => [
+                    'label' => 'الرقم'
+                ]
+            ]
+        ],
+        'links' => [
+            'label' => 'الروابط',
+            'fields' => [
+                'privacy_page' => [
+                    'label' => 'صفحة الخصوصية'
+                ]
+            ]
+        ],
         'social' => [
             'label' => 'مواقع التواصل اجتماعي',
             'fields' => [

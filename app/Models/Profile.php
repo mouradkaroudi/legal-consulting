@@ -19,7 +19,6 @@ class Profile extends Model
 	 * @var array<int, string>
 	 */
 	protected $fillable = [
-		"gender",
 		"experiences",
 		"education",
 		"car_license_image",
@@ -40,10 +39,5 @@ class Profile extends Model
 
 	public function getIsCompletedAttribute() {
 		return $this->status !== self::UNCOMPLETED;
-	}
-
-	public function getGenderLabelAttribute()
-	{
-		return $this->gender ? ($this->gender == "male" ? "ذكر" : "أنثى") : "-";
 	}
 }

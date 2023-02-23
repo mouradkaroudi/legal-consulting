@@ -35,6 +35,8 @@ class LocationForm extends Component implements Forms\Contracts\HasForms
 				Forms\Components\Select::make("country_code")
 					->label(__('Country'))
 					->options($countries)
+					->required()
+					->exists(table: Country::class, column: 'id')
                     ->reactive(),
 				Forms\Components\Select::make("city")
 					->label(__('City'))

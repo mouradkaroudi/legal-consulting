@@ -15,7 +15,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
 	use HasApiTokens, HasFactory, Notifiable;
 
-	protected $fillable = ["name", "email", "password", "withdrawal_methods", "preferred_lang", "address", "ID_number", "ID_image", "driving_license_image", "country_id"];
+	protected $fillable = ["name", "email", "password", "gender", "withdrawal_methods", "preferred_lang", "address", "ID_number", "ID_image", "driving_license_image", "country_id"];
 
 	protected $hidden = ["password", "remember_token"];
 
@@ -328,8 +328,18 @@ class User extends Authenticatable implements MustVerifyEmail
 		$this->save();
 	}
 
+	/**
+	 * 
+	 */
 	public function isBanned()
 	{
 		return $this->banned_at != null;
+	}
+
+	/**
+	 * Check if the required fields filled
+	 */
+	public function isAccountSettled() {
+		return !empty($this->ID_number) && !empty($this->address) && !empty($this->ID_image) && !empty($this->driving_license_image);
 	}
 }

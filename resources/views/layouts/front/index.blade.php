@@ -1,4 +1,7 @@
 @props(['title' => '', 'metaDescription' => ''])
+@php
+$whatsapp_number = setting('whatsapp_number');
+@endphp
 <!DOCTYPE html>
 <html dir="{{ isRtl() ? 'rtl': 'ltr' }}" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -27,17 +30,19 @@
 </head>
 
 <body class="bg-gray-100">
-
+    
+    @if(!empty($whatsapp_number))
     <div class="p-4 text-center bg-green-600 text-white">
         <div class="flex justify-center gap-2">
             <x-dynamic-component component="social-icons.whatsapp" class="w-4 h-4" />
             <span>{{ __('Contact us via') }} </span>
             <div class="flex gap-2">
-                <a class="font-bold" href="https://wa.me/<number>" target="_blank">{{ __('Whatsapp') }}</a>
+                <a class="font-bold" href="https://wa.me/{{ $whatsapp_number }}" target="_blank">{{ __('Whatsapp') }}</a>
                 <x-heroicon-o-external-link class="w-4 h-4 rtl:rotate-[270deg]"/>
             </div>
         </div>
     </div>
+    @endif
 
     <livewire:front.navigation />
     @yield('content')

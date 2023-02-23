@@ -21,7 +21,7 @@ class Table extends Component implements Tables\Contracts\HasTable
 			->label(__('Print'))
 			->url(fn($record) => route('office.credit.receipt', ['txn' => $record->id]))
 			->openUrlInNewTab()
-			->visible(fn($record) => in_array($record->source, [Transaction::DEPOSIT, Transaction::WITHDRAWALS]))
+			->visible(fn($record) => in_array($record->source, [Transaction::DEPOSIT, Transaction::WITHDRAWALS]) && $record->status == Transaction::SUCCESS)
 		];
 	}
 
@@ -75,7 +75,7 @@ class Table extends Component implements Tables\Contracts\HasTable
 	{
 
 		return Auth::user()
-			->currentOffice->transactions()
+			->currentOffice->transactions()->latest()
 			->getQuery();
 	}
 

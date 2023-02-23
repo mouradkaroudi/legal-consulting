@@ -26,15 +26,6 @@ class Profile extends Component implements HasForms
 	{
 		
 		$formScheme = [
-
-			Components\Select::make("gender")
-				->label(__('validation.attributes.sex'))
-				->options([
-					"male" => __('Male'),
-					"female" => __('Female'),
-				])
-				->required(),
-
 			Components\FileUpload::make("car_license_image")
 				->label(__('Vehicle License')),
 			Components\TextInput::make("professional_license_number")
@@ -98,11 +89,6 @@ class Profile extends Component implements HasForms
 
 
 		$data = $this->form->getState();
-
-		if (!$this->profile->isCompleted) {
-			$redirect = true;
-			$data["status"] = "available";
-		}
 
 		auth()
 			->user()

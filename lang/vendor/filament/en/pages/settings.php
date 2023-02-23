@@ -72,6 +72,22 @@ return [
                 ]
             ]
         ],
+        'whatsapp' => [
+            'label' => 'Whatsapp number',
+            'fields' => [
+                'number' => [
+                    'label' => 'Number'
+                ]
+            ]
+        ],
+        'links' => [
+            'label' => 'Links',
+            'fields' => [
+                'privacy_page' => [
+                    'label' => 'Privacy page'
+                ]
+            ]
+        ],
         'social' => [
             'label' => 'Social networks',
             'fields' => [

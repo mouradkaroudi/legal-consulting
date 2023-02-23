@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Models\Post;
 use Filament\Forms\Components;
 use App\Models\Setting;
 use Filament\Pages\Page;
@@ -71,6 +72,17 @@ class Settings extends Page
 
 	protected function getFormSchema(): array
 	{
+
+		$whatsappSettings = [
+			Components\TextInput::make("whatsapp_number")
+			->label(__('filament::pages/settings.fields.whatsapp.fields.number.label'))
+		];
+
+		$linksSettings = [
+			Components\Select::make("links_privacy_page")
+			->label(__('filament::pages/settings.fields.links.fields.privacy_page.label'))
+			->options(Post::where('post_type', Post::TYPE_PAGE)->get()->pluck('title', 'id'))
+		];
 
 		$homepageSettings = [
 			Components\Grid::make(2)->schema([
@@ -175,6 +187,12 @@ class Settings extends Page
 			Components\Fieldset::make("homepage")
 				->label(__('filament::pages/settings.fields.homepage.label'))
 				->schema($homepageSettings)->columns(1),
+			Components\Fieldset::make("whatsapp")
+				->label(__('filament::pages/settings.fields.whatsapp.label'))
+				->schema($whatsappSettings)->columns(1),
+			Components\Fieldset::make("links")
+				->label(__('filament::pages/settings.fields.links.label'))
+				->schema($linksSettings)->columns(1),
 			Components\Fieldset::make("social")
 				->label(__('filament::pages/settings.fields.social.label'))
 				->schema($socialLinksSchema)->columns(1),

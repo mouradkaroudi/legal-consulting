@@ -12,7 +12,7 @@
             @each('messenger.partials.messages', $thread->messages, 'message')
         </div>
     </div>
-    <livewire:messages.widgets.reply-form :threadId="$thread->id"/>
+    <livewire:messages.widgets.reply-form :thread="$thread"/>
 </div>
 
 @stop

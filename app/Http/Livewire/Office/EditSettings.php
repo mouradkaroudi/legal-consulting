@@ -5,13 +5,12 @@ namespace App\Http\Livewire\Office;
 use App\Models\DigitalOffice;
 use App\Models\Profession;
 use App\Models\Service;
+use App\Models\Specialization;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
@@ -24,7 +23,18 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 
 	public function mount(): void
 	{
-		$this->form->fill($this->digitalOffice->toArray());
+		$this->form->fill([
+			"image" => $this->digitalOffice->image,
+			"name" =>$this->digitalOffice->name,
+			"description" =>$this->digitalOffice->description,
+			"phone_number" => $this->digitalOffice->phone_number,
+			"professional_license_number" => $this->digitalOffice->professional_license_number,
+			"municipal_license_number" => $this->digitalOffice->municipal_license_number,
+			"tax_establishment_number" => $this->digitalOffice->tax_establishment_number,
+			"license_attachment" => $this->digitalOffice->license_attachment,
+			"status" => $this->digitalOffice->status,
+			"specializations" => $this->digitalOffice->specializations->pluck('id')
+		]);
 	}
 
 	protected function getFormModel(): DigitalOffice
@@ -35,6 +45,9 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 	// TODO: add TVA
 	protected function getFormSchema(): array
 	{
+
+		$specializations = Specialization::where('id', $this->digitalOffice->profession_id)->with('translation')->get()->pluck('translation.name', 'id');
+
 		$fields = [
 			Forms\Components\FileUpload::make("image")
 				->image()
@@ -58,27 +71,12 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 						->label(__('Description')),
 				])
 				->columns(1),
-			Fieldset::make("categorization")
-				->label(__('Category'))
-				->schema([
-					Select::make("specializations")
-						->label(__('Select specializations'))
-						->relationship("specializations", "name")
-						->multiple()
-						->options(function (callable $get) {
-							$professionId = $get("profession_id");
+			Select::make("specializations")
+				->label(__('Select specializations'))
+				->relationship('specializations', 'id')
+				->multiple()
+				->options($specializations),
 
-							if (!$professionId) {
-								return [];
-							}
-
-							$profession = Profession::find($professionId);
-							return $profession->specializations->pluck("name", "id");
-						})
-						->preload()
-						->reactive(),
-				])
-				->columns(1),
 			Fieldset::make("licenses")
 				->label(__('Licenses'))
 				->schema([
@@ -101,7 +99,7 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 			])
 			->columns(1);
 
-		if ($this->digitalOffice->status != "UNCOMPLETED") {
+		if ($this->digitalOffice->status != DigitalOffice::UNCOMPLETED) {
 			$fields[] = Forms\Components\Select::make("status")
 				->label(__('Status'))
 				->options([

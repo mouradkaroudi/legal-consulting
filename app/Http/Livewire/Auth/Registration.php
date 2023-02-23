@@ -26,6 +26,7 @@ class Registration extends Component implements HasForms
 
 	protected function getFormSchema(): array
 	{
+
 		$fields = [
 			TextInput::make("name")
 				->label(__("validation.attributes.name"))
@@ -44,10 +45,7 @@ class Registration extends Component implements HasForms
 				->password()
 				->label(__("validation.attributes.password_confirmation"))
 				->required(),
-			Checkbox::make("terms")
-				->label("أوفق على شروط الإستخدام")
-				->inline()
-				->required(),
+			get_privacy_checkbox(),
 		];
 
 		if (!empty($this->inviteToken)) {
@@ -56,14 +54,14 @@ class Registration extends Component implements HasForms
 			array_unshift(
 				$fields,
 				Radio::make("account_type")
-					->label("إختر نوع الحساب")
+					->label(__('Choose the account type'))
 					->options([
-						"beneficiary" => "مستفيد",
-						"provider" => "مقدم خدمة",
+						"beneficiary" => __('Beneficiary'),
+						"provider" => __('Service provider'),
 					])
 					->descriptions([
-						"beneficiary" => "الإستفادة من خدمات و استشارات",
-						"provider" => "تقديم الخدمات و الإستشارات",
+						"beneficiary" => __('Benefit from services and advice'),
+						"provider" => __('Providing services and consulting'),
 					])
 					->required()
 			);
@@ -77,15 +75,15 @@ class Registration extends Component implements HasForms
 
 		$this->validate();
 
-		if( $this->account_type === 'provider' ) {
+		if ($this->account_type === 'provider') {
 			$user = AuthService::registerServiceProvider($this->name, $this->email, $this->password);
-		}else{
+		} else {
 			$user = AuthService::registerUser($this->name, $this->email, $this->password, $this->inviteToken);
 		}
 
 		Auth::loginUsingId($user->id);
 
-		
+
 		return redirect()->route("account.settings");
 	}
 

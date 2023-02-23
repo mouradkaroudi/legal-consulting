@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('service_id')->constrained();
             $table->string('slug');
+            $table->float('fee_percentage')->default(0);
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
     }

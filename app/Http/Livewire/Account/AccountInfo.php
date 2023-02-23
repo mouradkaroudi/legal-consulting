@@ -32,6 +32,7 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
 
     private function updateProfile($data)
     {
+
         $email = $data['email'];
         $name = $data['name'];
         $avatar_url = $data['avatar_url'];
@@ -41,6 +42,7 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
         $ID_image = $data['ID_image'];
         $driving_license_image = $data['driving_license_image'];
         $country_id = $data['country_id'];
+        $gender = $data['gender'];
 
         $this->user->email = $email;
         $this->user->name = $name;
@@ -51,6 +53,8 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
         $this->user->ID_image = $ID_image;
         $this->user->driving_license_image = $driving_license_image;
         $this->user->country_id = $country_id;
+        $this->user->gender = $gender;
+
 
         $this->user->save();
         redirect()->route("account.settings");
@@ -100,6 +104,12 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
             Forms\Components\FileUpload::make('driving_license_image')
                 ->label(__('Driving license image'))
                 ->required(),
+            Forms\Components\Select::make("gender")
+                ->label(__('validation.attributes.sex'))
+                ->options([
+                    "male" => __('Male'),
+                    "female" => __('Female'),
+                ]),
             Forms\Components\Select::make("country_id")
                 ->label(__('validation.attributes.nationality'))
                 ->options($citizenships)

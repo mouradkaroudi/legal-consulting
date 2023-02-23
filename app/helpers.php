@@ -2,13 +2,40 @@
 
 use App\Models\DigitalOffice;
 use App\Models\DigitalOfficeEmployee;
+use App\Models\Post;
 use App\Models\Setting;
+use Filament\Forms\Components\Checkbox;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 
 /**
  * 
  */
-function isRtl() {
+function get_privacy_checkbox()
+{
+
+    $url = '#';
+    $page = setting('links_privacy_page');
+
+    if(!empty($page)) {
+        $post = Post::find($page);
+        if(!empty($post)) {
+            $url = route('posts', ['post' => $post, 'slug' => $post->slug]);
+        }
+    }
+
+    return Checkbox::make("terms")
+        ->label(new HtmlString( __('auth.privacy') . ' ' . '<a href=" '.$url.' ">'.__("Privacy & Policy") .'</a>'))
+        ->inline()
+        ->required();
+}
+
+/**
+ * 
+ */
+function isRtl()
+{
     return app()->getLocale() == 'ar';
 }
 
@@ -26,12 +53,12 @@ function setting($name)
 /**
  * 
  */
-function site_name() {
-    
+function site_name()
+{
+
     $name = setting('general_settings_site_name_' . app()->getLocale());
 
     return $name ? $name : config('app.name');
-
 }
 
 /**

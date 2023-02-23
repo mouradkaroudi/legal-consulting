@@ -70,7 +70,7 @@ class PayPalController extends Controller
             ],
             "purchase_units" => [
                 0 => [
-                    "custom_id" => json_encode(['actual_amount' => $amount - $tax]),
+                    "custom_id" => json_encode(['actual_amount' => $amount - $tax, 'tax' => $tax]),
                     "amount" => [
                         "currency_code" => "USD",
                         "value" => $amountUSD,
@@ -107,10 +107,12 @@ class PayPalController extends Controller
 
             $custom_id = json_decode($response['purchase_units'][0]['payments']['captures'][0]['custom_id']);
             $actualAmount = $custom_id->actual_amount;
+            $tax = $custom_id->tax;
             $user = auth()->user();
 
             TransactionService::deposit(User::find($user->id), [
                 'amount' => $actualAmount,
+                'fees' => $tax,
                 'status' => Transaction::SUCCESS, 
                 'metadata' => ['payment_method' => 'paypal']
             ]);

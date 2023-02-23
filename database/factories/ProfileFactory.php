@@ -18,7 +18,6 @@ class ProfileFactory extends Factory
     public function definition()
     {
         return [
-            'gender' => 'male',
             'status' => Profile::AVAILABLE,
         ];
     }

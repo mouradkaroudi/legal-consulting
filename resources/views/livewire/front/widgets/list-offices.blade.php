@@ -1,5 +1,5 @@
 <div>
-    <form method="GET" wire:submit.prevent="submit">
+    <form method="GET">
         <div class="p-6 bg-white rounded-xl border border-gray-300">
             {{ $this->mainForm }}
 
@@ -11,12 +11,6 @@
                 <div class="mt-4" x-show="expanded" hidden x-collapse>
                     {{ $this->locationForm }}
                 </div>
-            </div>
-
-            <div class="mt-3 pt-2 border-t">
-                <x-filament-support::button :type="'submit'">
-                    {{ __('Search') }}
-                </x-filament-support::button>
             </div>
 
         </div>

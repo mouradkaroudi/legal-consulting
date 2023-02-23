@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone_number')->unique()->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->foreignId('country_id')->nullable();
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->string('ID_number')->nullable();
             $table->string('ID_image')->nullable();
             $table->string('driving_license_image')->nullable();
+            $table->string('address')->nullable();
             $table->float('hold_balance')->default(0);
             $table->float('available_balance')->default(0);
             $table->foreignId('current_office_id')->nullable();

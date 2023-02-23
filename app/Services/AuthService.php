@@ -35,7 +35,7 @@ class AuthService
             if (empty($inviteToken)) {
 
                 event(new Registered($user));
-
+                DB::commit();
                 return $user;
             }
 

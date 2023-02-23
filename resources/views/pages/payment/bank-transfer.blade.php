@@ -17,7 +17,7 @@
     <div class="max-w-lg mx-auto">
         <h1 class="text-3xl font-bold mb-2">{{ __('Bank transfer') }}</h1>
         <p class="mb-6 text-xl">
-            قم بتحويل المبلغ الذي تريد شحن بحسابك الى الحساب البنكي . <span class="block mt-4 text-center bg-gray-200 rounded-full p-2">{{ setting('transactions_bank_rib') }}</span>
+            
         </p>
         <x-filament::card>
             <livewire:payment.bank-transfer-form />

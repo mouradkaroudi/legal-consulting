@@ -8,9 +8,7 @@ use App\Services\RatingService;
 use Digikraaft\ReviewRating\Models\Review;
 use Filament\Tables\Actions\Action;
 use Filament\Forms;
-use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -19,14 +17,13 @@ use Filament\Tables\Contracts\HasTable;
 use Livewire\Component;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 use Yepsua\Filament\Forms\Components\Rating;
 
 class Table extends Component implements HasTable
 {
 	use InteractsWithTable, AuthorizesRequests;
 
-	public $paymentMethod;
+	public $rating;
 
 	protected function getTableColumns(): array
 	{
@@ -57,7 +54,7 @@ class Table extends Component implements HasTable
 		return [
 			Action::make("pay")
 				->label(__('Pay'))
-				->url(fn($record) => route('account.orders.pay', ['order' => $record->id]))
+				->url(fn ($record) => route('account.orders.pay', ['order' => $record->id]))
 				->button()
 				->color('success')
 				->hidden(fn ($record) => $record->status === Order::PAID),
@@ -69,6 +66,10 @@ class Table extends Component implements HasTable
 							"title" => $record->latestReview()->title,
 							"review" => $record->latestReview()->review,
 							"review_id" => $record->latestReview()->id,
+						]);
+					}else{
+						$form->fill([
+							"rating" => 0
 						]);
 					}
 				})
@@ -92,30 +93,34 @@ class Table extends Component implements HasTable
 						);
 
 						Notification::make()
-						->title(__('The review was successfully updated'))
-						->success()
-						->send();
-
+							->title(__('The review was successfully updated'))
+							->success()
+							->send();
 					} else {
-						RatingService::createOrderReview($record, User::find(auth()->user()->id),[
+						RatingService::createOrderReview($record, User::find(auth()->user()->id), [
 							'rating' => $rating,
 							'title' => $title,
 							'review' => $review
 						]);
 						Notification::make()
-						->title(__('The review was successfully added'))
-						->success()
-						->send();
+							->title(__('The review was successfully added'))
+							->success()
+							->send();
 					}
-
-
 				})
 				->form(function ($record) {
 
 					$form = [
-						Rating::make('rating')->label('تقييم')->helperText('تقييمك لجودة الخدمة من 1 الى 5.'),
-						TextInput::make('title')->label('عنوان التقييم'),
-						Textarea::make('review')->label('نص')->required(),
+						Rating::make('rating')
+							->label(__('Review'))
+							->helperText(__('Your rating for quality of service from 1 to 5'))
+							->required()
+							,
+						TextInput::make('title')
+							->label(__('Review title')),
+						Textarea::make('review')
+							->label(__('Text'))
+							->required(),
 					];
 
 					if ($record->hasReview()) {
@@ -130,8 +135,7 @@ class Table extends Component implements HasTable
 
 	protected function getTableQuery(): Builder
 	{
-		return Order::latest()
-			->where('beneficiary_id', auth()->user()->id);
+		return Order::where('beneficiary_id', auth()->user()->id)->latest();
 	}
 
 	public function render()

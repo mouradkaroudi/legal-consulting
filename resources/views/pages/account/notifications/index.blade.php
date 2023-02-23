@@ -15,7 +15,7 @@
     @endforelse
     <div class="flex items-center justiyf-between">
         <hr class="w-full">
-        <p tabindex="0" class="focus:outline-none text-sm flex flex-shrink-0 leading-normal px-3 py-16 text-gray-500">هذا كل شيء في الوقت الراهن :)</p>
+        <p tabindex="0" class="focus:outline-none text-sm flex flex-shrink-0 leading-normal px-3 py-16 text-gray-500">{{ __("That's it for now") }} :)</p>
         <hr class="w-full">
     </div>
 </div>

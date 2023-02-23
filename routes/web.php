@@ -109,7 +109,6 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
             'can:viewAny, App\Models\Order'
         ]);
 
-
         Route::name('credit.')->prefix('/credit')->group(function() {
             Route::get('/', [OfficeCreditController::class,'index'])->name('index');
             Route::get('/{txn}/receipt', [OfficeCreditController::class,'receipt'])->name('receipt');
@@ -153,13 +152,6 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'verified', 'ac
     Route::put('/current-office', [CurrentOfficeController::class, 'update'])->name('current-office.update');
 });
 
-
-
-/**
- * TODO: Webhooks routes
- */
-
-
 /**
  * Payments methods routes
  */
@@ -168,16 +160,6 @@ Route::name('payment.')->prefix('/payment')->middleware(['auth', 'account.settle
     Route::name('paypal.')->prefix('/paypal')->group(function () {        
         Route::get('/checkout', [PayPalController::class, 'checkout'])->name('checkout');
         Route::get('/process', [PayPalController::class, 'process'])->name('process');        
-    });
-
-    Route::name('balance.')->prefix('/balance')->group(function () {
-        //Route::get('/subscription', [PaymentBalanceController::class, 'subscription'])->name('subscription');
-        //Route::get('/order', [PaymentBalanceController::class, 'order'])->name('order');
-    });
-
-    Route::name('bank-transfer.')->prefix('/bank-transfer')->group(function () {
-        //Route::get('/subscriptions', [BankTransferController::class, 'subscription'])->name('subscription');
-        //Route::get('/order', [BankTransferController::class, 'order'])->name('order');
     });
 
 });

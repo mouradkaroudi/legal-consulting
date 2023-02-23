@@ -5,15 +5,18 @@ namespace App\Filament\Resources\TransactionResource\Pages;
 use App\Filament\Resources\TransactionResource;
 use App\Models\Transaction;
 use App\Services\TransactionService;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ManageRecords;
+use Filament\Support\Actions\Concerns\CanNotify;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions;
 use Filament\Tables\Filters;
-use Filament\Forms;
-use Illuminate\Support\Str;
 
 class ManageTransactions extends ManageRecords
 {
+
+	use CanNotify;
+
 	protected static string $resource = TransactionResource::class;
 
 	protected function getTableQuery(): Builder
@@ -26,17 +29,21 @@ class ManageTransactions extends ManageRecords
 	public function accept()
 	{
 		$txn = $this->mountedTableActionData;
-
 		$transactionService = new TransactionService(Transaction::find($txn["id"]));
 		$transactionService->AccpetTransaction();
+
+		Notification::make()
+			->body(__('filament-support::actions/edit.single.messages.saved'))
+			->success()
+			->send();
+
 	}
 
 	public function refuse()
 	{
 		$txn = $this->mountedTableActionData;
-
 		$transactionService = new TransactionService(Transaction::find($txn["id"]));
-		$transactionService->refuseTransaction("");
+		$transactionService->rejectTransaction();
 	}
 
 	protected function getTableActions(): array
@@ -44,7 +51,7 @@ class ManageTransactions extends ManageRecords
 		return [
 			Actions\EditAction::make()
 				->modalActions(
-					fn($action, $record) => [
+					fn ($action, $record) => [
 						$action
 							->makeModalAction("accept")
 							->button()
@@ -61,8 +68,7 @@ class ManageTransactions extends ManageRecords
 							->color("danger"),
 					]
 				)
-				->modalContent(fn($record) => view("filament.resources.transactions.details", compact('record')))
-				//->form([Forms\Components\Textarea::make("notes")->label("ملاحظات")]),
+				->modalContent(fn ($record) => view("filament.resources.transactions.details", compact('record')))
 		];
 	}
 
@@ -70,12 +76,14 @@ class ManageTransactions extends ManageRecords
 	{
 		return [
 			Filters\SelectFilter::make("source")
-			->label(__('filament::resources/transactions.table.filters.source.label'))
-			->options([
-					Transaction::RECEIVE_EARNINGS => __('transactions.' . Transaction::RECEIVE_EARNINGS),
+				->label(__('filament::resources/transactions.table.filters.source.label'))
+				->options([
+					Transaction::RECEIVE_EARNINGS => __('transactions.receive_earnings'),
 					Transaction::PAY_DUES => __('transactions.' . Transaction::PAY_DUES),
 					Transaction::DEPOSIT => __('transactions.' . Transaction::DEPOSIT),
 					Transaction::WITHDRAWALS => __('transactions.' . Transaction::WITHDRAWALS),
+					Transaction::SUBSCRIPTION_FEES => __("transactions.subscription_fees"),
+					Transaction::BANK_TRANSFER => __("transactions.bank_transfer"),
 				])
 				->attribute('source'),
 			Filters\SelectFilter::make("status")
@@ -83,6 +91,7 @@ class ManageTransactions extends ManageRecords
 				->options([
 					Transaction::SUCCESS => __('transactions.' . Transaction::SUCCESS),
 					Transaction::PENDING => __('transactions.' . Transaction::PENDING),
+					Transaction::REJECTED => __('transactions.' . Transaction::REJECTED),
 					Transaction::FAILED => __('transactions.' . Transaction::FAILED),
 				])
 				->attribute('status')

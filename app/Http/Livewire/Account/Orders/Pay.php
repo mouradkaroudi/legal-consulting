@@ -42,8 +42,6 @@ class Pay extends Component implements HasForms
         $this->form->fill([
             'order_id' => $this->order->id
         ]);
-
-
     }
 
     public function balancePaymentSelected() {

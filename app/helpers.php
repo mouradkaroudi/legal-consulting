@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * 
+ */
+function isRtl() {
+    return app()->getLocale() == 'ar';
+}
+
+/**
+ * 
  * 
  * @return string
  */

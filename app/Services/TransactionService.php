@@ -91,7 +91,7 @@ class TransactionService
 	 * Make a deposit
 	 */
 	public static function deposit(Model $holder, $args): void
-	{	
+	{
 
 		$amount = $args['amount'];
 		$fees = $args['fees'] ?? 0;
@@ -114,22 +114,42 @@ class TransactionService
 	}
 
 	/**
+	 * Bank transfer transaction
+	 */
+	public static function bankTransfer(Model $holder, $args)
+	{
+
+		$amount = $args['amount'];
+		$metadata = $args['metadata'] ?? [];
+
+		$data = [
+			"amount" => $amount,
+			"type" => "debit",
+			"fees" => 0,
+			"actual_amount" => $amount,
+			"source" => Transaction::BANK_TRANSFER,
+			"status" => Transaction::PENDING,
+			"metadata" => $metadata
+		];
+
+		$holder->transactions()->create($data);
+	}
+
+	/**
 	 * Accept a pending transaction
 	 */
 	public function AccpetTransaction()
 	{
-		if ($this->txn->status !== Transaction::PENDING) {
+		if ($this->txn->status != Transaction::PENDING) {
 			return;
 		}
 
 		$this->txn->completeTransaction();
 
-		if ($this->txn->source !== Transaction::WITHDRAWALS) {
-			if ($this->txn->isDebit()) {
-				$this->txn->transactionable->addToBalance($this->txn->amount);
-			} else {
-				$this->txn->transactionable->substractFromBalance($this->txn->amount);
-			}
+		if ($this->txn->isDebit()) {
+			$this->txn->transactionable->addToBalance($this->txn->amount);
+		} else {
+			$this->txn->transactionable->substractFromBalance($this->txn->amount);
 		}
 
 		TransactionEvents\Accepted::dispatch($this->txn);
@@ -138,13 +158,13 @@ class TransactionService
 	/**
 	 * Refuse a pending transaction
 	 */
-	public function refuseTransaction(?string $body = '')
+	public function rejectTransaction(?string $body = '')
 	{
-		if ($this->txn->status !== Transaction::PENDING) {
+		if ($this->txn->status != Transaction::PENDING) {
 			return;
 		}
 
-		$this->txn->status = Transaction::FAILED;
+		$this->txn->status = Transaction::REJECTED;
 		$this->txn->save();
 
 		TransactionEvents\Refused::dispatch($this->txn, $body);

@@ -61,6 +61,17 @@ return [
                 ],
             ]
         ],
+        'homepage' => [
+            'label' => 'Homepage',
+            'fields' => [
+                'text_color' => [
+                    'label' => 'Text color'
+                ],
+                'bg_color' => [
+                    'label' => 'Background color'
+                ]
+            ]
+        ],
         'social' => [
             'label' => 'Social networks',
             'fields' => [

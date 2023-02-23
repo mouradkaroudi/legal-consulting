@@ -8,15 +8,16 @@
         <span>{{ __('Reviews') }}</span>
     </div>
     <div class="grid grid-cols-1">
-        @if(!empty($orders->reviews))
-        @foreach( $orders->reviews as $review )
+        @if(!empty($orders))
+        @foreach( $orders as $order )
+        @foreach($order->reviews as $review)
         <article>
             <div class="flex items-center mb-4 -space-x-4">
                 <img class="w-10 h-10 rounded-full ml-2" src="{{ $review->author->avatar_url() }}" alt="">
                 <div class="space-y-1 font-medium dark:text-white">
                     <p>
                         {{ $review->author->name }}
-                        <time datetime="{{ $review->author->created_at }}" class="block text-sm text-gray-500 dark:text-gray-400">{{ __('Member since :date', ['date' => $order->latestReview()->author->created_at]) }}</time>
+                        <time datetime="{{ $review->author->created_at }}" class="block text-sm text-gray-500 dark:text-gray-400">{{ __('Member since :date', ['date' => $order->latestReview()->author->created_at->translatedFormat(config('tables.date_format'))]) }}</time>
                     </p>
                 </div>
             </div>
@@ -28,18 +29,18 @@
                     </svg>
                     @endfor
                     @if(!empty($review->title))
-                    <h3 class="ml-2 text-sm font-semibold text-gray-900 dark:text-white">$review->title</h3>
+                    <h3 class="ml-2 text-sm font-semibold text-gray-900 dark:text-white">{{ $review->title }}</h3>
                     @endif
             </div>
             <footer class="mb-5 text-sm text-gray-500 dark:text-gray-400">
-                <p><time datetime="{{ $review->created_at }}">{{ $review->created_at }}</time></p>
+                <p><time datetime="{{ $review->created_at }}">{{ $review->created_at->translatedFormat(config('tables.date_format')) }}</time></p>
             </footer>
 
             <p class="mb-2 font-light text-gray-500 dark:text-gray-400">
                 {{ $review->review }}
             </p>
         </article>
-
+        @endforeach
         @endforeach
         @else
         <p>{{ __('There are no reviews currently.') }}</p>

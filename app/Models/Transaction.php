@@ -12,15 +12,16 @@ class Transaction extends Model
     // Transaction status
     public const PENDING = 'pending';
     public const FAILED = 'failed';
+    public const REJECTED = 'rejected';
     public const SUCCESS = 'success';
 
     // Transaction source
     public const RECEIVE_EARNINGS = 'recieve_earnings';
     public const PAY_DUES = 'pay_dues';
-    public const RECHARGE = 'RECHARGE';
     public const WITHDRAWALS = 'withdrawals';
     public const DEPOSIT = 'deposit';
     public const SUBSCRIPTION_FEES = 'subscription_fees';
+    public const BANK_TRANSFER = 'bank_transfer';
 
     protected $fillable = [
         'amount',

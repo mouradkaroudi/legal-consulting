@@ -51,8 +51,8 @@ class OfficeListingController extends Controller
             $displayMessagingForm = false;
         }
 
-        $orders = $digitalOffice->orders;
-
+        $orders = $digitalOffice->orders()->whereHas('reviews')->get();
+  
         return view('pages.search.single.index', [
             'office' => $digitalOffice,
             'displayMessagingForm' => $displayMessagingForm,

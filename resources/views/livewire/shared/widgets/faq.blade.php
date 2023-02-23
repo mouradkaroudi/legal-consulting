@@ -1,6 +1,6 @@
 <section class="bg-white">
     <div class="container max-w-4xl px-6 py-10 mx-auto">
-        <h1 class="text-4xl font-semibold text-center text-gray-800">الأسئلة الشائعة</h1>
+        <h1 class="text-4xl font-semibold text-center text-gray-800">{{ __('Frequently asked questions') }}</h1>
 
         <div class="mt-12 space-y-4">
             @if(!empty($posts))

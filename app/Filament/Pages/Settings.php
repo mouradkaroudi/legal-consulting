@@ -72,6 +72,18 @@ class Settings extends Page
 	protected function getFormSchema(): array
 	{
 
+		$homepageSettings = [
+			Components\Grid::make(2)->schema([
+				Components\ColorPicker::make("homepage_cta_textcolor")->label(
+					__('filament::pages/settings.fields.homepage.fields.text_color.label')
+				),
+				Components\ColorPicker::make("homepage_cta_bgcolor")->label(
+					__('filament::pages/settings.fields.homepage.fields.bg_color.label')
+				),
+			]),
+		];
+
+
 		$generalSettings = [
 			Components\Grid::make(2)->schema([
 				Components\FileUpload::make("general_settings_site_logo")->label(
@@ -160,6 +172,9 @@ class Settings extends Page
 			Components\Fieldset::make("payment")
 				->label(__('filament::pages/settings.fields.payment.label'))
 				->schema($paymentSettingScheme)->columns(1),
+			Components\Fieldset::make("homepage")
+				->label(__('filament::pages/settings.fields.homepage.label'))
+				->schema($homepageSettings)->columns(1),
 			Components\Fieldset::make("social")
 				->label(__('filament::pages/settings.fields.social.label'))
 				->schema($socialLinksSchema)->columns(1),

@@ -66,7 +66,7 @@
         <div class="flex items-center my-2 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
             <p class="text-center font-semibold mx-4 mb-0">{{ __('Or make a deposit') }}</p>
         </div>
-        <livewire:payment.form :amount="$order->amount" entity="order" :entityId="$order->id" />
+        <livewire:payment.form :amount="$order->amount" entity="order" :entityId="$order->id" :redirectRoute="route('account.orders.index')"/>
     </div>
 
 </div>

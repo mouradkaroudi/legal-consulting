@@ -1,6 +1,6 @@
 @props(['title' => '', 'metaDescription' => ''])
 <!DOCTYPE html>
-<html dir="{{ app()->getLocale() == 'ar' ? 'rtl': 'ltr' }}" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html dir="{{ isRtl() ? 'rtl': 'ltr' }}" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
 
     <title>{{ site_name() . ($title ? ' - ' . $title : '') }}</title>
@@ -26,6 +27,18 @@
 </head>
 
 <body class="bg-gray-100">
+
+    <div class="p-4 text-center bg-green-600 text-white">
+        <div class="flex justify-center gap-2">
+            <x-dynamic-component component="social-icons.whatsapp" class="w-4 h-4" />
+            <span>{{ __('Contact us via') }} </span>
+            <div class="flex gap-2">
+                <a class="font-bold" href="https://wa.me/<number>" target="_blank">{{ __('Whatsapp') }}</a>
+                <x-heroicon-o-external-link class="w-4 h-4 rtl:rotate-[270deg]"/>
+            </div>
+        </div>
+    </div>
+
     <livewire:front.navigation />
     @yield('content')
     <livewire:shared.widgets.footer />

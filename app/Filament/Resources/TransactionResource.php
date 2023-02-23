@@ -54,12 +54,15 @@ class TransactionResource extends Resource
 						Transaction::DEPOSIT => __("transactions.deposit"),
 						Transaction::PAY_DUES => __("transactions.pay_dues"),
 						Transaction::WITHDRAWALS => __("transactions.withdrawals"),
+						Transaction::SUBSCRIPTION_FEES => __("transactions.subscription_fees"),
+						Transaction::BANK_TRANSFER => __("transactions.bank_transfer"),
 					]),
 				\Filament\Tables\Columns\BadgeColumn::make("status")
 					->label(__('filament::resources/transactions.table.columns.status.label'))
 					->enum([
 						Transaction::SUCCESS => __("transactions.success"),
 						Transaction::PENDING => __("transactions.pending"),
+						Transaction::REJECTED => __("transactions.rejected"),
 					]),
 				\Filament\Tables\Columns\TextColumn::make("created_at")
 					->label(__('filament::resources/transactions.table.columns.created_at.label'))

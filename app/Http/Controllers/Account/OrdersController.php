@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\Transaction;
-use App\Services\TransactionService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
+
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      *
@@ -24,32 +26,14 @@ class OrdersController extends Controller
      * 
      */
     public function pay(Request $request, Order $order)
-    {
+    {   
+
+        $this->authorize('view', $order);
         
         if($order->isPaid()) {
             abort(404);
         }
 
-        $autopay = $request->input('autopay');
-
-        return view('pages.account.orders.pay', compact('order', 'autopay'));
+        return view('pages.account.orders.pay', compact('order'));
     }
 }
-
-/*
-        if ($request->user()->available_balance < $amount) {
-            return redirect()->route('account.orders.index')->withErrors([
-                'message' => __("Insufficient account balance. Please try another payment method")
-            ]);
-        }
-
-        TransactionService::pay(
-            $request->user(),
-            $order->office,
-            $amount,
-            Transaction::SUCCESS,
-            ['order_id' => $order->id]
-        );
-
-        $order->markAsPaid();
-*/

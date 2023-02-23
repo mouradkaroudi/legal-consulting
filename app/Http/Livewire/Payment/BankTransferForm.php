@@ -3,7 +3,9 @@
 namespace App\Http\Livewire\Payment;
 
 use App\Models\Transaction;
+use App\Models\User;
 use App\Models\Withdrawal;
+use App\Services\TransactionService;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Tabs;
@@ -17,21 +19,22 @@ class BankTransferForm extends Component implements HasForms
 {
 	use InteractsWithForms;
 
-	public $txn_id;
-	public $receipt_attachment;
+	public $transfer_number;
+	public $attachments;
 	public $amount;
+	public $redirectRoute = null;
 
 	protected function getFormSchema(): array
 	{
 		return [
 			TextInput::make("amount")
-				->label("المبلغ")
+				->label(__("Amount"))
 				->required(),
-			TextInput::make("txn_id")
-				->label("رقم المعاملة المالية")
+			TextInput::make("transfer_number")
+				->label(__('The financial transaction number'))
 				->required(),
-			FileUpload::make("receipt_attachment")->label(
-				"صورة لوصل تأكيد التحويل"
+			FileUpload::make("attachments")->label(
+				__('The transaction confirmation receipt')
 			),
 		];
 	}
@@ -41,15 +44,12 @@ class BankTransferForm extends Component implements HasForms
 		$user = auth()->user();
 		$data = $this->form->getState();
 
-		$user->transactions()->create([
+		TransactionService::bankTransfer(User::find($user->id), [
 			"amount" => $data["amount"],
-			"type" => "debit",
-			"source" => Transaction::DEPOSIT,
-			"status" => Transaction::PENDING,
 			"metadata" => [
-				"txn_id" => $data["txn_id"],
-				"receipt_attachment" => $data["receipt_attachment"],
-			],
+				"transfer_number" => $data["transfer_number"],
+				"attachments" => [$data["attachments"]],
+			]
 		]);
 	}
 
@@ -58,12 +58,16 @@ class BankTransferForm extends Component implements HasForms
 		$this->save();
 
 		Notification::make()
-			->title("تم ارسال طلب الشحن بنجاح")
-			->body('سيتم اضافة الرصيد الى حسابك فور تحقق ادارة الموقع من التحويل البنكي. شكرا على تفهمك')
+			->title(__('The deposit request has been sent successfully'))
+			->body(__('The amount will be added to your account once we verifies the bank transfer. Thank you for being so understanding'))
 			->success()
 			->send();
 
 		$this->reset();
+		if($this->redirectRoute) {
+			return redirect()->route($this->redirectRoute);
+		}
+
 	}
 
 	public function render()

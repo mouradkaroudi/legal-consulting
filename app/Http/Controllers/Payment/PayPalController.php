@@ -33,12 +33,24 @@ class PayPalController extends Controller
 
         if ($entity === 'subscription') {
             $plan = ProfessionSubscriptionPlan::find($id);
+            $currentOffice = $request->user()->currentOffice;
+            
+            if(!$currentOffice) {
+                abort(404);
+            }
+
+            if($currentOffice->profession_id != $plan->profession_id) {
+                abort(404);
+            }
+
             $amount = $plan->total_amount;
             $tax = $plan->tax_amount;
         }
 
         if ($entity === 'order') {
             $order = Order::find($id);
+            $this->authorize('view', $order);
+
             $amount = $order->total_amount;
             $tax = $order->tax_amount;
         }

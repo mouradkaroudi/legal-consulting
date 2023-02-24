@@ -19,6 +19,7 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
     {
         $this->form->fill([
             'name' => $user->name,
+            'phone_number' => $user->phone_number,
             'email' => $user->email,
             'avatar_url' => $user->avatar_url,
             'preferred_lang' => $user->preferred_lang,
@@ -33,6 +34,7 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
     private function updateProfile($data)
     {
 
+        $phone_number = $data['phone_number'];
         $email = $data['email'];
         $name = $data['name'];
         $avatar_url = $data['avatar_url'];
@@ -45,6 +47,7 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
         $gender = $data['gender'];
 
         $this->user->email = $email;
+        $this->user->phone_number = $phone_number;
         $this->user->name = $name;
         $this->user->avatar_url = $avatar_url;
         $this->user->preferred_lang = $preferred_lang;
@@ -91,6 +94,9 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
                         'en' => 'English'
                     ]),
             ]),
+            Forms\Components\TextInput::make('phone_number')
+                ->label(__('validation.attributes.phone'))
+                ->unique('users', 'phone_number', $this->user),
             Forms\Components\TextInput::make('ID_number')
                 ->label(__('validation.attributes.ID'))
                 ->unique()

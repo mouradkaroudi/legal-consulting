@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\Country;
 use App\Models\User;
 use Carbon\Carbon;
 use Filament\Forms;
@@ -13,6 +14,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
 class UserResource extends Resource
 {
@@ -43,7 +45,44 @@ class UserResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([]);
+            ->schema([
+                Forms\Components\Card::make([
+                    Forms\Components\Grid::make()->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label(__('Name'))
+                            ->inlineLabel(),
+                        Forms\Components\TextInput::make('email')
+                            ->label(__('validation.attributes.email'))
+                            ->inlineLabel(),
+                        Forms\Components\TextInput::make('ID_number')
+                            ->label(__('validation.attributes.ID'))
+                            ->inlineLabel(),
+                        Forms\Components\TextInput::make('phone_number')
+                            ->label(__('validation.attributes.phone'))
+                            ->inlineLabel(),
+                        Forms\Components\TextInput::make('country_id')
+                            ->label(__('validation.attributes.nationality'))
+                            ->inlineLabel(),
+                        Forms\Components\Placeholder::make('ID_image')
+                            ->label(__('validation.attributes.ID_image'))
+                            ->content(fn($record) => new HtmlString('<a href="'.asset('storage/' . $record->ID_image).'" target="_blank">' .__('File link'). '</a>'))
+                            ->inlineLabel(),
+                        Forms\Components\Placeholder::make('driving_license_image')
+                            ->label(__('Driving license image'))
+                            ->content(fn($record) => new HtmlString('<a href="'.asset('storage/' . $record->driving_license_image).'" target="_blank">' .__('File link'). '</a>'))
+                            ->inlineLabel(),
+                        Forms\Components\TextInput::make('preferred_lang')
+                            ->label(__('validation.attributes.language'))
+                            ->inlineLabel(),
+                        Forms\Components\TextInput::make('address')
+                            ->label(__('validation.attributes.address'))
+                            ->inlineLabel(),
+                        Forms\Components\TextInput::make('gender')
+                            ->label(__('validation.attributes.sex'))
+                            ->inlineLabel(),
+                    ])
+                ])
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -59,10 +98,16 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->mutateRecordDataUsing(function (array $data): array {
+                        if(!empty($data['country_id'])) {
+                            $data['country_id'] = Country::where('id', $data['country_id'])->with('translation')->first()->translation->name;
+                        }
+                        return $data;
+                    }),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('ban')
-                        ->label(__('filament::resources/users.table.actions.ban.label')) 
+                        ->label(__('filament::resources/users.table.actions.ban.label'))
                         ->action(function ($record) {
                             $record->banned_at = Carbon::now();
                             $record->save();
@@ -97,7 +142,7 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ManageUsers::route('/'),
-            'view' => Pages\ViewUser::route('/{record}'),
+            //'view' => Pages\ViewUser::route('/{record}'),
         ];
     }
 }

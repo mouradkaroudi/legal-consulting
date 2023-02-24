@@ -45,7 +45,13 @@ class ManageTransactions extends ManageRecords
 		$transactionService = new TransactionService(Transaction::find($txn["id"]));
 		$transactionService->rejectTransaction();
 	}
-
+    protected function getActions(): array
+    {
+        return [
+            // Actions\CreateAction::make(),
+        ];
+    }
+	
 	protected function getTableActions(): array
 	{
 		return [

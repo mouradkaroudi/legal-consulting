@@ -48,50 +48,6 @@ class SubscriptionController extends Controller
     public function subscribe(Request $request, ProfessionSubscriptionPlan $professionSubscriptionPlan)
     {
         
-        $from = $request['from'] ?? 'account';
 
-        $payer = $from === 'account' ? auth()->user() :  auth()->user()->currentOffice;
-
-        if (empty($payer)) {
-            return response('', 400);
-        }
-
-        $planId = $professionSubscriptionPlan->id;
-
-        $professionSubscriptionPlan = ProfessionSubscriptionPlan::find($planId);
-
-        // FIXME: move this to Transaction service
-        if ($professionSubscriptionPlan->amount > $payer->available_balance) {
-            return redirect()->route('office.subscription.index', ['profession_subscription_plan' => $professionSubscriptionPlan->id])->withErrors([
-                'message' => __("Insufficient account balance. Please try another payment method")
-            ]);
-        }
-
-        TransactionService::subscribe(
-            $payer,
-            $professionSubscriptionPlan->amount,
-            Transaction::SUCCESS,
-            ['subscription_plan' => $professionSubscriptionPlan->id]
-        );
-
-        SubscriptionService::createSubscription(
-            $payer instanceof DigitalOffice ? $payer : $payer->currentOffice,
-            $professionSubscriptionPlan
-        );
-
-        $office = $request->user()->currentOffice;
-        $office->status = DigitalOffice::AVAILABLE;
-        if (setting('digital_office_direct_registration') == 1) {
-            
-        } else {
-            //$office->status = DigitalOffice::PENDING;
-        }
-
-        $office->save();
-
-        return redirect()->route('office.settings',['tab' => 'subscription'])->with(
-            'success',
-            __("Congratulation! You have been subscribed")
-        );
     }
 }

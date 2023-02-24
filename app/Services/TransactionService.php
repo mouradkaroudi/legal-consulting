@@ -18,8 +18,13 @@ class TransactionService
 	/**
 	 * 
 	 */
-	public static function subscribe(Model $payer, $amount, $status, $metadata = [])
+	public static function subscribe(Model $payer, $args)
 	{
+
+		$amount = $args['amount'];
+		$status = $args['status'];
+		$metadata = $args['metadata'];
+
 		$payer->transactions()->create([
 			'amount' => $amount,
 			'fees' => 0,
@@ -93,6 +98,7 @@ class TransactionService
 	public static function deposit(Model $holder, $args): void
 	{
 
+		$actual_amount = $args['actual_amount'];
 		$amount = $args['amount'];
 		$fees = $args['fees'] ?? 0;
 		$status = $args['status'];
@@ -102,7 +108,7 @@ class TransactionService
 			"amount" => $amount,
 			"type" => "debit",
 			"fees" => $fees,
-			"actual_amount" => $amount,
+			"actual_amount" => $actual_amount,
 			"source" => Transaction::DEPOSIT,
 			"status" => $status,
 			"metadata" => $metadata

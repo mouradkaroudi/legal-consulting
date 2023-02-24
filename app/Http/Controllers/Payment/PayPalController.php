@@ -112,6 +112,7 @@ class PayPalController extends Controller
 
             TransactionService::deposit(User::find($user->id), [
                 'amount' => $actualAmount,
+                'actual_amount' => $actualAmount + $tax,
                 'fees' => $tax,
                 'status' => Transaction::SUCCESS, 
                 'metadata' => ['payment_method' => 'paypal']

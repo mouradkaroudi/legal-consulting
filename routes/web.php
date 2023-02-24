@@ -94,7 +94,7 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
 
     Route::name('subscription.')->prefix('/subscription')->group(function () {
         Route::get('/{profession_subscription_plan}', [SubscriptionController::class, 'index'])->name('index');
-        Route::get('/{profession_subscription_plan}/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe'); // FIXME: post request
+        //Route::get('/{profession_subscription_plan}/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe'); // FIXME: post request
         Route::get('/', [SubscriptionController::class, 'select'])->name('select');
     });
 

@@ -123,7 +123,7 @@ class PayPalController extends Controller
             }
 
             if($entity === 'subscription') {
-                return redirect()->route('office.subscription.subscribe', ['profession_subscription_plan' => $id]);
+                return redirect()->route('office.subscription.index', ['profession_subscription_plan' => $id]);
             }
             
         } else {

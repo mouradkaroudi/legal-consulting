@@ -97,7 +97,7 @@ class Transaction extends Model
         }
 
         return __("transactions.details." . $this->source, [
-            "amount" => money($this->actual_amount, 'SAR', true)
+            "amount" => money($this->amount, 'SAR', true)
         ]);
     }
 

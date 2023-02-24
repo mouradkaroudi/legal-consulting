@@ -63,10 +63,12 @@ class Subscribe extends Component implements HasForms
     {
         return [
             Forms\Components\Radio::make('credit')
+                ->label(__('Choose the account type'))
                 ->options([
                     'account' => __('Account balance'),
                     'office' => __('Office balance')
                 ])
+                ->required()
         ];
     }
 

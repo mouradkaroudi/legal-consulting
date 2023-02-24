@@ -1,4 +1,4 @@
-<div class="grid grid-cols-2 gap-6">
+<div class="grid grid-cols-1 gap-6">
     <div class="w-full">
         <div class="border bg-blue-100 border-blue-500 rounded-lg p-4 mb-6">
             <div class="flex justify-between">
@@ -59,7 +59,7 @@
                     </p>
 
                     @endif
-                    <x-filament::button size="lg" class="w-full" :type="'submit'">
+                    <x-filament::button size="lg" class="w-full mt-4" :type="'submit'">
                         {{ __('Complete the payment') }}
                     </x-filament::button>
                 </form>
@@ -69,6 +69,8 @@
         <div class="flex items-center my-2 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
             <p class="text-center font-semibold mx-4 mb-0">{{ __('Or make a deposit') }}</p>
         </div>
+
+        <livewire:payment.form :amount="$plan->amount" entity="subscription" :entityId="$plan->id"/>
 
     </div>
 

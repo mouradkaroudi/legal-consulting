@@ -65,10 +65,13 @@ Route::get('/', function () {
 /**
  * Authentication routes
  */
-Route::name('auth.')->middleware(RedirectIfAuthenticated::class)->group(function () {
+Route::name('auth.')->group(function () {
     Route::get('/registration', [RegistrationController::class, 'create'])->name('registration');
     Route::get('/login', [AuthController::class, 'index'])->name('login');
-});
+    Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.request');
+})->middleware(['guest']);
+
+Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('password.reset')->middleware(['guest']);
 
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', [AuthController::class, 'verifyEmailPrompt'])->name('verification.notice');

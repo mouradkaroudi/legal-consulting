@@ -1,7 +1,7 @@
 <form wire:submit.prevent="submit" class="space-y-8">
     {{ $this->form }}
     <x-filament-support::button :form="'submit'" :type="'submit'" class="w-full">
-    إنشاء حساب  
+        {{ __('Create an account') }}  
     </x-filament-support::button>
         
     </button>

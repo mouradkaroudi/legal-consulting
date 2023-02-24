@@ -9,7 +9,7 @@
                 <label for="remember" class="text-gray-500 dark:text-gray-300">{{ __('Remember me') }}</label>
             </div>
         </div>
-        <x-filament::link class="text-sm" href="#">
+        <x-filament::link class="text-sm" href="{{ route('auth.password.request') }}">
             {{ __('Forgot your password ?') }}
         </x-filament::link>
     </div>

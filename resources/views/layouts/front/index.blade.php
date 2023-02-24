@@ -47,6 +47,8 @@ $whatsapp_number = setting('whatsapp_number');
     <livewire:front.navigation />
     @yield('content')
     <livewire:shared.widgets.footer />
+
+    @livewire('notifications')
 </body>
 
 </html>

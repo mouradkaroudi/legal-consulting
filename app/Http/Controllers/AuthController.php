@@ -20,6 +20,20 @@ class AuthController extends Controller
     }
 
     /**
+     * Handle forget password
+     */
+    public function forgotPassword( Request $request ) {
+        return view('pages.auth.forgot-password');
+    }
+
+    /**
+     * Handle reset password
+     */
+    public function resetPassword( Request $request, $token ) {
+        return view('pages.auth.reset-password', ['token' => $token, 'email' => $request->input('email')]);
+    }
+
+    /**
      * Display the email verification prompt.
      */
     public function verifyEmailPrompt( Request $request ) {

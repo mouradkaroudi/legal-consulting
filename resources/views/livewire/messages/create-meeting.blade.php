@@ -7,7 +7,7 @@
         {{ __('Create a meeting') }}
     </x-slot>
     <x-alert>
-        احرص على استعمال موقع القانوني في معاملاتك المالية. <a href="#" class="underline text-bule-700">أعرف كيف نضمن حقوقك.</a>
+        {{ __('Be sure to keep your financial dealings on the site') }}.
 
     </x-alert>
     <p class="text-sm text-gray-700">
@@ -22,7 +22,7 @@
             <span class="font-bold text-base">Wibox</span>
             <x-heroicon-o-external-link class="w-4 h-4 text-gray-400" />
         </a>
-        <a href="#" class="p-4 border items-center justify-between rounded-lg flex hover:shadow-sm hover:-translate-y-1 duration-300">
+        <a href="https://zoom.us/" class="p-4 border items-center justify-between rounded-lg flex hover:shadow-sm hover:-translate-y-1 duration-300">
             <span class="font-bold text-base">Zoom</span>
             <x-heroicon-o-external-link class="w-4 h-4 text-gray-400" />
         </a>

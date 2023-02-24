@@ -100,13 +100,14 @@ class Subscribe extends Component implements HasForms
                 'metadata' => ['subscription_plan' => $this->plan->id]
             ]            
         );
+        
+        $office = auth()->user()->currentOffice;
 
         SubscriptionService::createSubscription(
-            $payer,
+            $office,
             $this->plan
         );
 
-        $office = auth()->user()->currentOffice;
         $office->status = DigitalOffice::AVAILABLE;
         if (setting('digital_office_direct_registration') == 1) {
             

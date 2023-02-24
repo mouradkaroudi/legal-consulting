@@ -43,8 +43,13 @@
                     {{ $message }}
                 </div>
                 @enderror
+                @if(session()->has('success'))
+                <div class="bg-green-100 border font-semibold text-green-900 border-green-700 rounded-lg p-4 mb-6">
+                    {{ session()->get('success') }}
+                </div>
+                @endif
 
-                <livewire:office.subscription.subscribe :plan="$plan"/>
+                <livewire:office.subscription.subscribe :plan="$plan" />
 
             </div>
 

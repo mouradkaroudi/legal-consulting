@@ -36,11 +36,6 @@
 
     <div>
         <div class="bg-white border border-gray-200 rounded">
-            @if(session()->has('success'))
-            <div class="bg-green-100 border font-semibold text-green-900 border-green-700 rounded-lg p-4 mb-6">
-                {{ session()->get('success') }}
-            </div>
-            @endif
             <div class="flex items-center pr-4">
                 <input type="radio" name="isBalancePaymentSelected" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2" {{ $isBalancePaymentSelected ? "checked" : "" }}>
                 <label for="bordered-radio-1" class="w-full py-4 mr-2 font-bold text-gray-900">

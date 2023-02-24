@@ -45,11 +45,12 @@ class Navigation extends Component
                 'label' => __('Offices'),
                 'routeName' => 'account.offices'
             ];
-            $this->navigationLinks[] = [
-                'label' => __('Invites'),
-                'routeName' => 'account.invites'
-            ];
         }
+
+        $this->navigationLinks[] = [
+            'label' => __('Invites'),
+            'routeName' => 'account.invites'
+        ];
 
     }
 

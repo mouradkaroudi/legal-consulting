@@ -52,7 +52,8 @@ Route::get('/', function () {
         $n[] = [
             'title' => $slide->title,
             'content' => $slide->content,
-            'color' => $slide->meta->where('option', 'bg_color')->first()?->value,
+            'text_color' => $slide->meta->where('option', 'text_color')->first()?->value,
+            'bg_color' => $slide->meta->where('option', 'bg_color')->first()?->value,
             'image' => asset('storage/' . $slide->meta->where('option', 'bg_image')->first()?->value)
         ];
     }

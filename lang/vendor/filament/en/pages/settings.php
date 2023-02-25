@@ -64,6 +64,12 @@ return [
         'homepage' => [
             'label' => 'Homepage',
             'fields' => [
+                'wstextcolor' => [
+                    'label' => 'Whatsapp text color'
+                ],
+                'wsbgcolor' => [
+                    'label' => 'Whatsapp background color'
+                ],
                 'text_color' => [
                     'label' => 'Text color'
                 ],

@@ -65,6 +65,12 @@ return [
         'homepage' => [
             'label' => 'الرئيسية',
             'fields' => [
+                'wstextcolor' => [
+                    'label' => 'لون نص واتساب'
+                ],
+                'wsbgcolor' => [
+                    'label' => 'لون خلفية واتساب'
+                ],
                 'text_color' => [
                     'label' => 'لون النص'
                 ],

@@ -1,6 +1,8 @@
 @props(['title' => '', 'metaDescription' => ''])
 @php
 $whatsapp_number = setting('whatsapp_number');
+$wsTextColor = setting('homepage_whatsapp_textcolor');
+$wsBgColor = setting('homepage_whatsapp_bgcolor');
 @endphp
 <!DOCTYPE html>
 <html dir="{{ isRtl() ? 'rtl': 'ltr' }}" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -32,7 +34,7 @@ $whatsapp_number = setting('whatsapp_number');
 <body class="bg-gray-100">
     
     @if(!empty($whatsapp_number))
-    <div class="p-4 text-center bg-green-600 text-white">
+    <div class="p-4 text-center" style="background-color: {{ $wsBgColor }}; color: {{ $wsTextColor }};">
         <div class="flex justify-center gap-2">
             <x-dynamic-component component="social-icons.whatsapp" class="w-4 h-4" />
             <span>{{ __('Contact us via') }} </span>

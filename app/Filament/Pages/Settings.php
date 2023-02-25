@@ -86,6 +86,12 @@ class Settings extends Page
 
 		$homepageSettings = [
 			Components\Grid::make(2)->schema([
+				Components\ColorPicker::make("homepage_whatsapp_textcolor")->label(
+					__('filament::pages/settings.fields.homepage.fields.wstextcolor.label')
+				),
+				Components\ColorPicker::make("homepage_whatsapp_bgcolor")->label(
+					__('filament::pages/settings.fields.homepage.fields.wsbgcolor.label')
+				),
 				Components\ColorPicker::make("homepage_cta_textcolor")->label(
 					__('filament::pages/settings.fields.homepage.fields.text_color.label')
 				),

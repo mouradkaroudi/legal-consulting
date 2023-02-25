@@ -12,7 +12,10 @@ class Navigation extends Component
 {
     public function render()
     {
-        $menu = FilamentNavigation::get('home-menu');
+
+        $name = 'home-menu-'. app()->getLocale();
+
+        $menu = FilamentNavigation::get($name);
 
         if(empty($menu)) {
             return view('livewire.front.navigation', ['menu' => []]);

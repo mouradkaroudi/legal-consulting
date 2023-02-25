@@ -7,6 +7,7 @@ use Closure;
 use Livewire\Component;
 use Filament\Forms;
 use Filament\Forms\Components\Grid;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,11 +18,11 @@ class Password extends Component implements Forms\Contracts\HasForms
   public $password;
   public $current_password;
   public $password_confirmation;
-  
-  private function updatePassword( $password )
+
+  private function updatePassword($password)
   {
     $user = Auth::user();
-    $user->password = Hash::make( $password );
+    $user->password = Hash::make($password);
     $user->save();
   }
 
@@ -31,6 +32,12 @@ class Password extends Component implements Forms\Contracts\HasForms
 
     $this->updatePassword($data['password']);
 
+    $this->reset();
+
+    Notification::make()
+      ->title(__('The information has been updated successfully'))
+      ->success()
+      ->send();
   }
 
   protected function getFormSchema(): array
@@ -41,12 +48,12 @@ class Password extends Component implements Forms\Contracts\HasForms
           ->label(__("validation.attributes.current_password"))
           ->rules([
             function () {
-                return function (string $attribute, $value, Closure $fail) {
-                    if(!Hash::check($value, Auth::user()->password)) {
-                        return $fail(__("validation.current_password"));
-                    }    
-                };
-            },        
+              return function (string $attribute, $value, Closure $fail) {
+                if (!Hash::check($value, Auth::user()->password)) {
+                  return $fail(__("validation.current_password"));
+                }
+              };
+            },
           ])
           ->password()
           ->required(),

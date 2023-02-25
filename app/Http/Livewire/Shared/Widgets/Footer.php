@@ -17,8 +17,9 @@ class Footer extends Component
 
     public function render()
     {
-
-        $menu = FilamentNavigation::get('footer-menu');
+        $name = 'footer-menu-'. app()->getLocale();
+        $menu = FilamentNavigation::get($name);
+        
         if(empty($menu)) {
             return view('livewire.shared.widgets.footer', ['menu' => []]);
         }

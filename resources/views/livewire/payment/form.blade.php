@@ -13,6 +13,17 @@
             <livewire:payment.gateways.paypal.form :entity="$entity" :entityId="$entityId" />
         </div>
     </div>
+    <div class="bg-white border border-gray-200 rounded">
+        <div class="flex items-center pr-4">
+            <input type="radio" x-model="method" value="stcpay" name="paymentMethod" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+            <label for="bordered-radio-1" class="w-full py-4 mr-2 font-bold text-gray-900">
+                {{ __('STCPay') }}
+            </label>
+        </div>
+        <div class="px-6 pb-4" x-cloak x-show="method == 'stcpay'">
+            <livewire:payment.gateways.stc-pay.form :entity="$entity" :entityId="$entityId" />
+        </div>
+    </div>
     @if($accpetBankTransfer)
     <div class="bg-white border border-gray-200 rounded">
         <div class="flex items-center pr-4">

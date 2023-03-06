@@ -56,7 +56,7 @@ class MessagesTable extends Component implements HasTable
     protected function getTableQuery(): Builder|Relation
     {
         $user = Auth::user();
-        return $user->currentOffice->threads->toQuery()->latest("updated_at");
+        return Thread::query()->forOffice($user->currentOffice)->latest("updated_at");
     }
 
     public function render()

@@ -200,6 +200,21 @@ class Thread extends Model
 	 *
 	 * @return Builder
 	 */
+	public function scopeForOffice(Builder $query, $office)
+	{
+		return $query
+			->whereHasMorph('receiver', $office::class)
+			->where('receiver_id', $office->id);
+	}
+
+	/**
+	 * Returns threads that the user is associated with.
+	 *
+	 * @param Builder $query
+	 * @param mixed $userId
+	 *
+	 * @return Builder
+	 */
 	public function scopeForModel(Builder $query, $model)
 	{
 		return $query

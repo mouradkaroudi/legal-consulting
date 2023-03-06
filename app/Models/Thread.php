@@ -185,6 +185,21 @@ class Thread extends Model
 	 *
 	 * @return Builder
 	 */
+	public function scopeForUser(Builder $query, $user)
+	{
+		return $query
+			->whereHasMorph('sender', $user::class)
+			->where('sender_id', $user->id);
+	}
+
+	/**
+	 * Returns threads that the user is associated with.
+	 *
+	 * @param Builder $query
+	 * @param mixed $userId
+	 *
+	 * @return Builder
+	 */
 	public function scopeForModel(Builder $query, $model)
 	{
 		return $query

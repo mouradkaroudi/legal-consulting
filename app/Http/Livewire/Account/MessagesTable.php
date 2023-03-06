@@ -53,7 +53,7 @@ class MessagesTable extends Component implements HasTable
 
     $user = Auth::user();
 
-    return $user->threads->toQuery()->latest("updated_at");
+    return Thread::query()->forUser($user)->latest("updated_at");
   }
 
   public function render()

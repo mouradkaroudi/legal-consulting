@@ -28,6 +28,10 @@ class Participant extends Model
         return $this->belongsTo(Thread::class, 'thread_id', 'id');
     }
 
+    public function model() {
+        return $this->morphTo();
+    }
+
     /**
      * User relationship.
      *

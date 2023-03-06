@@ -17,7 +17,7 @@ class Thread extends Model
 	 *
 	 * @var array
 	 */
-	protected $fillable = ["user_id", "office_id", "subject"];
+	protected $fillable = ["subject"];
 
 
 	/**
@@ -54,6 +54,22 @@ class Thread extends Model
 	public function participants()
 	{
 		return $this->hasMany(Participant::class, "thread_id", "id");
+	}
+
+	/**
+	 * Sender relationship
+	 */
+	public function sender()
+	{
+		return $this->morphTo();
+	}
+
+	/**
+	 * Receiver relationship
+	 */
+	public function receiver()
+	{
+		return $this->morphTo();
 	}
 
 	/**
@@ -169,21 +185,13 @@ class Thread extends Model
 	 *
 	 * @return Builder
 	 */
-	public function scopeForUser(Builder $query, $userId)
+	public function scopeForModel(Builder $query, $model)
 	{
-		$participantsTable = "participants";
-		$threadsTable = "threads";
-
 		return $query
-			->join(
-				$participantsTable,
-				$this->getQualifiedKeyName(),
-				"=",
-				$participantsTable . ".thread_id"
-			)
-			->where($participantsTable . ".user_id", $userId)
-			//->whereNull($participantsTable . '.deleted_at')
-			->select($threadsTable . ".*");
+			->whereHasMorph('sender', $model::class)
+			->orWhereHasMorph('receiver', $model::class)
+			->where('sender_id', $model->id)
+			->orWhere('receiver_id', $model->id);
 	}
 
 	/**
@@ -307,10 +315,10 @@ class Thread extends Model
 	 *
 	 * @return void
 	 */
-	public function markAsRead($userId)
+	public function markAsRead($model)
 	{
 		try {
-			$participant = $this->getParticipantFromUser($userId);
+			$participant = $this->getParticipantFromModel($model);
 			$participant->last_read = new Carbon();
 			$participant->save();
 		} catch (ModelNotFoundException $e) {
@@ -326,10 +334,10 @@ class Thread extends Model
 	 *
 	 * @return bool
 	 */
-	public function isUnread($userId)
+	public function isUnread($model)
 	{
 		try {
-			$participant = $this->getParticipantFromUser($userId);
+			$participant = $this->getParticipantFromModel($model);
 
 			if (
 				$participant->last_read == null ||
@@ -354,10 +362,11 @@ class Thread extends Model
 	 *
 	 * @throws ModelNotFoundException
 	 */
-	public function getParticipantFromUser($userId)
+	public function getParticipantFromModel($model)
 	{
 		return $this->participants()
-			->where("user_id", $userId)
+			->whereHasMorph('model', $model::class)
+			->where('model_id', $model->id)
 			->firstOrFail();
 	}
 
@@ -484,14 +493,18 @@ class Thread extends Model
 	 *
 	 * @return Collection
 	 */
-	public function userUnreadMessages($userId)
+	public function unreadMessages($model)
 	{
 		$messages = $this->messages()
-			->where("user_id", "!=", $userId)
+			->whereHasMorph(
+				'model',
+				$model::class
+			)
+			->where("model_id", "!=", $model->id)
 			->get();
 
 		try {
-			$participant = $this->getParticipantFromUser($userId);
+			$participant = $this->getParticipantFromModel($model);
 		} catch (ModelNotFoundException $e) {
 			return collect();
 		}
@@ -512,6 +525,7 @@ class Thread extends Model
 	 *
 	 * @return Collection
 	 */
+	/*
 	public function userUnreadOfficeMessages($userId, $officeId)
 	{
 		$messages = $this->where("office_id", $officeId)
@@ -520,7 +534,7 @@ class Thread extends Model
 			->get();
 
 		try {
-			$participant = $this->getParticipantFromUser($userId);
+			$participant = $this->getParticipantFromModel($userId);
 		} catch (ModelNotFoundException $e) {
 			return collect();
 		}
@@ -533,7 +547,7 @@ class Thread extends Model
 			return $message->updated_at->gt($participant->last_read);
 		});
 	}
-
+	*/
 	/**
 	 * Returns count of unread office messages in thread for given user.
 	 *

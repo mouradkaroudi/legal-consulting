@@ -20,7 +20,7 @@ class MessagesTable extends Component implements HasTable
   protected function getTableColumns(): array
   {
     return [
-      TextColumn::make("office.name")
+      TextColumn::make("receiver.name")
         ->label(__('Office name')),
       TextColumn::make("subject")
         ->label(__('Subject')),
@@ -44,16 +44,16 @@ class MessagesTable extends Component implements HasTable
   protected function getTableRecordClassesUsing(): ?Closure
   {
     return function ($record) {
-      $user_id = Auth::id();
-      return $record->isUnread($user_id) ? "bg-gray-200" : "";
+      return $record->isUnread(Auth::user()) ? "bg-gray-200" : "";
     };
   }
 
   protected function getTableQuery(): Builder|Relation
   {
-    return Thread::query()
-      ->where('user_id', Auth::id())
-      ->latest("updated_at");
+
+    $user = Auth::user();
+
+    return $user->threads->toQuery()->latest("updated_at");
   }
 
   public function render()

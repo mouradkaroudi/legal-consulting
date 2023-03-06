@@ -1,7 +1,7 @@
 <div class="flex flex-row py-4">
-    <img class="object-cover w-12 h-12 border-2 border-gray-300 rounded-full" alt="{{ $message->user->name }}" src="//www.gravatar.com/avatar/{{ md5($message->user->email) }} ?s=64">
+    <img class="object-cover w-12 h-12 border-2 border-gray-300 rounded-full" alt="{{ $message->model->name }}" src="//www.gravatar.com/avatar/{{ md5($message->model->email) }} ?s=64">
     <div class="flex-col mt-1">
-        <div class="flex items-center flex-1 px-4 font-bold leading-tight">{{ $message->user->name }}
+        <div class="flex items-center flex-1 px-4 font-bold leading-tight">{{ $message->model->name }}
             <span class="mr-2 text-xs font-normal text-gray-500"> {{ $message->created_at->diffForHumans() }}</span>
         </div>
         <div class="flex-1 px-2 ml-2 leading-loose text-gray-600">

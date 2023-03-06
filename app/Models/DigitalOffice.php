@@ -22,7 +22,7 @@ class DigitalOffice extends Model
 
 	public const PENDING = 'pending';
 	public const PENDING_PAYMENT = 'pending_payment';
-
+	
 	protected $fillable = [
 		"user_id", // TODO: remove this
 		"name",
@@ -88,7 +88,7 @@ class DigitalOffice extends Model
 	 */
 	public function threads()
 	{
-		return $this->hasMany(Thread::class, "office_id", "id");
+		return $this->morphMany(Thread::class, 'receiver');
 	}
 
 	/**

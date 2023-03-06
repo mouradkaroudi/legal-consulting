@@ -45,39 +45,39 @@ class SendMessage extends Component implements HasForms
         $digitalOffice = DigitalOffice::find($officeId);
         $employees = DigitalOfficeEmployee::where('office_id', $officeId)->permission('manage-messages')->get();
 
-        $thread = Thread::create([
-            'user_id' => Auth::id(),
-            'office_id' => $digitalOffice->id,
-            'subject' => $subject,
-        ]);
+        $thread = new Thread(['subject' => $subject]);
+
+        $thread->sender()->associate(Auth::user());
+        $thread->receiver()->associate($digitalOffice);
+
+        $thread->save();
 
         // Message
-        Message::create([
+        (new Message([
             'thread_id' => $thread->id,
-            'user_id' => Auth::id(),
+            //'user_id' => Auth::id(),
             'type' => Message::TEXT,
             'body' => $body,
-        ]);
+        ]))->model()->associate(Auth::user())->save();
 
         // Sender
-        Participant::create([
+        (new Participant([
             'thread_id' => $thread->id,
-            'user_id' => Auth::id(),
             'last_read' => Date::now(),
-        ]);
-
+        ]))->model()->associate(Auth::user())->save();
+        
         // Office owner
-        Participant::create([
+        (new Participant([
             'thread_id' => $thread->id,
-            'user_id' => $digitalOffice->user_id
-        ]);
+        ]))->model()->associate(DigitalOfficeEmployee::where('office_id',$digitalOffice->id)
+            ->where('user_id', $digitalOffice->owner->id)->first()
+        )->save();
 
         // Add all eligible employees as participants to the thread
         foreach ($employees as $employee) {
-            Participant::create([
+            (new Participant([
                 'thread_id' => $thread->id,
-                'user_id' => $employee->user_id
-            ]);
+            ]))->model()->associate($employee)->save();
         }
 
         return redirect()->route('account.messages.show', ['id' => $thread->id]);

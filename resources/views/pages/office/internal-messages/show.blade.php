@@ -1,8 +1,8 @@
-@extends('layouts.dashboard', ['pageTitle' => __('Messages')])
+@extends('layouts.dashboard', ['pageTitle' => __('Office messages')])
 
 @section('content')
 <div class="mx-auto max-w-screen-xl flex flex-col">
-    <livewire:office.widgets.messages.header
+    <livewire:office.widgets.internal-messages.header
     :thread="$thread" 
     :showCloseConversation="true"
     :showCreateOffer="$showCreateOffer"

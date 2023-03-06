@@ -17,6 +17,7 @@ use App\Http\Controllers\Account\OrdersController as AccountOrdersController;
 
 use App\Http\Controllers\Office\CreditController as OfficeCreditController;
 use App\Http\Controllers\Office\EmployeesController;
+use App\Http\Controllers\Office\InternalMessagesController;
 use App\Http\Controllers\Office\MessagesController as OfficeMessagesController;
 use App\Http\Controllers\Office\NotificationsController as OfficeNotificationsController;
 use App\Http\Controllers\Office\SettingsController;
@@ -122,6 +123,7 @@ Route::name('office.')->prefix('/office')->middleware(['account.canAccessCurrent
         Route::resource('/employees', EmployeesController::class);
         Route::get('/notifications', OfficeNotificationsController::class)->name('notifications');
         Route::resource('/threads', OfficeMessagesController::class);
+        Route::resource('/internal-threads', InternalMessagesController::class);
     });
 });
 

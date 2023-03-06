@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Session;
 class MessagesController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        // $this->authorizeResource(Thread::class, "thread");
+    }
+
+    /**
      * Show all of the message threads to the user.
      *
      * @return mixed
@@ -48,13 +58,12 @@ class MessagesController extends Controller
         // $users = User::whereNotIn('id', $thread->participantsUserIds())->get();
 
         // don't show the current user in list
-        $userId = Auth::id();
-        $users = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
+        //$userId = Auth::id();
+        //$users = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
         $viewer = 'user';
 
-        $thread->markAsRead($userId);
+        $thread->markAsRead(Auth::user());
 
-        return view('pages.account.messages.show', compact('thread', 'users', 'viewer'));
+        return view('pages.account.messages.show', compact('thread', 'viewer'));
     }
-
 }

@@ -7,10 +7,10 @@
             <div class="mt-2 flex items-center text-sm text-gray-500">
                 @if( $viewer === 'user' )
                     <x-heroicon-s-office-building class="ml-1.5 h-5 w-5 flex-shrink-0 text-gray-400"/>
-                    {{ $thread->office->name }}
+                    name
                 @else
                     <x-heroicon-s-user class="ml-1.5 h-5 w-5 flex-shrink-0 text-gray-400"/>
-                    {{ $thread->owner->name }}
+                    name
                 @endif
             </div>
             @if($thread->closed_at)

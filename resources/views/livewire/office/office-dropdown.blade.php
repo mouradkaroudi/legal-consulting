@@ -1,6 +1,10 @@
 <x-filament::dropdown placement="bottom-end">
     <x-slot name="trigger">
-        <x-filament::button icon="heroicon-o-chevron-down" iconPosition="after" color="custom" class="bg-green-600 hover:bg-green-500 focus:bg-green-700 focus:ring-offset-green-70 rounded-full">
+        <x-filament::button 
+            icon="heroicon-o-chevron-down" 
+            iconPosition="after" 
+            color="custom" 
+            class="bg-green-600 hover:bg-green-500 focus:bg-green-700 focus:ring-offset-green-70 rounded-full whitespace-nowrap">
             {{ $currentOffice->name }}
         </x-filament::button>
     </x-slot>

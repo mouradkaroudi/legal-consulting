@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Office;
 
+use App\Models\DigitalOfficeEmployee;
 use App\Models\Thread;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -13,7 +14,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class MessagesTable extends Component implements HasTable
+class InternalMessagesTable extends Component implements HasTable
 {
 
     use InteractsWithTable;
@@ -23,8 +24,8 @@ class MessagesTable extends Component implements HasTable
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('sender.name')
-                ->label(__('Beneficiary')),
+            TextColumn::make('sender.user.name')
+                ->label(__('Employee')),
             TextColumn::make('subject')
                 ->label(__('Subject')),
         ];
@@ -40,8 +41,8 @@ class MessagesTable extends Component implements HasTable
     protected function getTableRecordUrlUsing(): Closure
     {
         return fn (Model $record): string => route(
-            'office.threads.show',
-            ['digitalOffice' => $this->officeId, 'thread' => $record->id]
+            'office.internal-threads.show',
+            ['internal_thread' => $record->id]
         );
     }
 
@@ -56,11 +57,14 @@ class MessagesTable extends Component implements HasTable
     protected function getTableQuery(): Builder|Relation
     {
         $user = Auth::user();
-        return $user->currentOffice->threads->toQuery()->latest("updated_at");
+        return Thread::query()->forModel($user->officeEmployment($user->currentOffice))
+        ->where('sender_type', DigitalOfficeEmployee::class)
+        ->orWhere('receiver_type', DigitalOfficeEmployee::class)
+        ->latest("updated_at");
     }
 
     public function render()
     {
-        return view('livewire.office.messages-table');
+        return view('livewire.office.internal-messages-table');
     }
 }

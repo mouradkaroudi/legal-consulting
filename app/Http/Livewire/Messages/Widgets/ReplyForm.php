@@ -3,17 +3,11 @@
 namespace App\Http\Livewire\Messages\Widgets;
 
 use App\Models\Message;
-use App\Models\Thread;
-use Filament\Forms\Components\Actions\Modal\Actions\Action;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Concerns\HasFormComponentActions;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Filament\Forms\Components;
-use Illuminate\Support\Str;
 
 class ReplyForm extends Component implements HasForms
 {
@@ -60,10 +54,6 @@ class ReplyForm extends Component implements HasForms
         ];
     }
 
-    public function upload($file) {
-        //dd($file);
-    }
-
     protected function getForms(): array
     {
         return [
@@ -79,21 +69,19 @@ class ReplyForm extends Component implements HasForms
         $data = $this->uploadForm->getState();
 
         if(!empty($this->attachment)) {
-            Message::create([
+            (new Message([
                 'thread_id' => $this->thread->id,
-                'user_id' => Auth::id(),
                 'body' => $data['attachment'],
                 'type' => Message::ATTACHMENT    
-            ]);
+            ]))->model()->associate(Auth::user()->loggedAs())->save();
         }
 
         // Message
-        Message::create([
+        (new Message([
             'thread_id' => $this->thread->id,
-            'user_id' => Auth::id(),
             'body' => $body,
             'type' => Message::TEXT
-        ]);
+        ]))->model()->associate(Auth::user()->loggedAs())->save();
 
         return redirect(url()->previous());
     }

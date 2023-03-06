@@ -51,10 +51,18 @@ class User extends Authenticatable implements MustVerifyEmail
 	public function currentOffice()
 	{
 		if (is_null($this->current_office_id) && $this->id) {
-			//$this->switchOffice($this->personalTeam());
+			//$this->switchOffice();
 		}
 
 		return $this->belongsTo(DigitalOffice::class, "current_office_id");
+	}
+
+	/**
+	 * Each user can join offices as employee
+	 * We return employment relationship for the user in current logged office
+	 */
+	public function officeEmployment( $office ) {
+		return DigitalOfficeEmployee::where('user_id', $this->id)->where('office_id', $office->id)->first();
 	}
 
 	/**
@@ -252,11 +260,18 @@ class User extends Authenticatable implements MustVerifyEmail
 	}
 
 	/**
-	 *
+	 * Transactions
 	 */
 	public function transactions()
 	{
 		return $this->morphMany(Transaction::class, "transactionable");
+	}
+
+	/**
+	 * User Threads
+	 */
+	public function threads() {
+		return $this->morphMany(Thread::class, 'sender');
 	}
 
 	/**
@@ -328,6 +343,18 @@ class User extends Authenticatable implements MustVerifyEmail
 		$this->save();
 	}
 
+	/**
+	 * 
+	 */
+	public function loggedAs() {
+
+		if($this->currentOffice) {
+			return $this->officeEmployee($this->currentOffice);
+		}
+
+		return $this;
+
+	}
 	/**
 	 * 
 	 */

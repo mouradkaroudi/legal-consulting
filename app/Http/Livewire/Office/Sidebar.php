@@ -83,8 +83,16 @@ class Sidebar extends Component
         "label" => __("Messages"),
         "routeName" => "office.threads.index",
         'icon' => 'heroicon-o-chat-alt-2',
-        'badge' => Message::unreadForUserOffice(Auth::id(), $user->currentOffice->id)->count()
+        'badge' => Message::unreadForModel($user->officeEmployment($user->currentOffice))->count()
       ];
     }
+
+    $this->sidebarLinks[] = [
+      "label" => __("Office messages"),
+      "routeName" => "office.internal-threads.index",
+      'icon' => 'heroicon-o-chat-alt-2',
+      //'badge' => Message::unreadForModel($user->officeEmployment($user->currentOffice))->count()
+    ];
+
   }
 }

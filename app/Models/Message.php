@@ -25,7 +25,7 @@ class Message extends Model
      *
      * @var array
      */
-    protected $fillable = ['thread_id', 'user_id', 'body', 'type'];
+    protected $fillable = ['thread_id', 'body', 'type'];
 
     /**
      * Thread relationship.
@@ -49,6 +49,14 @@ class Message extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * 
+     */
+    public function model()
+    {
+        return $this->morphTo();
     }
 
     /**
@@ -92,17 +100,16 @@ class Message extends Model
      * @param mixed $userId
      * @return Builder
      */
-    public function scopeUnreadForUser(Builder $query, $userId)
+    public function scopeUnreadForModel(Builder $query, $model)
     {
-        return $query->where('user_id', '!=', $userId)
-            ->whereHas('participants', function (Builder $query) use ($userId) {
-                $query->where('user_id', $userId)
+        return $query->where('model_id', '!=', $model->id)
+            ->whereHasMorph('model', $model::class)
+            ->whereHas('participants', function (Builder $query) use ($model) {
+                $query->where('model_id', $model->id)
                     ->where(function (Builder $q) {
                         $q->where('last_read', '<', $this->getConnection()->raw($this->getConnection()->getTablePrefix() . $this->getTable() . '.created_at'))
                             ->orWhereNull('last_read');
                     });
-            })->whereHas('thread', function(Builder $query) use ($userId) {
-                $query->where('user_id', $userId);
             });
     }
 
@@ -123,9 +130,8 @@ class Message extends Model
                         $q->where('last_read', '<', $this->getConnection()->raw($this->getConnection()->getTablePrefix() . $this->getTable() . '.created_at'))
                             ->orWhereNull('last_read');
                     });
-            })->whereHas('thread', function(Builder $query) use ($userId, $officeId) {
+            })->whereHas('thread', function (Builder $query) use ($userId, $officeId) {
                 $query->where('office_id', $officeId);
             });
     }
-
 }

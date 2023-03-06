@@ -15,7 +15,7 @@ class MessagesButtonWithIndicator extends Component
     public function mount() {
 
         $user = Auth::user();
-        $this->messagesCount = Message::unreadForUser($user->id)->count();
+        $this->messagesCount = Message::unreadForModel($user)->count();
 
     }
 

@@ -7,7 +7,7 @@ use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class MessagesController extends Controller
+class InternalMessagesController extends Controller
 {
   /**
    * Create the controller instance.
@@ -16,7 +16,7 @@ class MessagesController extends Controller
    */
   public function __construct()
   {
-    $this->authorizeResource(Thread::class, "thread");
+    $this->authorizeResource(Thread::class, "internal_thread");
   }
 
   /**
@@ -26,19 +26,18 @@ class MessagesController extends Controller
    */
   public function index(Request $request)
   {
-    return view("pages.office.messages.index", [
+    return view("pages.office.internal-messages.index", [
       "officeId" => auth()->user()->currentOffice->id,
     ]);
   }
 
-  public function show(Thread $thread)
+  public function show(Thread $internalThread)
   {
-
     $user = auth()->user();
-    $thread->markAsRead($user->officeEmployment($user->currentOffice));
+    $internalThread->markAsRead($user->officeEmployment($user->currentOffice));
 
-    return view("pages.office.messages.show", [
-      "thread" => $thread,
+    return view("pages.office.internal-messages.show", [
+      "thread" => $internalThread,
       "showCreateOffer" => $user->can('create', \App\Models\Order::class)
     ]);
   }

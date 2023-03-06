@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 class DigitalOfficeEmployee extends Model
 {
     use HasFactory, HasRoles, HasPermissions, Notifiable;
-    
+
     protected $guard_name = 'web';
 
     /**
@@ -25,14 +25,14 @@ class DigitalOfficeEmployee extends Model
         'job_title'
     ];
 
-	/**
-	 * The attributes that should be cast.
-	 *
-	 * @var array<string, string>
-	 */
-	protected $casts = [
-		"ended_at" => "datetime",
-	];
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        "ended_at" => "datetime",
+    ];
 
     /**
      * Employee user
@@ -47,15 +47,23 @@ class DigitalOfficeEmployee extends Model
      * 
      * @return bool
      */
-    public function isOwner( DigitalOffice $office ): bool {
+    public function isOwner(DigitalOffice $office): bool
+    {
         return $this->user->id == $office->user_id;
     }
 
     /**
      * Query only active employees
      */
-    public function scopeActive( $query ) {
+    public function scopeActive($query)
+    {
         return $query->where('ended_at', null);
     }
 
+    /**
+     * 
+     */
+    public function getNameAttribute() {
+        return $this->user->name;
+    }
 }

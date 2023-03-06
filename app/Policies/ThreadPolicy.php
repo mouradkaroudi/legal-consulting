@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\DigitalOffice;
+use App\Models\DigitalOfficeEmployee;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -19,6 +20,7 @@ class ThreadPolicy
      */
     public function viewAny(User $user)
     {
+
         return $user->hasOfficePermission($user->currentOffice, 'manage-messages');
     }
 
@@ -31,8 +33,29 @@ class ThreadPolicy
      */
     public function view(User $user, Thread $thread)
     {
-        //TODO: allow participante to also access message
-        return $user->hasOfficePermission(DigitalOffice::find($thread->office_id), 'manage-messages' );
+
+        $isEmployeeThread = $thread->sender instanceof DigitalOfficeEmployee && $thread->receiver instanceof DigitalOfficeEmployee;
+
+        if($isEmployeeThread) {
+            if(!$user->currentOffice) {
+                return false;
+            }
+
+            $employee = $user->officeEmployee($user->currentOffice);
+
+            return $thread->sender->id == $employee->id || $thread->receiver->id == $employee->id;
+
+        }
+
+        if ($thread->sender->id == $user->id) {
+            return true;
+        }
+
+        if ($thread->receiver instanceof DigitalOffice) {
+            return $user->hasOfficePermission(DigitalOffice::find($thread->receiver->id), 'manage-messages');
+        }
+
+        return $thread->sender->id == $user->id || $thread->receiver->id == $user->id;
     }
 
     /**
@@ -56,7 +79,15 @@ class ThreadPolicy
      */
     public function update(User $user, Thread $thread)
     {
-        return $user->id == $thread->user_id || $user->hasOfficePermission($thread->office, 'manage-messages');
+        if ($thread->sender->id == $user->id) {
+            return true;
+        }
+
+        if ($thread->receiver instanceof DigitalOffice) {
+            return $user->hasOfficePermission(DigitalOffice::find($thread->receiver->id), 'manage-messages');
+        }
+
+        return $thread->sender->id == $user->id || $thread->receiver->id == $user->id;
     }
 
     /**
@@ -68,7 +99,14 @@ class ThreadPolicy
      */
     public function delete(User $user, Thread $thread)
     {
-        return $user->id == $thread->user_id;
+        if ($thread->sender->id == $user->id) {
+            return true;
+        }
+
+        if ($thread->receiver instanceof DigitalOffice) {
+            return $user->hasOfficePermission(DigitalOffice::find($thread->receiver->id), 'manage-messages');
+        }
+
+        return $thread->sender->id == $user->id || $thread->receiver->id == $user->id;
     }
-    
 }

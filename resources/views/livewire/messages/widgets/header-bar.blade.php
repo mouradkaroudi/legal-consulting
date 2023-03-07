@@ -27,7 +27,7 @@
     @if(!$thread->closed_at)
         <div class="mt-5 flex gap-4 lg:mt-0 lg:ml-4">            
             @if($showCreateOffer)
-            <livewire:office.create-order :officeId="$thread->receiver->id" :beneficiaryId="$thread->user_id"/>
+            <livewire:office.create-order :officeId="$thread->receiver->id" :beneficiaryId="$thread->sender->id"/>
             @endif
             @if($showCloseConversation)
             <span class="block">

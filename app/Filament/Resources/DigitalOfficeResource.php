@@ -7,6 +7,7 @@ use App\Filament\Resources\DigitalOfficeResource\RelationManagers;
 use App\Models\DigitalOffice;
 use Carbon\Carbon;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -82,6 +83,25 @@ class DigitalOfficeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('editDisplayInfo')
+                        ->label(__('filament::resources/offices.table.actions.displayInfo.label'))
+                        ->mountUsing(fn (Forms\ComponentContainer $form, $record) => $form->fill([
+                            'display_info' => $record->display_info,
+                        ]))
+                        ->action(function ($record, $data) {
+                            $fields = $data['display_info'];
+                            $record->display_info = $fields;
+                            $record->save();
+                        })
+                        ->form([
+                            Select::make('display_info')
+                                ->label(__('filament::resources/offices.table.actions.displayInfo.label'))
+                                ->multiple()
+                                ->options([
+                                    'phone_number' => __('validation.attributes.phone'),
+                                    'email' => __('validation.attributes.email')
+                                ])
+                        ]),
                     Tables\Actions\Action::make('viewProfile')
                         ->label(__('filament::resources/offices.table.actions.viewProfile.label'))
                         ->url(fn (DigitalOffice $record) => route('search.office', [
@@ -91,7 +111,7 @@ class DigitalOfficeResource extends Resource
                             'name' => $record->url_name
                         ]))
                         ->openUrlInNewTab()
-                        ->visible(fn($record) => $record->status != DigitalOffice::UNCOMPLETED)
+                        ->visible(fn ($record) => $record->status != DigitalOffice::UNCOMPLETED)
                         ->icon('heroicon-o-external-link'),
                     Tables\Actions\Action::make('ban')
                         ->label(__('filament::resources/offices.table.actions.ban.label'))

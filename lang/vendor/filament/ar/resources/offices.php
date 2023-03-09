@@ -27,6 +27,9 @@ return [
             ]
         ],
         'actions' => [
+            'displayInfo' => [
+                'label' => 'معلومات الظاهرة'
+            ],
             'viewProfile' => [
                 'label' => 'عرض البروفايل'
             ],

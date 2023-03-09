@@ -43,7 +43,8 @@ class DigitalOffice extends Model
 	];
 
 	protected $casts = [
-		"withdrawal_methods" => "array"
+		"withdrawal_methods" => "array",
+		"display_info" => "array"
 	];
 
 	/**

@@ -27,6 +27,9 @@ return [
             ]
         ],
         'actions' => [
+            'displayInfo' => [
+                'label' => 'Displayed info'
+            ],
             'viewProfile' => [
                 'label' => 'View Profile'
             ],

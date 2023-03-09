@@ -18,12 +18,22 @@
                 <div class="px-4 py-2 font-semibold">{{ __('Full name') }}</div>
                 <div class="px-4 py-2">{{ $office->owner->name }}</div>
             </div>
+            @if( is_null($office->display_info) || (is_array($office->display_info) && in_array('email',$office->display_info)))
             <div class="grid grid-cols-2">
                 <div class="px-4 py-2 font-semibold">{{ __('Email address') }}</div>
                 <div class="px-4 py-2">
                     <a class="text-blue-800" href="mailto:{{ $office->owner->email }}">{{ $office->owner->email }}</a>
                 </div>
             </div>
+            @endif
+            @if( is_null($office->display_info) || (is_array($office->display_info) && in_array('phone_number',$office->display_info) && !empty($office->phone_number)))
+            <div class="grid grid-cols-2">
+                <div class="px-4 py-2 font-semibold">{{ __('validation.attributes.phone') }}</div>
+                <div class="px-4 py-2">
+                    <a class="text-blue-800" href="tel:{{ $office->phone_number }}">{{ $office->phone_number }}</a>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 </div>

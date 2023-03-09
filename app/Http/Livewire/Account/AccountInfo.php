@@ -108,8 +108,7 @@ class AccountInfo extends Component implements Forms\Contracts\HasForms
                 ->label(__('validation.attributes.ID_image'))
                 ->required(),
             Forms\Components\FileUpload::make('driving_license_image')
-                ->label(__('Driving license image'))
-                ->required(),
+                ->label(__('Driving license image')),
             Forms\Components\Select::make("gender")
                 ->label(__('validation.attributes.sex'))
                 ->options([

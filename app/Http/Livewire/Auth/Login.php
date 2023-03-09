@@ -16,6 +16,7 @@ class Login extends Component implements HasForms
 
     public $email;
     public $password;
+    public $redirect = null;
 
     protected function getFormSchema(): array
     {
@@ -46,6 +47,10 @@ class Login extends Component implements HasForms
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
+        }
+
+        if(!empty($this->redirect)) {
+            return redirect()->to($this->redirect);
         }
 
         return redirect()->intended('account');

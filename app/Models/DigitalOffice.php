@@ -77,9 +77,8 @@ class DigitalOffice extends Model
 	{
 		return $this->belongsToMany(
 			Specialization::class,
-			"digital_office_specializations",
-			"specialization_id",
-			"office_id"
+			'digital_office_specializations',
+			'office_id'
 		);
 	}
 

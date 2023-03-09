@@ -14,9 +14,12 @@ class AuthController extends Controller
     /**
      * 
      */
-    public function index()
+    public function index( Request $request )
     {
-        return view('pages.auth.login');
+
+        return view('pages.auth.login', [
+            'redirect' => $request->input('redirect')
+        ]);
     }
 
     /**

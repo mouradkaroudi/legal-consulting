@@ -367,6 +367,6 @@ class User extends Authenticatable implements MustVerifyEmail
 	 * Check if the required fields filled
 	 */
 	public function isAccountSettled() {
-		return !empty($this->ID_number) && !empty($this->address) && !empty($this->ID_image) && !empty($this->driving_license_image);
+		return !empty($this->ID_number) && !empty($this->address) && !empty($this->ID_image);
 	}
 }

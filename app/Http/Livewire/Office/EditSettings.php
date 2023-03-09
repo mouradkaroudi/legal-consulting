@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Office;
 
 use App\Models\DigitalOffice;
+use App\Models\DigitalOfficeSpecialization;
 use App\Models\Profession;
 use App\Models\Service;
 use App\Models\Specialization;
@@ -73,7 +74,7 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 				->columns(1),
 			Select::make("specializations")
 				->label(__('Select specializations'))
-				->relationship('specializations', 'id')
+				//->relationship('specializations', 'id')
 				->multiple()
 				->options($specializations),
 
@@ -120,6 +121,16 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 
 		$data = $this->form->getState();
 
+		$specializationsIds = $data['specializations'];
+		$specializations = [];
+
+		foreach($specializationsIds as $specializationsId) {
+			$specializations[] = [
+				'specialization_id' => $specializationsId,
+				'office_id' => $this->digitalOffice->id
+			];
+		}
+
 		$data = [
 			"image" => $data["image"],
 			"description" => $data["description"],
@@ -132,6 +143,8 @@ class EditSettings extends Component implements Forms\Contracts\HasForms
 		];
 
 		$this->digitalOffice->update($data);
+		
+		DigitalOfficeSpecialization::upsert($specializations, ['specialization_id', 'office_id']);
 
 		Notification::make()
 			->title(__('The information has been updated successfully'))

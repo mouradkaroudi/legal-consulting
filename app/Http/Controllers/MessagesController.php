@@ -51,7 +51,7 @@ class MessagesController extends Controller
         } catch (ModelNotFoundException $e) {
             Session::flash('error_message', 'The thread with ID: ' . $id . ' was not found.');
 
-            return redirect()->route('account.messages.show');
+            return redirect()->route('account.messages.index');
         }
 
         // show current user in list if not a current participant

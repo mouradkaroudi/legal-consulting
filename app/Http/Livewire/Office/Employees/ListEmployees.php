@@ -75,7 +75,7 @@ class ListEmployees extends Component implements Tables\Contracts\HasTable
 			Tables\Actions\Action::make('send_message')
 				->label(__('Send message'))
 				->button()
-				->visible(fn($record) => $record->user_id != auth()->user()->id)
+				->visible(fn($record) => $record->user_id != auth()->user()->id && $record->ended_at == null)
 				->action(function ($record, array $data) {
 
 					$user = Auth::user();

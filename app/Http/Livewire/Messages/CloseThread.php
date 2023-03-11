@@ -25,7 +25,7 @@ class CloseThread extends Component
 
         $this->thread->closed_at = Date::now();
         $this->thread->closed_by = auth()->user()->id;
-
+        
         $this->thread->save();
 
         return redirect()->route('account.messages.show', ['id' => $this->thread->id]);

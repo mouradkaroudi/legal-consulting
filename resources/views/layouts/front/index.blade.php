@@ -1,6 +1,9 @@
 @props(['title' => '', 'metaDescription' => ''])
 @php
 $whatsapp_number = setting('whatsapp_number');
+if(!empty($whatsapp_number)) {
+$whatsapp_number = explode(',', $whatsapp_number);
+}
 $wsTextColor = setting('homepage_whatsapp_textcolor');
 $wsBgColor = setting('homepage_whatsapp_bgcolor');
 @endphp
@@ -32,15 +35,17 @@ $wsBgColor = setting('homepage_whatsapp_bgcolor');
 </head>
 
 <body class="bg-gray-100">
-    
+
     @if(!empty($whatsapp_number))
     <div class="p-4 text-center" style="background-color: {{ $wsBgColor }}; color: {{ $wsTextColor }};">
         <div class="flex justify-center gap-2">
             <x-dynamic-component component="social-icons.whatsapp" class="w-4 h-4" />
             <span>{{ __('Contact us via') }} </span>
             <div class="flex gap-2">
-                <a class="font-bold" href="https://wa.me/{{ $whatsapp_number }}" target="_blank">{{ __('Whatsapp') }}</a>
-                <x-heroicon-o-external-link class="w-4 h-4 rtl:rotate-[270deg]"/>
+                @foreach($whatsapp_number as $whatsapp_num)
+                <a class="font-bold" href="https://wa.me/{{ $whatsapp_num }}" target="_blank">{{ $whatsapp_num }}</a>
+                <x-heroicon-o-external-link class="w-4 h-4 rtl:rotate-[270deg]" />
+                @endforeach
             </div>
         </div>
     </div>

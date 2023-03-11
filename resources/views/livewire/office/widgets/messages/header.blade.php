@@ -23,7 +23,7 @@
         @endif
         @if($showCloseConversation)
         <span class="block">
-            <livewire:messages.close-thread :threadId="$thread->id" />
+            <livewire:messages.close-thread :thread="$thread" />
         </span>
         @endif
     </div>

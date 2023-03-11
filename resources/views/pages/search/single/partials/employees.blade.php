@@ -8,7 +8,7 @@
         <span>{{ __('Office employees') }}</span>
     </div>
     <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
-        @foreach( $office->employees as $employee )
+        @foreach( $office->employees()->whereNull('ended_at')->get() as $employee )
         <div class="text-center border p-4 rounded-lg">
             <img class="w-12 h-12 rounded-full mx-auto mb-2" src="{{ $employee->user->avatar_url() }}" alt="">
             <span class="block font-bold">{{ $employee->user->name }}</span>

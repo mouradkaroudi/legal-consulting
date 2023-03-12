@@ -46,7 +46,7 @@
             displaySlide(parseInt(e.target.dataset.index))
         })
     })
-    /*
+    
     setInterval(function() {
         displaySlide(currentSlide)
         if(currentSlide == (document.querySelectorAll('.hero-slide-item').length - 1)) {
@@ -54,6 +54,6 @@
         }else{
             currentSlide = currentSlide + 1;
         }
-    }, 15000);*/
+    }, 15000);
 </script>
 @endif

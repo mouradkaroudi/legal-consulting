@@ -25,7 +25,8 @@
     </div>
 </div>
 <script>
-    var slides = JSON.parse('{!! json_encode($slides) !!}');
+    var s = '{!! json_encode($slides) !!}';
+    var slides = JSON.parse(s.replace(/\s+/g,""));
     var currentSlide = 1;
 
     function displaySlide(index) {

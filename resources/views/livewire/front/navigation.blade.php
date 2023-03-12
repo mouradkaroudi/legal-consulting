@@ -76,7 +76,10 @@
                     @endauth
                     @guest
                     <x-filament-support::button tag='a' :href="route('auth.login')" color="primary" icon='heroicon-o-user'>
-                        {{ __('Account') }}
+                        {{ __('Sign In') }}
+                    </x-filament-support::button>
+                    <x-filament-support::button tag='a' :href="route('auth.registration')" color="secondary" icon='heroicon-o-plus'>
+                        {{ __('Sign Up') }}
                     </x-filament-support::button>
                     @endguest
                 </li>

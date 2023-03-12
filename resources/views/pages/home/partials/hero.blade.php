@@ -21,14 +21,6 @@
                 </div>
 
             </div>
-            <div class="w-full max-w-xl xl:w-4/12">
-                <div class="bg-white rounded shadow-2xl p-7 sm:p-10">
-                    <h3 class="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
-                        {{ __('Sign to your account') }}
-                    </h3>
-                    <livewire:auth.login />
-                </div>
-            </div>
         </div>
     </div>
 </div>

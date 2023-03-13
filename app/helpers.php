@@ -88,17 +88,23 @@ function generateResourceUrl($resourceType, $data)
 
     if ($resourceType == 'service') {
         $service = \App\Models\Service::find($data['service_id']);
-        return route('search.listing', ['service' => $service->slug]);
+        if($service) {
+            return route('search.listing', ['service' => $service->slug]);
+        }
     }
 
     if ($resourceType == 'profession') {
         $profession = \App\Models\Profession::find($data['profession_id']);
-        return route('search.listing', ['service' => $profession->service->slug, 'profession' => $profession->slug,]);
+        if($profession) {
+            return route('search.listing', ['service' => $profession->service->slug, 'profession' => $profession->slug,]);
+        }
     }
 
     if ($resourceType == 'page') {
         $post = \App\Models\Post::find($data['page_id']);
-        return route('posts', ['post' => $post, 'slug' => $post->slug]);
+        if($post) {
+            return route('posts', ['post' => $post, 'slug' => $post->slug]);
+        }
     }
 
     return '';

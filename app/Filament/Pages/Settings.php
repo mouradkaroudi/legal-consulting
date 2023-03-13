@@ -208,6 +208,9 @@ class Settings extends Page
 			Components\Fieldset::make("links")
 				->label(__('filament::pages/settings.fields.links.label'))
 				->schema($linksSettings)->columns(1),
+			Components\Fieldset::make("pages")
+				->label(__('filament::pages/settings.fields.page.label'))
+				->schema($pageSettingScheme)->columns(1),
 			Components\Fieldset::make("social")
 				->label(__('filament::pages/settings.fields.social.label'))
 				->schema($socialLinksSchema)->columns(1),

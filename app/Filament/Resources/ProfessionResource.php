@@ -17,7 +17,7 @@ class ProfessionResource extends Resource
     protected static ?string $model = Profession::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-    
+
     protected static function getNavigationLabel(): string
     {
         return static::$navigationLabel ?? static::$navigationLabel ?? __('filament::resources/professions.label.plural');
@@ -37,14 +37,15 @@ class ProfessionResource extends Resource
     {
         return __('Content Management');
     }
-    
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('service_id')
-                ->relationship('serviceTranslation', 'name')
+                    ->relationship('service', 'id')
                     ->label(__('filament::resources/professions.form.fields.service_id.label'))
+                    ->getOptionLabelFromRecordUsing(fn($record) => $record->translation->name)
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
@@ -59,8 +60,7 @@ class ProfessionResource extends Resource
                 Forms\Components\TextInput::make('fee_percentage')
                     ->label(__('filament::resources/professions.form.fields.fee_percentage.label'))
                     ->numeric()
-                    ->required()
-                    ,
+                    ->required(),
                 Forms\Components\Toggle::make('is_available')
                     ->label(__('filament::resources/professions.form.fields.is_available.label')),
             ]);

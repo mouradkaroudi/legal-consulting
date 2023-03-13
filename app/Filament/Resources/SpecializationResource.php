@@ -45,7 +45,8 @@ class SpecializationResource extends Resource
             ->schema([
                 Forms\Components\Select::make('profession_id')
                     ->label(__('filament::resources/specializations.form.fields.profession_id.label'))
-                    ->relationship('professionTranslation', 'name')
+                    ->relationship('profession', 'id')
+                    ->getOptionLabelFromRecordUsing(fn($record) => $record->translation->name)
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->label(__('filament::resources/specializations.form.fields.name.label'))

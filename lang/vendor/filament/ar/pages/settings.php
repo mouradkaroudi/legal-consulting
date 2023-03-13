@@ -95,6 +95,17 @@ return [
                 ]
             ]
         ],
+        'page' => [
+            'label' => 'الصفحات',
+            'fields' => [
+                'textcolor' => [
+                    'label' => 'لون نص '
+                ],
+                'bgcolor' => [
+                    'label' => 'لون خلفية '
+                ],
+            ]
+        ],
         'social' => [
             'label' => 'مواقع التواصل اجتماعي',
             'fields' => [

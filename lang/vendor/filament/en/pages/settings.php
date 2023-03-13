@@ -86,6 +86,17 @@ return [
                 ]
             ]
         ],
+        'page' => [
+            'label' => 'Pages',
+            'fields' => [
+                'textcolor' => [
+                    'label' => 'Text color'
+                ],
+                'bgcolor' => [
+                    'label' => 'Background color'
+                ],
+            ]
+        ],
         'links' => [
             'label' => 'Links',
             'fields' => [

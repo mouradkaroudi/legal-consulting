@@ -174,6 +174,15 @@ class Settings extends Page
 				->hidden(fn ($state, callable $get) => $get('transactions_bank_transfer') == 0)
 		];
 
+		$pageSettingScheme = [
+			Components\ColorPicker::make("page_bgcolor")->label(
+				__('filament::pages/settings.fields.page.fields.textcolor.label')
+			),
+			Components\ColorPicker::make("page_textcolor")->label(
+				__('filament::pages/settings.fields.page.fields.bgcolor.label')
+			),
+		];
+
 		return [
 			Components\Fieldset::make("general_settings")
 				->label(__('filament::pages/settings.fields.general_settings.label'))

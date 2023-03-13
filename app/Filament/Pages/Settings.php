@@ -176,10 +176,10 @@ class Settings extends Page
 
 		$pageSettingScheme = [
 			Components\ColorPicker::make("page_bgcolor")->label(
-				__('filament::pages/settings.fields.page.fields.textcolor.label')
+				__('filament::pages/settings.fields.page.fields.bgcolor.label')
 			),
 			Components\ColorPicker::make("page_textcolor")->label(
-				__('filament::pages/settings.fields.page.fields.bgcolor.label')
+				__('filament::pages/settings.fields.page.fields.textcolor.label')
 			),
 		];
 

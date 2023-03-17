@@ -47,6 +47,7 @@
                     </x-filament::dropdown>
                 </div>
                 <div class="flex gap-2">
+                    <livewire:account.services-dropdown />
                     <livewire:account.messages-button-with-indicator />
                     <livewire:account.notification-button />
                 </div>

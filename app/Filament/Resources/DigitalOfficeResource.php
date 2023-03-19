@@ -104,12 +104,12 @@ class DigitalOfficeResource extends Resource
                         ]),
                     Tables\Actions\Action::make('viewProfile')
                         ->label(__('filament::resources/offices.table.actions.viewProfile.label'))
-                        ->url(fn (DigitalOffice $record) => route('search.office', [
+                        ->url(fn (DigitalOffice $record) => $record->service && $record->profession ? route('search.office', [
                             'service' => $record->service,
                             'profession' => $record->profession,
                             'digitalOffice' => $record->id,
                             'name' => $record->url_name
-                        ]))
+                        ]) : '')
                         ->openUrlInNewTab()
                         ->visible(fn ($record) => $record->status != DigitalOffice::UNCOMPLETED)
                         ->icon('heroicon-o-external-link'),

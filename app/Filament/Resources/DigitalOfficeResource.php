@@ -150,7 +150,7 @@ class DigitalOfficeResource extends Resource
         return [
             'index' => Pages\ListDigitalOffices::route('/'),
             //'create' => Pages\CreateDigitalOffice::route('/create'),
-            'edit' => Pages\EditDigitalOffice::route('/{record}/edit'),
+            //'edit' => Pages\EditDigitalOffice::route('/{record}/edit'),
         ];
     }
 }

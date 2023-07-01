@@ -1,8 +1,13 @@
+
 # Legal Consulting Project
 
 The repository is a demonstration of my skills and expertise in web development using the Laravel framework along with Livewire, Tailwind CSS, and FilamentPHP. It showcases various features and functionalities commonly found in a legal consulting application, such as user authentication, document sharing, appointment scheduling, and chatting.
 
 Please note that this project is solely a showcase of technical capabilities.
+
+## TODO
+
+- Move all pages in `resoures/views/pages` to `resoures/views/livewire/pages`
 
 ## Technologies Used
 

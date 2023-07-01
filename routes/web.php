@@ -27,7 +27,13 @@ use App\Http\Controllers\Office\SetupOfficeController;
 use App\Http\Controllers\Office\SubscriptionController;
 
 use App\Http\Controllers\Payment\PayPalController;
-
+use App\Http\Livewire\Auth\Login;
+use App\Http\Livewire\Pages\Auth\ForgetPassword;
+use App\Http\Livewire\Pages\Auth\Login as AuthLogin;
+use App\Http\Livewire\Pages\Auth\Registration;
+use App\Http\Livewire\Pages\Auth\ResetPassword;
+use App\Http\Livewire\Pages\Auth\VerifyEmail;
+use App\Http\Livewire\Pages\Search\Listing;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
@@ -68,15 +74,15 @@ Route::get('/', function () {
  * Authentication routes
  */
 Route::name('auth.')->group(function () {
-    Route::get('/registration', [RegistrationController::class, 'create'])->name('registration');
-    Route::get('/login', [AuthController::class, 'index'])->name('login');
-    Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.request');
+    Route::get('/registration', Registration::class)->name('registration');
+    Route::get('/login', AuthLogin::class)->name('login');
+    Route::get('/forgot-password', ForgetPassword::class)->name('password.request');
 })->middleware(['guest']);
 
-Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('password.reset')->middleware(['guest']);
+Route::get('/reset-password/{token}', ResetPassword::class)->name('password.reset')->middleware(['guest']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('verify-email', [AuthController::class, 'verifyEmailPrompt'])->name('verification.notice');
+    Route::get('verify-email', VerifyEmail::class)->name('verification.notice');
     Route::post('send', [AuthController::class, 'resendVerification'])->name('verification.send');
     Route::get('verify-email/{id}/{hash}', [AuthController::class, 'verifyEmail'])
         ->middleware(['signed', 'throttle:6,1'])
@@ -134,9 +140,7 @@ Route::name('account.')->prefix('/account')->middleware(['auth', 'verified', 'ac
 
     Route::get('/', [DashboardController::class, 'index'])->name('overview');
 
-
     Route::get('/settings', [AccountSettingsController::class, 'index'])->name('settings');
-    
 
     Route::name('credit.')->prefix('/credit')->group(function() {
         Route::get('/', [CreditController::class, 'index'])->name('index');
@@ -174,7 +178,7 @@ Route::name('payment.')->prefix('/payment')->middleware(['auth', 'account.settle
  * Offices listing routes
  */
 Route::name('search.')->prefix('/services')->group(function () {
-    Route::get('/{service:slug?}/{profession:slug?}', [OfficeListingController::class, 'index'])->name('listing');
+    Route::get('/{service:slug}/{profession:slug?}', Listing::class)->name('listing');
     Route::get('/{service:slug}/{profession:slug}/{digitalOffice}-{name?}', [OfficeListingController::class, 'show'])
         ->where([
             'digitalOffice' => '[0-9]+'
